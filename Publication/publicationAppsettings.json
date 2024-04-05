@@ -1,0 +1,17 @@
+{
+  "AppSettings": {
+    "SID": "HXIN1737767674IN",
+    "apiKey": "A4e5665d88e6ee4c326b654cfac87dde2",
+    "sender": "HSBOON",
+    "template_id": "1207162079538531004"
+  },
+  "ApplicationInsights": {
+    "InstrumentationKey": "78c9035e-c55a-457c-b782-b3aa1a3c72d8"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  }
+}

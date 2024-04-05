@@ -1,0 +1,136 @@
+{
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/SignUp",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7102
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/SignUp",
+      "UpstreamHttpMethod": [ "POST", "PATCH" ]
+      //"AuthenticationOptions": {
+      //  "AuthenticationProviderKey": "Bearer",
+      //  "AllowedScopes": []
+      //}
+    },
+    //For UserController
+    {
+      "DownstreamPathTemplate": "/api/User",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7093
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/Users",
+      "UpstreamHttpMethod": [ "POST", "PUT", "GET", "PATCH" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/User/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7093
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/Users/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Lead",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7093
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/PotentialLead",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/UserUtil/{phoneNumber}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7093
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/UserUtility",
+      "UpstreamHttpMethod": [ "GET" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/UserUtil/",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7093
+        }
+      ],
+      "UpstreamPathTemplate": "/gateway/UserUtility",
+      "UpstreamHttpMethod": [ "PATCH" ]
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/Visit/GetVisitsByOwnerId/{id}",
+      "UpstreamPathTemplate": "/gateway/Visit/{id}",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7279
+        }
+      ],
+      "Key": "Visit"
+    },
+    {
+      "DownstreamPathTemplate": "/api/Booking/GetBookingsByOwnerId/{id}",
+      "UpstreamPathTemplate": "/gateway/Booking/{id}",
+      "UpstreamHttpMethod": [
+        "Get"
+      ],
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 7038
+        }
+      ],
+      "Key": "Booking"
+    }
+  ],
+
+  "Aggregates": [
+    {
+      "RouteKeys": [
+        "Visit",
+        "Booking"
+      ],
+      "UpstreamPathTemplate": "/gateway/VisitAndBooking/{id}",
+      "Aggregator": "VisitAndBookingAggregator"
+    }
+    //,
+    //{
+    //  "ReRouteKeys": [
+    //    "Visit1",
+    //    "Booking2"
+    //  ],
+    //  "UpstreamPathTemplate": "/gateway/VisitAndBooking1/{id}",
+    //  "Aggregator": "UserAndProductAggregator"
+    //}
+    //end here
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5021"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "AppSettings": {
+    "Secret": "copartner_web_api_key",
+    "RefreshTokenTTL": 2
+  },
+  "ApplicationInsights": {
+    "InstrumentationKey": "78c9035e-c55a-457c-b782-b3aa1a3c72d8"
+  },
+  "Logging": {
+    "LogLevel": {
+      "Default": "Information",
+      "Microsoft.AspNetCore": "Warning"
+    }
+  },
+  "AllowedHosts": "*",
+  "Serilog": {
+    "Using": [ "Serilog.Sinks.File" ],
+    "MinimumLevel": {
+      "Default": "Information"
+    },
+    "WriteTo": [
+      {
+        "Name": "File",
+        "Args": {
+          "path": "../../../Logs/Api/CommonLib/CoPartner_AuthServcice_API-.log",
+          "rollingInterval": "Day",
+          "OutputTemplate": "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} {CorrelationId} {Level:u3}] {Username} {Message:lj}{NewLine}{Exception}"
+        }
+      },
+      {
+        "Name": "Console",
+        "Args": {
+          "rollingInterval": "Day",
+          "OutputTemplate": "[{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} {CorrelationId} {Level:u3}] {Username} {Message:lj}{NewLine}{Exception}"
+        }
+      }
+    ]
+  }
+}
