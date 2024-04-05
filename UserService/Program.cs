@@ -95,7 +95,7 @@ builder.Services.AddScoped<IJsonMapper, JsonMapper>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
-builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehaviour<,>));
+//builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehaviour<,>));
 
 ////Resolve Dependencies Ends
 if (builder.Environment.IsProduction())
