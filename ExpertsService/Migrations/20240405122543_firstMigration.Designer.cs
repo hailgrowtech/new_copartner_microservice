@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExpertsService.Migrations
 {
     [DbContext(typeof(ExpertsDbContext))]
-    [Migration("20240405071907_CreateAllTables")]
-    partial class CreateAllTables
+    [Migration("20240405122543_firstMigration")]
+    partial class firstMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -49,7 +49,7 @@ namespace ExpertsService.Migrations
                     b.Property<int?>("Experience")
                         .HasColumnType("int");
 
-                    b.Property<int>("ExpertTypeId")
+                    b.Property<int?>("ExpertTypeId")
                         .HasColumnType("int");
 
                     b.Property<string>("MobileNumber")
@@ -111,9 +111,7 @@ namespace ExpertsService.Migrations
                 {
                     b.HasOne("ExpertService.Models.ExpertsType", "ExpertType")
                         .WithMany()
-                        .HasForeignKey("ExpertTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ExpertTypeId");
 
                     b.Navigation("ExpertType");
                 });

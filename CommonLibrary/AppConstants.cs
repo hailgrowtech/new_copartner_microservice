@@ -52,6 +52,17 @@ public static class AppConstants
 
     #endregion
 
+    #region Experts Service
+
+    public const string Expert_ExpertNotFound = "Unable to find experts. ";
+    public const string Expert_ExpertExistsWithMobileOrEmail = "Experts already exists for given mobile and email.";
+    public const string Expert_FailedToCreateNewExpert = "Failed to create new experts.";
+    public const string Expert_FailedToUpdateExpert = "Failed to update Expert.";
+    public const string Expert_ExpertCreated = "Expert created successfully.";
+    public const string Expert_ExpertUpdated = "Expert updated successfully.";
+
+    #endregion
+
 
 
     #region Enumerators

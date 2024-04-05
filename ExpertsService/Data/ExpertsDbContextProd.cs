@@ -15,6 +15,6 @@ public class ExpertsDbContextProd : DbContext
     }
 
     public DbSet<Experts> Experts { get; set; }
-
+    public DbSet<ExpertsType> ExpertsType { get; set; }
 
 }

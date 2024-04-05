@@ -6,7 +6,7 @@ namespace ExpertService.Dtos
     public class ExpertsCreateDto
     {
         public string Name { get; set; }
-        public ExpertsType ExpertTypeID { get; set; }
+        public int? ExpertTypeID { get; set; }
         public string? SEBIRegNo { get; set; }
         public string? Email { get; set; }
         public int? Experience { get; set; }
