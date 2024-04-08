@@ -7,8 +7,8 @@ namespace CourseService.Logic
     {
         Task<ResponseDto> Get();
         Task<ResponseDto> Get(Guid id);
-        Task<ResponseDto> Post(CourseCreateDto experts);
-        Task<ResponseDto> Patch(Guid Id, JsonPatchDocument<CourseCreateDto> expertsDto);
+        Task<ResponseDto> Post(CourseCreateDto courses);
+        Task<ResponseDto> Patch(Guid Id, JsonPatchDocument<CourseCreateDto> courseDto);
         //bool ResetPassword(ExpertsPasswordDTO expertsPasswordDTO);
     }
 }

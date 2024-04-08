@@ -16,5 +16,7 @@ namespace CourseService.Data
         }
 
         public DbSet<Course> Courses { get; set; }
+        public DbSet<CourseBooking> CourseBookings { get; set; }
+        public DbSet<CourseStatus> CourseStatuses { get; set; }
     }
 }
