@@ -2,6 +2,7 @@
 using CourseService.Data;
 using CourseService.Models;
 using MediatR;
+using Microsoft.EntityFrameworkCore;
 
 namespace CourseService.Handlers
 {

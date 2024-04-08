@@ -1,4 +1,10 @@
 
+using CommonLibrary.Authorization;
+using CommonLibrary.ErrorHandler;
+using CourseService.Data;
+using CourseService.Logic;
+using ExpertService.Profiles;
+using FluentValidation;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Reflection;
@@ -87,7 +93,7 @@ namespace CourseService
             //Resolve Dependencies Start
 
             //Experts Service Dependencies
-            builder.Services.AddScoped<IExpertsBusinessProcessor, ExpertsBusinessProcessor>();
+            builder.Services.AddScoped<ICourseBusinessProcessor, CourseBusinessProcessor>();
             builder.Services.AddScoped<IJsonMapper, JsonMapper>();
             //AutoMapper
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -98,11 +104,11 @@ namespace CourseService
             ////Resolve Dependencies Ends
             if (builder.Environment.IsProduction())
             {
-                builder.Services.AddDbContext<ExpertsDbContextProd>();
+                builder.Services.AddDbContext<CourseDbContextProd>();
             }
             else
             {
-                builder.Services.AddDbContext<ExpertsDbContextProd, ExpertsDbContext>();
+                builder.Services.AddDbContext<CourseDbContextProd, CourseDbContext>();
             }
 
 
@@ -119,7 +125,7 @@ namespace CourseService
             //migrate any database changes on startup (includes initial db creation)
             using (var scope = app.Services.CreateScope())
             {
-                var dataContext = scope.ServiceProvider.GetRequiredService<ExpertsDbContext>();
+                var dataContext = scope.ServiceProvider.GetRequiredService<CourseDbContext>();
                 dataContext.Database.Migrate();
             }
 

@@ -3,5 +3,5 @@ using MediatR;
 
 namespace CourseService.Commands
 {
-    public record DeleteCourseCommand(Guid Id) : IRequest<Course>;
+    public record DeleteCourseBookingCommand(Guid Id) : IRequest<CourseBooking>;
 }
