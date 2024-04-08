@@ -63,6 +63,15 @@ public static class AppConstants
 
     #endregion
 
+    #region Course Service
+
+    public const string Course_CourseNotFound = "Unable to find courses. ";
+    public const string Course_FailedToCreateNewCourse = "Failed to create new course.";
+    public const string Course_FailedToUpdateCourse = "Failed to update Course.";
+    public const string Course_CourseCreated = "Course created successfully.";
+    public const string Course_CourseUpdated = "Course updated successfully.";
+
+    #endregion
 
 
     #region Enumerators
