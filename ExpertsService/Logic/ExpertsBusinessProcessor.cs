@@ -39,7 +39,7 @@ public class ExpertsBusinessProcessor : IExpertsBusinessProcessor
             {
                 IsSuccess = false,
                 Data = null,
-                ErrorMessages = new List<string>() { AppConstants.User_UserNotFound }
+                ErrorMessages = new List<string>() { AppConstants.Expert_ExpertNotFound }
             };
         }
         var expertsReadDto = _mapper.Map<ExpertReadDto>(experts);
@@ -61,7 +61,7 @@ public class ExpertsBusinessProcessor : IExpertsBusinessProcessor
             {
                 IsSuccess = false,
                 Data = _mapper.Map<ExpertReadDto>(existingExperts),
-                ErrorMessages = new List<string>() { AppConstants.User_UserExistsWithMobileOrEmail }
+                ErrorMessages = new List<string>() { AppConstants.Expert_ExpertExistsWithMobileOrEmail }
             };
         }
 
@@ -72,7 +72,7 @@ public class ExpertsBusinessProcessor : IExpertsBusinessProcessor
             {
                 IsSuccess = false,
                 Data = _mapper.Map<ExpertReadDto>(existingExperts),
-                ErrorMessages = new List<string>() { AppConstants.User_FailedToCreateNewUser }
+                ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
             };
         }
 
@@ -80,7 +80,7 @@ public class ExpertsBusinessProcessor : IExpertsBusinessProcessor
         return new ResponseDto()
         {
             Data = resultDto,
-            DisplayMessage = AppConstants.User_UserCreated
+            DisplayMessage = AppConstants.Expert_ExpertCreated
         };
     }
     public async Task<ResponseDto> Patch(Guid Id, JsonPatchDocument<ExpertsCreateDto> request)
@@ -93,8 +93,8 @@ public class ExpertsBusinessProcessor : IExpertsBusinessProcessor
             return new ResponseDto()
             {
                 IsSuccess = false,
-                //   Data = _mapper.Map<UserReadDto>(existingUser),
-                ErrorMessages = new List<string>() { AppConstants.User_UserNotFound }
+                //   Data = _mapper.Map<ExpertsReadDto>(existingExperts),
+                ErrorMessages = new List<string>() { AppConstants.Expert_ExpertNotFound }
             };
         }
 
@@ -105,20 +105,20 @@ public class ExpertsBusinessProcessor : IExpertsBusinessProcessor
             {
                 IsSuccess = false,
                 Data = _mapper.Map<ExpertReadDto>(existingExperts),
-                ErrorMessages = new List<string>() { AppConstants.User_FailedToUpdateUser }
+                ErrorMessages = new List<string>() { AppConstants.Expert_FailedToUpdateExpert }
             };
         }
 
         return new ResponseDto()
         {
             Data = _mapper.Map<ExpertReadDto>(result),
-            DisplayMessage = AppConstants.User_UserUpdated
+            DisplayMessage = AppConstants.Expert_ExpertUpdated
         };
     }
-    //public async Task<UserReadDto> Delete(Guid Id)
+    //public async Task<ExpertsReadDto> Delete(Guid Id)
     //{
-    //    var user = await _sender.Send(new DeleteUserCommand(Id));
-    //    var userReadDto = _mapper.Map<UserReadDto>(user);
+    //    var user = await _sender.Send(new DeleteExpertsCommand(Id));
+    //    var userReadDto = _mapper.Map<ExpertsReadDto>(user);
     //    return userReadDto;
     //}
 

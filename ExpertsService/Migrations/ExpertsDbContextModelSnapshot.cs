@@ -46,7 +46,7 @@ namespace ExpertsService.Migrations
                     b.Property<int?>("Experience")
                         .HasColumnType("int");
 
-                    b.Property<int>("ExpertTypeId")
+                    b.Property<int?>("ExpertTypeId")
                         .HasColumnType("int");
 
                     b.Property<string>("MobileNumber")
@@ -108,9 +108,7 @@ namespace ExpertsService.Migrations
                 {
                     b.HasOne("ExpertService.Models.ExpertsType", "ExpertType")
                         .WithMany()
-                        .HasForeignKey("ExpertTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("ExpertTypeId");
 
                     b.Navigation("ExpertType");
                 });

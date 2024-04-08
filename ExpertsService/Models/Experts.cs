@@ -11,6 +11,7 @@ public class Experts : BaseModel
     [Required]
     public string Name { get; set; }
     public ExpertsType ExpertType { get; set; }
+    public int? ExpertTypeId { get; set; }
     public string? SEBIRegNo { get; set; }
     public string? Email { get; set; }
     public int? Experience { get; set; }
