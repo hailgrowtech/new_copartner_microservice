@@ -1,0 +1,6 @@
+@MigrationDB_HostAddress = http://localhost:5129
+
+GET {{MigrationDB_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -15,10 +15,10 @@ public class CreateCourseHandler : IRequestHandler<CreateCourseCommand, Course>
 
     public async Task<Course> Handle(CreateCourseCommand request, CancellationToken cancellationToken)
     {
-        var entity = request.course;
+        var entity = request.Course;
         await _dbContext.Courses.AddAsync(entity);
         await _dbContext.SaveChangesAsync(cancellationToken);
-        request.course.Id = entity.Id;
-        return request.course;
+        request.Course.Id = entity.Id;
+        return request.Course;
     }
 }

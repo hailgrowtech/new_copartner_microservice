@@ -9,7 +9,7 @@ namespace CourseService.Handlers
     public class DeleteCourseBookingHandler : IRequestHandler<DeleteCourseBookingCommand, CourseBooking>
     {
         private readonly CourseDbContext _dbContext;
-        public DeleteCourseBookingHandler(DeleteCourseBookingCommand dbContext) => _dbContext = dbContext;
+        public DeleteCourseBookingHandler(CourseDbContext dbContext) => _dbContext = dbContext;
         public async Task<CourseBooking> Handle(DeleteCourseBookingCommand request, CancellationToken cancellationToken)
         {
             var courseBookingList = await _dbContext.CourseBookings.Where(a => a.Id == request.Id).SingleOrDefaultAsync(cancellationToken: cancellationToken);

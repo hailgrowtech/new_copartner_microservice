@@ -6,10 +6,13 @@ namespace CourseService.Models
     [Table("CourseBooking")]
     public class CourseBooking : BaseModel
     {
-        public int UserId { get; set; }
-        public int CourseId { get; set; }
+        public User User { get; set; }
+        public Guid UserId { get; set; }
+        public Course Course { get; set; }
+        public Guid CourseId { get; set; }
         public DateTime BookingDate { get; set; }
-        public int ExpertId { get; set; }
+        public Experts Experts { get; set; }
+        public Guid ExpertId { get; set; }
 
     }
 }

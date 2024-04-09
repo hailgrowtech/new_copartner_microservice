@@ -12,7 +12,7 @@ namespace CourseService.Models
         public int VideoCount { get; set; }
         public DateTime Duration { get; set; }
         public DateTime LaunchDate { get; set; }
-
+        public Experts Experts { get; set; }
         public Guid ExpertId { get; set; }
         public int Amount { get; set; }
     }

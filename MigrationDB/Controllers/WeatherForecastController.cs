@@ -1,7 +1,6 @@
-using CourseService;
 using Microsoft.AspNetCore.Mvc;
 
-namespace ExpertService.Controllers
+namespace MigrationDB.Controllers
 {
     [ApiController]
     [Route("[controller]")]
