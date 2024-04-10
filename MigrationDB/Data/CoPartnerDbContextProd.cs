@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using MigrationDB.Model;
 using MigrationDB.Models;
 
 namespace MigrationDB.Data;
@@ -20,6 +21,8 @@ public class CoPartnerDbContextProd : DbContext
     public DbSet<Course> Courses { get; set; }
     public DbSet<CourseBooking> CourseBookings { get; set; }
     public DbSet<CourseStatus> CourseStatuses { get; set; }
+    public DbSet<SubscriptionMst> subscriptionMsts { get; set; }
+    public DbSet<Subscriber> subscribers { get; set; }
 
 
 }
