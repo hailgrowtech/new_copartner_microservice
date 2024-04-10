@@ -1,0 +1,13 @@
+﻿using FluentValidation;
+using SubscriptionService.Commands;
+
+namespace SubscriptionService.Validators;
+public class CreateExpertsCommandValidator : AbstractValidator<CreateSubscriptionMstCommand>
+{
+    public CreateExpertsCommandValidator()
+    {
+        //RuleFor(x => x.User.Id).NotEmpty();
+        RuleFor(x => x.SubscriptionMst.ServiceType).NotEmpty().MaximumLength(300);
+       // RuleFor(x => x.User.LastName).NotEmpty().MaximumLength(100);
+    }
+}
