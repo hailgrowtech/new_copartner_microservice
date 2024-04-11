@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExpertsService", "ExpertsSe
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CourseService", "CourseService\CourseService.csproj", "{3E263442-C5EC-49B4-9466-67E0A8BB8FA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MigrationDB", "MigrationDB\MigrationDB.csproj", "{6F7EE620-2F05-45CF-BF22-ECE9E5C7D0E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MigrationDB", "MigrationDB\MigrationDB.csproj", "{6F7EE620-2F05-45CF-BF22-ECE9E5C7D0E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SubscriptionService", "SubscriptionService\SubscriptionService.csproj", "{0C43064B-AFE4-4203-8442-63DBCE4E9A54}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{6F7EE620-2F05-45CF-BF22-ECE9E5C7D0E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6F7EE620-2F05-45CF-BF22-ECE9E5C7D0E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6F7EE620-2F05-45CF-BF22-ECE9E5C7D0E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0C43064B-AFE4-4203-8442-63DBCE4E9A54}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0C43064B-AFE4-4203-8442-63DBCE4E9A54}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0C43064B-AFE4-4203-8442-63DBCE4E9A54}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0C43064B-AFE4-4203-8442-63DBCE4E9A54}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -76,6 +82,7 @@ Global
 		{F3C22C8E-613F-481E-BAD7-44E039D31BD5} = {712147FE-0422-452C-BB6B-628829E2797E}
 		{3E263442-C5EC-49B4-9466-67E0A8BB8FA6} = {712147FE-0422-452C-BB6B-628829E2797E}
 		{6F7EE620-2F05-45CF-BF22-ECE9E5C7D0E0} = {79BB73C7-A0E0-4AA5-BFB5-9AC254A028D9}
+		{0C43064B-AFE4-4203-8442-63DBCE4E9A54} = {712147FE-0422-452C-BB6B-628829E2797E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9E070022-75FD-4AF3-92F9-19A8D3322D8B}
