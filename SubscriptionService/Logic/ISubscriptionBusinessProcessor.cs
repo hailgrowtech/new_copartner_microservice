@@ -8,8 +8,9 @@ namespace SubscriptionService.Logic
     {
         Task<ResponseDto> Get();
         Task<ResponseDto> Get(Guid id);
-        Task<ResponseDto> Post(SubscriptionCreateDto subscriptionMstCreateDto);
+        Task<ResponseDto> Post(SubscriptionCreateDto subscriptionCreateDto);
+        Task<ResponseDto> Put(Guid id,SubscriptionCreateDto subscriptionCreateDto);
         Task<ResponseDto> Delete(Guid id);
-        Task<ResponseDto> Patch(Guid Id, JsonPatchDocument<SubscriptionCreateDto> subscriptionMstCreateDto);
+        Task<ResponseDto> Patch(Guid Id, JsonPatchDocument<SubscriptionCreateDto> subscriptionCreateDto);
     }
 }

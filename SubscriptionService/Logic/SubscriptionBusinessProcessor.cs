@@ -64,8 +64,8 @@ namespace SubscriptionService.Logic
                     ErrorMessages = new List<string>() { AppConstants.Expert_ExpertNotFound }
                 };
             }
-            var subscriptionMsts = _mapper.Map<SubscriptionMst>(existingsubscriptionMsts);
-            var result = await _sender.Send(new PatchSubscriptionMstCommand(Id, request, subscriptionMsts));
+            var subscriptionMsts = _mapper.Map<Subscription>(existingsubscriptionMsts);
+            var result = await _sender.Send(new PatchSubscriptionCommand(Id, request, subscriptionMsts));
             if (result == null)
             {
                 return new ResponseDto()
@@ -85,26 +85,59 @@ namespace SubscriptionService.Logic
 
         public async Task<ResponseDto> Post(SubscriptionCreateDto request)
         {
-            var subscriptionMsts = _mapper.Map<SubscriptionMst>(request);
+            var subscription = _mapper.Map<Subscription>(request);
 
-            var existingsubscriptionMsts = await _sender.Send(new GetSubscriptionByIdQuery(subscriptionMsts.Id));
-            if (existingsubscriptionMsts != null)
+            var existingsubscription = await _sender.Send(new GetSubscriptionByIdQuery(subscription.Id));
+            if (existingsubscription != null)
             {
                 return new ResponseDto()
                 {
                     IsSuccess = false,
-                    Data = _mapper.Map<SubscriptionReadDto>(existingsubscriptionMsts),
+                    Data = _mapper.Map<SubscriptionReadDto>(existingsubscription),
                     ErrorMessages = new List<string>() { AppConstants.Expert_ExpertExistsWithMobileOrEmail }
                 };
             }
 
-            var result = await _sender.Send(new CreateSubscriptionCommand(subscriptionMsts));
+            var result = await _sender.Send(new CreateSubscriptionCommand(subscription));
             if (result == null)
             {
                 return new ResponseDto()
                 {
                     IsSuccess = false,
-                    Data = _mapper.Map<SubscriptionReadDto>(existingsubscriptionMsts),
+                    Data = _mapper.Map<SubscriptionReadDto>(existingsubscription),
+                    ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
+                };
+            }
+
+            var resultDto = _mapper.Map<SubscriptionReadDto>(result);
+            return new ResponseDto()
+            {
+                Data = resultDto,
+                DisplayMessage = AppConstants.Expert_ExpertCreated
+            };
+        }
+        public async Task<ResponseDto> Put(Guid Id, SubscriptionCreateDto request)
+        {
+            var subscription = _mapper.Map<Subscription>(request);
+
+            var existingSubscription = await _sender.Send(new GetSubscriptionByIdQuery(Id));
+            if (existingSubscription == null)
+            {
+                return new ResponseDto()
+                {
+                    IsSuccess = false,
+                    Data = _mapper.Map<SubscriptionReadDto>(existingSubscription),
+                    ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
+                };
+            }
+            subscription.Id = Id; // Assigning the provided Id to the subscription
+            var result = await _sender.Send(new PutSubscriptionCommand(subscription));
+            if (result == null)
+            {
+                return new ResponseDto()
+                {
+                    IsSuccess = false,
+                    Data = _mapper.Map<SubscriptionReadDto>(existingSubscription),
                     ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
                 };
             }

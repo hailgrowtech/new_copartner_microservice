@@ -28,7 +28,7 @@ public class SubscriptionController : ControllerBase
     [HttpGet]
     public async Task<object> Get()
     {
-        _logger.LogInformation("Fetching SubscriptionMst Data..");
+        _logger.LogInformation("Fetching Subscription Data..");
         var experts = await _logic.Get();
         return Ok(experts);
     }
@@ -45,15 +45,29 @@ public class SubscriptionController : ControllerBase
     [HttpGet("{Id}", Name = "Get")]
     public async Task<ActionResult<SubscriptionReadDto>> Get(Guid Id)
     {
-        _logger.LogInformation("Fetching SubscriptionMst details for Id : " + Id.ToString());
+        _logger.LogInformation("Fetching Subscription details for Id : " + Id.ToString());
         var subscriptionMsts = await _logic.Get(Id);
         return subscriptionMsts != null ? (ActionResult<SubscriptionReadDto>)Ok(subscriptionMsts) : NotFound();
     }
 
     [HttpPost]
-    public async Task<object> Post(SubscriptionCreateDto subscriptionMstCreateDto)
+    public async Task<object> Post(SubscriptionCreateDto subscriptionCreateDto)
     {
-        var response = await _logic.Post(subscriptionMstCreateDto);
+        var response = await _logic.Post(subscriptionCreateDto);
+
+        if (response.IsSuccess)
+        {
+            Guid guid = (Guid)response.Data.GetType().GetProperty("Id").GetValue(response.Data);
+
+            return Ok(response);
+        }
+        return NotFound(response);
+    }
+
+    [HttpPut("{Id:guid}")]
+    public async Task<object> Put(Guid Id,SubscriptionCreateDto subscriptionCreateDto)
+    {
+        var response = await _logic.Put(Id,subscriptionCreateDto);
 
         if (response.IsSuccess)
         {
@@ -65,9 +79,9 @@ public class SubscriptionController : ControllerBase
     }
 
     [HttpPatch]
-    public async Task<object> Patch(Guid Id, [FromBody] JsonPatchDocument<SubscriptionCreateDto> subscriptionMstDtoPatch)
+    public async Task<object> Patch(Guid Id, [FromBody] JsonPatchDocument<SubscriptionCreateDto> subscriptionDtoPatch)
     {
-        var response = await _logic.Patch(Id, subscriptionMstDtoPatch);
+        var response = await _logic.Patch(Id, subscriptionDtoPatch);
         if (response.IsSuccess)
         {
             return Ok(response);
@@ -78,7 +92,7 @@ public class SubscriptionController : ControllerBase
         }
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{Id:guid}")]
     public async Task<ActionResult> Delete(Guid Id)
     {
         var user = await _logic.Delete(Id);

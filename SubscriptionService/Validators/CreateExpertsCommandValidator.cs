@@ -7,7 +7,7 @@ public class CreateExpertsCommandValidator : AbstractValidator<CreateSubscriptio
     public CreateExpertsCommandValidator()
     {
         //RuleFor(x => x.User.Id).NotEmpty();
-        RuleFor(x => x.SubscriptionMst.ServiceType).NotEmpty().MaximumLength(300);
+        RuleFor(x => x.Subscription.ServiceType).NotEmpty().MaximumLength(300);
        // RuleFor(x => x.User.LastName).NotEmpty().MaximumLength(100);
     }
 }

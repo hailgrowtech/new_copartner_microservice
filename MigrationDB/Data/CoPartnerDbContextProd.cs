@@ -21,7 +21,7 @@ public class CoPartnerDbContextProd : DbContext
     public DbSet<Course> Course { get; set; }
     public DbSet<CourseBooking> CourseBookings { get; set; }
     public DbSet<CourseStatus> CourseStatus { get; set; }
-    public DbSet<SubscriptionMst> Subscriptions { get; set; }
+    public DbSet<Subscription> Subscriptions { get; set; }
     public DbSet<Subscriber> Subscribers { get; set; }
 
 

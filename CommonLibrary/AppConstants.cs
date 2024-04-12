@@ -73,6 +73,11 @@ public static class AppConstants
 
     #endregion
 
+    #region Common Messages 
+    public const string Common_NoRecordFound = "No record founds. ";
+
+    #endregion
+
 
     #region Enumerators
     public enum CountryCode

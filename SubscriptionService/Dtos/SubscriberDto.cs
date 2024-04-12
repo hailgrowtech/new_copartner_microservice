@@ -5,7 +5,7 @@ namespace SubscriptionService.Dtos
 {
     public class SubscriberDto
     {
-        public SubscriptionMst SubscriptionMst { get; set; }
+        public Subscription Subscription { get; set; }
         public Guid SubscriptionId { get; set; }
 
         public User User { get; set; }

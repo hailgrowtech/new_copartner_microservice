@@ -6,7 +6,7 @@ using SubscriptionService.Queries;
 
 namespace SubscriptionService.Handlers
 {
-    public class GetSubscriptionByIdHandler : IRequestHandler<GetSubscriptionByIdQuery, SubscriptionMst>
+    public class GetSubscriptionByIdHandler : IRequestHandler<GetSubscriptionByIdQuery, Subscription>
     {
         private readonly CoPartnerDbContext _dbContext;
         public GetSubscriptionByIdHandler(CoPartnerDbContext dbContext)
@@ -14,7 +14,7 @@ namespace SubscriptionService.Handlers
             _dbContext = dbContext;
         }
 
-        public async Task<SubscriptionMst> Handle(GetSubscriptionByIdQuery request, CancellationToken cancellationToken)
+        public async Task<Subscription> Handle(GetSubscriptionByIdQuery request, CancellationToken cancellationToken)
         {
             var subscriptionMstsList = await _dbContext.Subscriptions.Where(a => a.Id == request.Id).SingleOrDefaultAsync(cancellationToken: cancellationToken);
             return subscriptionMstsList;

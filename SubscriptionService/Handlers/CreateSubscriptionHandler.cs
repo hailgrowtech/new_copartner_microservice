@@ -5,7 +5,7 @@ using SubscriptionService.Commands;
 
 namespace SubscriptionService.Handlers
 {
-    public class CreateSubscriptionHandler : IRequestHandler<CreateSubscriptionCommand, SubscriptionMst>
+    public class CreateSubscriptionHandler : IRequestHandler<CreateSubscriptionCommand, Subscription>
     {
         private readonly CoPartnerDbContext _dbContext;
         public CreateSubscriptionHandler(CoPartnerDbContext dbContext)
@@ -13,13 +13,13 @@ namespace SubscriptionService.Handlers
             _dbContext = dbContext;
         }
 
-        public async Task<SubscriptionMst> Handle(CreateSubscriptionCommand request, CancellationToken cancellationToken)
+        public async Task<Subscription> Handle(CreateSubscriptionCommand request, CancellationToken cancellationToken)
         {
-            var entity = request.SubscriptionMst;
+            var entity = request.Subscription;
             await _dbContext.Subscriptions.AddAsync(entity);
             await _dbContext.SaveChangesAsync(cancellationToken);
-            request.SubscriptionMst.Id = entity.Id;
-            return request.SubscriptionMst;
+            request.Subscription.Id = entity.Id;
+            return request.Subscription;
         }
     }
 }

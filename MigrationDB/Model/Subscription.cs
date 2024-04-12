@@ -5,8 +5,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MigrationDB.Model
 {
-    [Table("SubscriptionMsts")]
-    public class SubscriptionMst : BaseModel
+    [Table("Subscription")]
+    public class Subscription : BaseModel
     {
         public Experts Experts { get; set; }
         public Guid ExpertsId { get; set; }

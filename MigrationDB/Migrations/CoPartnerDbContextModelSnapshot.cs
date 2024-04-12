@@ -44,14 +44,14 @@ namespace MigrationDB.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("PaymentMode")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("SubscriptionId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("SubscriptionMstId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("TotalAmount")
@@ -72,14 +72,14 @@ namespace MigrationDB.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("SubscriptionMstId");
+                    b.HasIndex("SubscriptionId");
 
                     b.HasIndex("UserId");
 
                     b.ToTable("Subscriber");
                 });
 
-            modelBuilder.Entity("MigrationDB.Model.SubscriptionMst", b =>
+            modelBuilder.Entity("MigrationDB.Model.Subscription", b =>
                 {
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
@@ -115,6 +115,9 @@ namespace MigrationDB.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("PlanType")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -144,7 +147,7 @@ namespace MigrationDB.Migrations
 
                     b.HasIndex("ExpertsId");
 
-                    b.ToTable("SubscriptionMsts");
+                    b.ToTable("Subscription");
                 });
 
             modelBuilder.Entity("MigrationDB.Models.Course", b =>
@@ -177,6 +180,9 @@ namespace MigrationDB.Migrations
 
                     b.Property<Guid>("ExpertsId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<DateTime>("LaunchDate")
                         .HasColumnType("datetime2");
@@ -221,6 +227,9 @@ namespace MigrationDB.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime2");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uniqueidentifier");
 
@@ -261,6 +270,9 @@ namespace MigrationDB.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<bool>("IsComplete")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
                     b.Property<Guid?>("UpdatedBy")
@@ -305,6 +317,9 @@ namespace MigrationDB.Migrations
 
                     b.Property<int?>("ExpertTypeId")
                         .HasColumnType("int");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<string>("MobileNumber")
                         .HasColumnType("nvarchar(max)");
@@ -380,6 +395,9 @@ namespace MigrationDB.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<string>("MobileNumber")
                         .HasColumnType("nvarchar(max)");
 
@@ -408,9 +426,9 @@ namespace MigrationDB.Migrations
 
             modelBuilder.Entity("MigrationDB.Model.Subscriber", b =>
                 {
-                    b.HasOne("MigrationDB.Model.SubscriptionMst", "SubscriptionMst")
+                    b.HasOne("MigrationDB.Model.Subscription", "Subscription")
                         .WithMany()
-                        .HasForeignKey("SubscriptionMstId")
+                        .HasForeignKey("SubscriptionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -420,12 +438,12 @@ namespace MigrationDB.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("SubscriptionMst");
+                    b.Navigation("Subscription");
 
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("MigrationDB.Model.SubscriptionMst", b =>
+            modelBuilder.Entity("MigrationDB.Model.Subscription", b =>
                 {
                     b.HasOne("MigrationDB.Models.Experts", "Experts")
                         .WithMany()

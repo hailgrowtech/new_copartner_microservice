@@ -8,7 +8,7 @@ namespace MigrationDB.Model
     [Table("Subscriber")]
     public class Subscriber : BaseModel
     {
-        public SubscriptionMst SubscriptionMst { get; set; }
+        public Subscription Subscription { get; set; }
         public Guid SubscriptionId { get; set; }
 
         public User User { get; set; }

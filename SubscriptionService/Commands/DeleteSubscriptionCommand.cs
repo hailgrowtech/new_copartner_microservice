@@ -4,5 +4,5 @@ using MigrationDB.Model;
 namespace SubscriptionService.Commands
 {
 
-    public record DeleteSubscriptionCommand(Guid Id) : IRequest<SubscriptionMst>;
+    public record DeleteSubscriptionCommand(Guid Id) : IRequest<Subscription>;
 }

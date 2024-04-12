@@ -6,7 +6,7 @@ using SubscriptionService.Profiles;
 
 namespace SubscriptionService.Handlers
 {
-    public class PatchSubscriptionHandler : IRequestHandler<PatchSubscriptionMstCommand, SubscriptionMst>
+    public class PatchSubscriptionHandler : IRequestHandler<PatchSubscriptionCommand, Subscription>
     {
         private readonly CoPartnerDbContext _dbContext;
         private readonly IJsonMapper _jsonMapper;
@@ -17,9 +17,9 @@ namespace SubscriptionService.Handlers
             _jsonMapper = jsonMapper;
         }
 
-        public async Task<SubscriptionMst> Handle(PatchSubscriptionMstCommand command, CancellationToken cancellationToken)
+        public async Task<Subscription> Handle(PatchSubscriptionCommand command, CancellationToken cancellationToken)
         {
-            var subscriptionMstToUpdate = _jsonMapper.ToDomain(command.JsonPatchDocument, command.SubscriptionMst);
+            var subscriptionMstToUpdate = _jsonMapper.ToDomain(command.JsonPatchDocument, command.Subscription);
             _dbContext.Update(subscriptionMstToUpdate);
             await _dbContext.SaveChangesAsync(cancellationToken);
             return subscriptionMstToUpdate;

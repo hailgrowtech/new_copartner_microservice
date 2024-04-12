@@ -30,6 +30,7 @@ namespace MigrationDB.Migrations
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -66,6 +67,7 @@ namespace MigrationDB.Migrations
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -89,6 +91,7 @@ namespace MigrationDB.Migrations
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -104,7 +107,7 @@ namespace MigrationDB.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SubscriptionMsts",
+                name: "Subscription",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -122,14 +125,15 @@ namespace MigrationDB.Migrations
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_SubscriptionMsts", x => x.Id);
+                    table.PrimaryKey("PK_Subscription", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SubscriptionMsts_Experts_ExpertsId",
+                        name: "FK_Subscription_Experts_ExpertsId",
                         column: x => x.ExpertsId,
                         principalTable: "Experts",
                         principalColumn: "Id",
@@ -148,6 +152,7 @@ namespace MigrationDB.Migrations
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -173,7 +178,6 @@ namespace MigrationDB.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SubscriptionMstId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SubscriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     GSTAmount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
@@ -184,6 +188,7 @@ namespace MigrationDB.Migrations
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -191,9 +196,9 @@ namespace MigrationDB.Migrations
                 {
                     table.PrimaryKey("PK_Subscriber", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Subscriber_SubscriptionMsts_SubscriptionMstId",
-                        column: x => x.SubscriptionMstId,
-                        principalTable: "SubscriptionMsts",
+                        name: "FK_Subscriber_Subscription_SubscriptionId",
+                        column: x => x.SubscriptionId,
+                        principalTable: "Subscription",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -216,6 +221,7 @@ namespace MigrationDB.Migrations
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
                     DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
                 },
@@ -251,9 +257,9 @@ namespace MigrationDB.Migrations
                 column: "CourseBookingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Subscriber_SubscriptionMstId",
+                name: "IX_Subscriber_SubscriptionId",
                 table: "Subscriber",
-                column: "SubscriptionMstId");
+                column: "SubscriptionId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Subscriber_UserId",
@@ -261,8 +267,8 @@ namespace MigrationDB.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_SubscriptionMsts_ExpertsId",
-                table: "SubscriptionMsts",
+                name: "IX_Subscription_ExpertsId",
+                table: "Subscription",
                 column: "ExpertsId");
         }
 
@@ -282,7 +288,7 @@ namespace MigrationDB.Migrations
                 name: "CourseBooking");
 
             migrationBuilder.DropTable(
-                name: "SubscriptionMsts");
+                name: "Subscription");
 
             migrationBuilder.DropTable(
                 name: "Course");

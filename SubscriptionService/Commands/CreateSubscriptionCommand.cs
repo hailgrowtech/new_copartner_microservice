@@ -3,5 +3,5 @@ using MigrationDB.Model;
 
 namespace SubscriptionService.Commands
 {
-    public record CreateSubscriptionCommand(SubscriptionMst SubscriptionMst) : IRequest<SubscriptionMst>;
+    public record CreateSubscriptionCommand(Subscription Subscription) : IRequest<Subscription>;
 }
