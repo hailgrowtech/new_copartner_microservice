@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Server.IISIntegration;
 using Microsoft.EntityFrameworkCore;
 using MigrationDB.Data;
 using MigrationDB.Model;
@@ -16,7 +17,7 @@ namespace SubscriptionService.Handlers
 
         public async Task<Subscriber> Handle(GetSubscriberIdQuery request, CancellationToken cancellationToken)
         {
-            var subscribersList = await _dbContext.Subscribers.Where(a => a.Id == request.Id).SingleOrDefaultAsync(cancellationToken: cancellationToken);
+            var subscribersList = await _dbContext.Subscribers.Where(a => a.Id == request.Id && a.IsDeleted!=true).SingleOrDefaultAsync(cancellationToken: cancellationToken);
             return subscribersList;
         }
     }

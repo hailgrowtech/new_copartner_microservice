@@ -15,7 +15,7 @@ public class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, User>
 
     public async Task<User> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
     {
-        var userList = await _dbContext.Users.Where(a => a.Id == request.Id).SingleOrDefaultAsync(cancellationToken: cancellationToken);
+        var userList = await _dbContext.Users.Where(a => a.Id == request.Id && a.IsDeleted!= true).SingleOrDefaultAsync(cancellationToken: cancellationToken);
         return userList;
     }
 }

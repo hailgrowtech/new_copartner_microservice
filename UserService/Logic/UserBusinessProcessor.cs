@@ -87,7 +87,7 @@ public class UserBusinessProcessor : IUserBusinessProcessor
     {
         var user = _mapper.Map<User>(request);
 
-        var existingUser = await _sender.Send(new GetUserByIdQuery(user.Id));
+        var existingUser = await _sender.Send(new GetUserByIdQuery(Id));
         if (existingUser == null)
         {
             return new ResponseDto()
