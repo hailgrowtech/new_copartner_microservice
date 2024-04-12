@@ -2,7 +2,7 @@
 using SubscriptionService.Commands;
 
 namespace SubscriptionService.Validators;
-public class CreateExpertsCommandValidator : AbstractValidator<CreateSubscriptionMstCommand>
+public class CreateExpertsCommandValidator : AbstractValidator<CreateSubscriptionCommand>
 {
     public CreateExpertsCommandValidator()
     {

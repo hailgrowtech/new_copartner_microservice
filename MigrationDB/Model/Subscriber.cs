@@ -1,4 +1,5 @@
 ﻿using CommonLibrary.CommonModels;
+using Microsoft.EntityFrameworkCore;
 using MigrationDB.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -13,7 +14,9 @@ namespace MigrationDB.Model
         public User User { get; set; }
         public Guid UserId { get; set; }
 
+        [Precision(18, 2)]
         public decimal GSTAmount { get; set; }
+        [Precision(18, 2)]
         public decimal TotalAmount { get; set; }
         public string PaymentMode { get; set; }
         public bool isActive { get; set; }

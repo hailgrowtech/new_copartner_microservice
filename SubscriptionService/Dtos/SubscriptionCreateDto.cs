@@ -2,10 +2,9 @@
 
 namespace SubscriptionService.Dtos
 {
-    public class SubscriptionMstReadDto
+    public class SubscriptionCreateDto
     {
-        public Guid Id { get; set; }
-        public Experts Experts { get; set; }
+       // public Experts Experts { get; set; }
         public Guid ExpertsId { get; set; }
         public string ImagePath { get; set; }
         public string Tag { get; set; }
@@ -15,6 +14,6 @@ namespace SubscriptionService.Dtos
         public decimal Amount { get; set; }
         public string PremiumTelegramLink { get; set; }
         public string Description { get; set; }
-        public bool isActive { get; set; }
+        public bool IsActive { get; set; }
     }
 }

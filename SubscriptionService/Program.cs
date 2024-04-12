@@ -6,6 +6,8 @@ using Serilog;
 using SubscriptionService.Logic;
 using SubscriptionService.Profiles;
 using System.Reflection;
+using SubscriptionService.Configuration;
+using CommonLibrary.Authorization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +42,7 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "Experts Service API",
+        Title = "Subscription Service API",
         Version = "v1",
         Description = "An API to perform Experts operations",
         TermsOfService = new Uri("https://hailgrotech.com/"),
@@ -86,7 +88,8 @@ builder.Services.AddSwaggerGen(c =>
 //Resolve Dependencies Start
 
 //Experts Service Dependencies
-builder.Services.AddScoped<ISubscriptionMstProcessor, SubscriptionMstProcessor>();
+builder.Services.AddScoped<ISubscriptionBusinessProcessor, SubscriptionBusinessProcessor>();
+builder.Services.AddScoped<ISubscriberBusinessProcessor, SubscriberBusinessProcessor>();
 builder.Services.AddScoped<IJsonMapper, JsonMapper>();
 //AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -116,15 +119,29 @@ var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
     var dataContext = scope.ServiceProvider.GetRequiredService<CoPartnerDbContext>();
-    dataContext.Database.Migrate();
+    //dataContext.Database.Migrate();
 }
 // Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
 {
     app.UseSwagger();
-    app.UseSwaggerUI();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "User Service API V1");
+    });
 }
 
+// global cors policy
+app.UseCors(x => x
+    .SetIsOriginAllowed(origin => true)
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .AllowCredentials());
+
+// global error handler
+app.UseMiddleware<ErrorHandlerMiddleware>();
+app.UseMiddleware<JwtMiddleware>();
+// custom jwt auth middleware 
 app.UseHttpsRedirection();
 
 app.UseAuthorization();

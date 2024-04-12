@@ -2,8 +2,9 @@
 
 namespace SubscriptionService.Dtos
 {
-    public class SubscriptionMstDto
+    public class SubscriptionReadDto
     {
+        public Guid Id { get; set; }
         public Experts Experts { get; set; }
         public Guid ExpertsId { get; set; }
         public string ImagePath { get; set; }

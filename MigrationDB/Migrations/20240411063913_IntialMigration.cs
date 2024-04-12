@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MigrationDB.Migrations
 {
     /// <inheritdoc />
-    public partial class subscription : Migration
+    public partial class IntialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -104,7 +104,7 @@ namespace MigrationDB.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "subscriptionMsts",
+                name: "SubscriptionMsts",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -114,7 +114,7 @@ namespace MigrationDB.Migrations
                     ServiceType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     PlanType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     DurationMonth = table.Column<int>(type: "int", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     PremiumTelegramLink = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     isActive = table.Column<bool>(type: "bit", nullable: false),
@@ -127,9 +127,9 @@ namespace MigrationDB.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_subscriptionMsts", x => x.Id);
+                    table.PrimaryKey("PK_SubscriptionMsts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_subscriptionMsts_Experts_ExpertsId",
+                        name: "FK_SubscriptionMsts_Experts_ExpertsId",
                         column: x => x.ExpertsId,
                         principalTable: "Experts",
                         principalColumn: "Id",
@@ -169,15 +169,15 @@ namespace MigrationDB.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "subscribers",
+                name: "Subscriber",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SubscriptionMstId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     SubscriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    GSTAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    GSTAmount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     PaymentMode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     isActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -189,17 +189,17 @@ namespace MigrationDB.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_subscribers", x => x.Id);
+                    table.PrimaryKey("PK_Subscriber", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_subscribers_User_UserId",
-                        column: x => x.UserId,
-                        principalTable: "User",
+                        name: "FK_Subscriber_SubscriptionMsts_SubscriptionMstId",
+                        column: x => x.SubscriptionMstId,
+                        principalTable: "SubscriptionMsts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_subscribers_subscriptionMsts_SubscriptionMstId",
-                        column: x => x.SubscriptionMstId,
-                        principalTable: "subscriptionMsts",
+                        name: "FK_Subscriber_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -251,18 +251,18 @@ namespace MigrationDB.Migrations
                 column: "CourseBookingId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_subscribers_SubscriptionMstId",
-                table: "subscribers",
+                name: "IX_Subscriber_SubscriptionMstId",
+                table: "Subscriber",
                 column: "SubscriptionMstId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_subscribers_UserId",
-                table: "subscribers",
+                name: "IX_Subscriber_UserId",
+                table: "Subscriber",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_subscriptionMsts_ExpertsId",
-                table: "subscriptionMsts",
+                name: "IX_SubscriptionMsts_ExpertsId",
+                table: "SubscriptionMsts",
                 column: "ExpertsId");
         }
 
@@ -276,13 +276,13 @@ namespace MigrationDB.Migrations
                 name: "ExpertsType");
 
             migrationBuilder.DropTable(
-                name: "subscribers");
+                name: "Subscriber");
 
             migrationBuilder.DropTable(
                 name: "CourseBooking");
 
             migrationBuilder.DropTable(
-                name: "subscriptionMsts");
+                name: "SubscriptionMsts");
 
             migrationBuilder.DropTable(
                 name: "Course");

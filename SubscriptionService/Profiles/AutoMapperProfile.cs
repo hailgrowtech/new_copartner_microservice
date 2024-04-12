@@ -10,9 +10,9 @@ public class AutoMapperProfile : Profile
     {
         // Source -> Target
 
-        CreateMap<SubscriptionMst, SubscriptionMstReadDto>().ReverseMap();
-        CreateMap<SubscriptionMst, SubscriptionMstCreateDto>().ReverseMap();
-        CreateMap<SubscriptionMst, JsonPatchDocument<SubscriptionMstCreateDto>>().ReverseMap();
+        CreateMap<SubscriptionMst, SubscriptionReadDto>().ReverseMap();
+        CreateMap<SubscriptionMst, SubscriptionCreateDto>().ReverseMap();
+        CreateMap<SubscriptionMst, JsonPatchDocument<SubscriptionCreateDto>>().ReverseMap();
     }
 
 }

@@ -115,12 +115,13 @@ public class UserBusinessProcessor : IUserBusinessProcessor
             DisplayMessage = AppConstants.User_UserUpdated
         };
     }
-    //public async Task<UserReadDto> Delete(Guid Id)
-    //{
-    //    var user = await _sender.Send(new DeleteUserCommand(Id));
-    //    var userReadDto = _mapper.Map<UserReadDto>(user);
-    //    return userReadDto;
-    //}
+
+    public async Task<ResponseDto> Delete(Guid Id)
+    {
+        var user = await _sender.Send(new DeleteUserCommand(Id));
+        var userReadDto = _mapper.Map<ResponseDto>(user);
+        return userReadDto;
+    }
 
     public bool ResetPassword(UserPasswordDTO userPasswordDTO)
     {

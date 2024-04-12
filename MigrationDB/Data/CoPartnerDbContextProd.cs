@@ -18,11 +18,11 @@ public class CoPartnerDbContextProd : DbContext
     public DbSet<User> Users { get; set; }
     public DbSet<Experts> Experts { get; set; }
     public DbSet<ExpertsType> ExpertsType { get; set; }
-    public DbSet<Course> Courses { get; set; }
+    public DbSet<Course> Course { get; set; }
     public DbSet<CourseBooking> CourseBookings { get; set; }
-    public DbSet<CourseStatus> CourseStatuses { get; set; }
-    public DbSet<SubscriptionMst> subscriptionMsts { get; set; }
-    public DbSet<Subscriber> subscribers { get; set; }
+    public DbSet<CourseStatus> CourseStatus { get; set; }
+    public DbSet<SubscriptionMst> Subscriptions { get; set; }
+    public DbSet<Subscriber> Subscribers { get; set; }
 
 
 }

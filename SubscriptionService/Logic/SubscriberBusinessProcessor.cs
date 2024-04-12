@@ -10,12 +10,12 @@ using SubscriptionService.Queries;
 
 namespace SubscriptionService.Logic
 {
-    public class SubscriberProcessor : ISubscriberProcessor
+    public class SubscriberBusinessProcessor : ISubscriberBusinessProcessor
     {
         private readonly ISender _sender;
         private readonly IMapper _mapper;
 
-        public SubscriberProcessor(ISender sender, IMapper mapper)
+        public SubscriberBusinessProcessor(ISender sender, IMapper mapper)
         {
             _sender = sender;
             _mapper = mapper;
@@ -117,6 +117,12 @@ namespace SubscriptionService.Logic
                 Data = resultDto,
                 DisplayMessage = AppConstants.Expert_ExpertCreated
             };
+        }
+        public async Task<ResponseDto> Delete(Guid Id)
+        {
+            var user = await _sender.Send(new DeleteSubscriptionCommand(Id));
+            var userReadDto = _mapper.Map<ResponseDto>(user);
+            return userReadDto;
         }
     }
 }

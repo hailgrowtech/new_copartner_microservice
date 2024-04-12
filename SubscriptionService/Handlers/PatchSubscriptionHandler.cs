@@ -6,11 +6,11 @@ using SubscriptionService.Profiles;
 
 namespace SubscriptionService.Handlers
 {
-    public class PatchSubscriptionMstHandler : IRequestHandler<PatchSubscriptionMstCommand, SubscriptionMst>
+    public class PatchSubscriptionHandler : IRequestHandler<PatchSubscriptionMstCommand, SubscriptionMst>
     {
         private readonly CoPartnerDbContext _dbContext;
         private readonly IJsonMapper _jsonMapper;
-        public PatchSubscriptionMstHandler(CoPartnerDbContext dbContext,
+        public PatchSubscriptionHandler(CoPartnerDbContext dbContext,
                                 IJsonMapper jsonMapper)
         {
             _dbContext = dbContext;

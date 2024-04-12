@@ -2,7 +2,7 @@
 
 namespace SubscriptionService.Dtos
 {
-    public class SubscriptionMstCreateDto
+    public class SubscriptionDto
     {
         public Experts Experts { get; set; }
         public Guid ExpertsId { get; set; }

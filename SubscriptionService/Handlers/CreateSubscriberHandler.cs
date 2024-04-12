@@ -16,7 +16,7 @@ namespace SubscriptionService.Handlers
         public async Task<Subscriber> Handle(CreateSubscriberCommand request, CancellationToken cancellationToken)
         {
             var entity = request.Subscriber;
-            await _dbContext.subscribers.AddAsync(entity);
+            await _dbContext.Subscribers.AddAsync(entity);
             await _dbContext.SaveChangesAsync(cancellationToken);
             request.Subscriber.Id = entity.Id;
             return request.Subscriber;

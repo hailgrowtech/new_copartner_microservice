@@ -21,11 +21,11 @@ else
 var app = builder.Build();
 
 //migrate any database changes on startup (includes initial db creation)
-using (var scope = app.Services.CreateScope())
-{
-    var dataContext = scope.ServiceProvider.GetRequiredService<CoPartnerDbContextProd>();
-    dataContext.Database.Migrate();
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var dataContext = scope.ServiceProvider.GetRequiredService<CoPartnerDbContextProd>();
+//    dataContext.Database.Migrate();
+//}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

@@ -87,10 +87,10 @@ public class UserController : ControllerBase
         }
     }
 
-    //[HttpDelete("{id}")]
-    //public async Task<ActionResult> Delete(Guid Id)
-    //{
-    //    var user = await _logic.Delete(Id);
-    //    return user != null ? Ok(user) : NotFound();
-    //}
+    [HttpDelete("{id}")]
+    public async Task<ActionResult> Delete(Guid Id)
+    {
+        var user = await _logic.Delete(Id);
+        return user != null ? Ok(user) : NotFound();
+    }
 }

@@ -5,6 +5,6 @@ using SubscriptionService.Dtos;
 
 namespace SubscriptionService.Commands
 {
-    public record PatchSubscriptionMstCommand(Guid Id, JsonPatchDocument<SubscriptionMstCreateDto> JsonPatchDocument, SubscriptionMst SubscriptionMst) : IRequest<SubscriptionMst>;
+    public record PatchSubscriptionMstCommand(Guid Id, JsonPatchDocument<SubscriptionCreateDto> JsonPatchDocument, SubscriptionMst SubscriptionMst) : IRequest<SubscriptionMst>;
 
 }

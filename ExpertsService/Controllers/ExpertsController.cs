@@ -44,10 +44,10 @@ public class ExpertsController : ControllerBase
     /// </remarks>
     /// <param name="Id"></param>
     [HttpGet("{Id}", Name = "Get")]
-    public ActionResult<ExpertReadDto> Get(Guid Id)
+    public async Task<ActionResult<ExpertReadDto>> Get(Guid Id)
     {
         _logger.LogInformation("Fetching experts details for Id : " + Id.ToString());
-        var experts = _logic.Get(Id);
+        var experts = await _logic.Get(Id);
         return experts != null ? (ActionResult<ExpertReadDto>)Ok(experts) : NotFound();
     }
 

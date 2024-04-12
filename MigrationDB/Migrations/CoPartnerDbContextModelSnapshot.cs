@@ -41,6 +41,7 @@ namespace MigrationDB.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<decimal>("GSTAmount")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("PaymentMode")
@@ -54,6 +55,7 @@ namespace MigrationDB.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("TotalAmount")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid?>("UpdatedBy")
@@ -74,7 +76,7 @@ namespace MigrationDB.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("subscribers");
+                    b.ToTable("Subscriber");
                 });
 
             modelBuilder.Entity("MigrationDB.Model.SubscriptionMst", b =>
@@ -84,6 +86,7 @@ namespace MigrationDB.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<decimal>("Amount")
+                        .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<Guid>("CreatedBy")
@@ -141,7 +144,7 @@ namespace MigrationDB.Migrations
 
                     b.HasIndex("ExpertsId");
 
-                    b.ToTable("subscriptionMsts");
+                    b.ToTable("SubscriptionMsts");
                 });
 
             modelBuilder.Entity("MigrationDB.Models.Course", b =>

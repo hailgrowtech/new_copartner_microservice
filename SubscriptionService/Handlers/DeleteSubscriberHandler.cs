@@ -12,9 +12,9 @@ namespace SubscriptionService.Handlers
         public DeleteSubscriberHandler(CoPartnerDbContext dbContext) => _dbContext = dbContext;
         public async Task<Subscriber> Handle(DeleteSubscriberCommand request, CancellationToken cancellationToken)
         {
-            var subscribersList = await _dbContext.subscribers.Where(a => a.Id == request.Id).SingleOrDefaultAsync(cancellationToken: cancellationToken);
+            var subscribersList = await _dbContext.Subscribers.Where(a => a.Id == request.Id).SingleOrDefaultAsync(cancellationToken: cancellationToken);
             if (subscribersList == null) return null;
-            _dbContext.subscribers.Remove(subscribersList);
+            _dbContext.Subscribers.Remove(subscribersList);
             await _dbContext.SaveChangesAsync();
             return subscribersList;
         }

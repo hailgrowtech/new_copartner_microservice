@@ -4,11 +4,12 @@ using SubscriptionService.Dtos;
 
 namespace SubscriptionService.Logic
 {
-    public interface ISubscriberProcessor
+    public interface ISubscriberBusinessProcessor
     {
         Task<ResponseDto> Get();
         Task<ResponseDto> Get(Guid id);
         Task<ResponseDto> Post(SubscriberCreateDto subscriberCreateDto);
+        Task<ResponseDto> Delete(Guid id);
         Task<ResponseDto> Patch(Guid Id, JsonPatchDocument<SubscriberCreateDto> subscriberCreateDto);
     }
 }

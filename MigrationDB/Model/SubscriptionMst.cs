@@ -1,4 +1,5 @@
 ﻿using CommonLibrary.CommonModels;
+using Microsoft.EntityFrameworkCore;
 using MigrationDB.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -14,6 +15,7 @@ namespace MigrationDB.Model
         public string ServiceType { get; set; }
         public string PlanType { get; set; }
         public int  DurationMonth { get; set; }
+        [Precision(18, 2)]
         public decimal  Amount { get; set; }
         public string  PremiumTelegramLink { get; set; }
         public string  Description { get; set; }
