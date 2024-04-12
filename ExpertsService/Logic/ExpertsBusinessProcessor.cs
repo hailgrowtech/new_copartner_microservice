@@ -87,7 +87,7 @@ public class ExpertsBusinessProcessor : IExpertsBusinessProcessor
     {
         var experts = _mapper.Map<Experts>(request);
 
-        var existingExperts = await _sender.Send(new GetExpertsByIdQuery(experts.Id));
+        var existingExperts = await _sender.Send(new GetExpertsByIdQuery(Id));
         if (existingExperts == null)
         {
             return new ResponseDto()

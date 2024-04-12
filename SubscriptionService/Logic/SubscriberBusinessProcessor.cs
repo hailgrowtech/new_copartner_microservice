@@ -56,7 +56,7 @@ namespace SubscriptionService.Logic
         {
             var subscribers = _mapper.Map<Subscriber>(request);
 
-            var existingsubscribers = await _sender.Send(new GetSubscriberIdQuery(subscribers.Id));
+            var existingsubscribers = await _sender.Send(new GetSubscriberIdQuery(Id));
             if (existingsubscribers == null)
             {
                 return new ResponseDto()

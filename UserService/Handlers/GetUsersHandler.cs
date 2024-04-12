@@ -11,7 +11,7 @@ public class GetUsersHandler : IRequestHandler<GetUsersQuery, IEnumerable<User>>
     public GetUsersHandler(UserDbContext dbContext) => _dbContext = dbContext;
     public async Task<IEnumerable<User>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
     {
-        var entities =  await _dbContext.Users.ToListAsync(cancellationToken: cancellationToken);
+        var entities =  await _dbContext.Users.Where(x => x.IsDeleted != true).ToListAsync(cancellationToken: cancellationToken);
         if (entities == null) return null; 
         return entities;      
     }
