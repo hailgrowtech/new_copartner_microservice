@@ -2,7 +2,6 @@
 using ExpertService.Commands;
 
 using MigrationDB.Models;
-using ExpertService.Data;
 using MigrationDB.Data;
 
 

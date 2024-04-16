@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ExpertService.Commands;
-using ExpertService.Data;
 
 using MigrationDB.Data;
 using MigrationDB.Models;

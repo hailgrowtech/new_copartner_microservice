@@ -6,7 +6,7 @@ using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Reflection;
 using ExpertService.Configuration;
-using ExpertService.Data;
+
 using ExpertService.Logic;
 using ExpertService.Profiles;
 using MigrationDB.Data;
@@ -97,14 +97,14 @@ builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 //builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehaviour<,>));
 
 ////Resolve Dependencies Ends
-if (builder.Environment.IsProduction())
-{
-    builder.Services.AddDbContext<ExpertsDbContextProd>();
-}
-else
-{
-    builder.Services.AddDbContext<ExpertsDbContextProd, ExpertsDbContext>();
-}
+//if (builder.Environment.IsProduction())
+//{
+//    builder.Services.AddDbContext<ExpertsDbContextProd>();
+//}
+//else
+//{
+    builder.Services.AddDbContext<CoPartnerDbContextProd, CoPartnerDbContext>();
+//}
 
 
 builder.Services.AddCors();
@@ -115,11 +115,11 @@ builder.Services.AddCors();
 var app = builder.Build();
 
 //migrate any database changes on startup (includes initial db creation)
-//using (var scope = app.Services.CreateScope())
-//{
-//    var dataContext = scope.ServiceProvider.GetRequiredService<ExpertsDbContext>();
-//    dataContext.Database.Migrate();
-//}
+using (var scope = app.Services.CreateScope())
+{
+    var dataContext = scope.ServiceProvider.GetRequiredService<CoPartnerDbContext>();
+    //dataContext.Database.Migrate();
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() || app.Environment.IsProduction())

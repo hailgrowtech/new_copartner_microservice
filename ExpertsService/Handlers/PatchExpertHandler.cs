@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using ExpertService.Commands;
-using ExpertService.Data;
+
 using ExpertService.Profiles;
 using MigrationDB.Models;
 using MigrationDB.Data;
