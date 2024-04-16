@@ -9,6 +9,7 @@ public interface IExpertsBusinessProcessor
     Task<ResponseDto> Get();
     Task<ResponseDto> Get(Guid id);
     Task<ResponseDto> Post(ExpertsCreateDto experts);
+    Task<ResponseDto> Put(Guid id, ExpertsCreateDto expertsCreateDto);
     Task<ResponseDto> Patch(Guid Id, JsonPatchDocument<ExpertsCreateDto> expertsDto);
     bool ResetPassword(ExpertsPasswordDTO expertsPasswordDTO);
 }

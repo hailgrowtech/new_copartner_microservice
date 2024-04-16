@@ -1,14 +1,18 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
 using ExpertService.Data;
-using ExpertService.Models;
+
 using ExpertService.Queries;
+using MigrationDB.Models;
+using MigrationDB.Data;
 
 namespace ExpertService.Handlers;
+
 public class GetExpertsByIdHandler : IRequestHandler<GetExpertsByIdQuery, Experts>
 {
-    private readonly ExpertsDbContext _dbContext;
-    public GetExpertsByIdHandler(ExpertsDbContext dbContext)
+    private readonly CoPartnerDbContext _dbContext;
+
+    public GetExpertsByIdHandler(CoPartnerDbContext dbContext)
     {
         _dbContext = dbContext;
     }

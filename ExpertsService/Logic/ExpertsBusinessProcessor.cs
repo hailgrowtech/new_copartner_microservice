@@ -5,8 +5,9 @@ using MediatR;
 using Microsoft.AspNetCore.JsonPatch;
 using ExpertService.Commands;
 using ExpertService.Dtos;
-using ExpertService.Models;
 using ExpertService.Queries;
+using MassTransit.Courier.Contracts;
+using MigrationDB.Models;
 
 namespace ExpertService.Logic;
 public class ExpertsBusinessProcessor : IExpertsBusinessProcessor
@@ -127,6 +128,40 @@ public class ExpertsBusinessProcessor : IExpertsBusinessProcessor
         //TODO : Encrypt Password. Make sure old and new password are not same. Make sure password is a combination of Alpha Numeric Char with Special Char and minmum 8 chars.
         // Write these validations in a seperate method
         return true;
+    }
+
+    public async Task<ResponseDto> Put(Guid id, ExpertsCreateDto request)
+    {
+        var experts = _mapper.Map<Experts>(request);
+
+        var existingExperts = await _sender.Send(new GetExpertsByIdQuery(id));
+        if (existingExperts == null)
+        {
+            return new ResponseDto()
+            {
+                IsSuccess = false,
+                Data = _mapper.Map<ExpertReadDto>(existingExperts),
+                ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
+            };
+        }
+        experts.Id = id; // Assigning the provided Id to the experts
+        var result = await _sender.Send(new PutExpertsCommand(experts));
+        if (result == null)
+        {
+            return new ResponseDto()
+            {
+                IsSuccess = false,
+                Data = _mapper.Map<ExpertReadDto>(existingExperts),
+                ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
+            };
+        }
+
+        var resultDto = _mapper.Map<ExpertReadDto>(result);
+        return new ResponseDto()
+        {
+            Data = resultDto,
+            DisplayMessage = AppConstants.Expert_ExpertCreated
+        };
     }
 }
 

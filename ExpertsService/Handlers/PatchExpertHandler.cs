@@ -1,15 +1,17 @@
 ﻿using MediatR;
 using ExpertService.Commands;
 using ExpertService.Data;
-using ExpertService.Models;
 using ExpertService.Profiles;
+using MigrationDB.Models;
+using MigrationDB.Data;
 
 namespace ExpertService.Handlers;
 public class PatchExpertHandler : IRequestHandler<PatchExpertsCommand, Experts>
 {
-    private readonly ExpertsDbContext _dbContext;
+    private readonly CoPartnerDbContext _dbContext;
     private readonly IJsonMapper _jsonMapper;
-    public PatchExpertHandler(ExpertsDbContext dbContext,
+
+    public PatchExpertHandler(CoPartnerDbContext dbContext,
                             IJsonMapper jsonMapper)
     {
         _dbContext = dbContext;

@@ -1,7 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.JsonPatch;
 using ExpertService.Dtos;
-using ExpertService.Models;
+using MigrationDB.Models;
+
 
 namespace ExpertService.Commands;
 
