@@ -1,14 +1,16 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using ExpertService.Data;
-using ExpertService.Models;
 using ExpertService.Queries;
+using MigrationDB.Data;
+using MigrationDB.Models;
 
 namespace ExpertService.Handlers;
 public class GetExpertsHandler : IRequestHandler<GetExpertsQuery, IEnumerable<Experts>>
 {
-    private readonly ExpertsDbContext _dbContext;
-    public GetExpertsHandler(ExpertsDbContext dbContext) => _dbContext = dbContext;
+    private readonly CoPartnerDbContext _dbContext;
+    public GetExpertsHandler(CoPartnerDbContext dbContext) => _dbContext = dbContext;
+
+
     public async Task<IEnumerable<Experts>> Handle(GetExpertsQuery request, CancellationToken cancellationToken)
     {
         var entities =  await _dbContext.Experts.ToListAsync(cancellationToken: cancellationToken);

@@ -1,13 +1,16 @@
 ﻿using MediatR;
 using ExpertService.Commands;
+
+using MigrationDB.Models;
 using ExpertService.Data;
-using ExpertService.Models;
+using MigrationDB.Data;
+
 
 namespace ExpertService.Handlers;
-public class CreateExpertsHandler : IRequestHandler<CreateExpertsCommand, Experts>
+public class  CreateExpertsHandler : IRequestHandler<CreateExpertsCommand, Experts>
 {
-    private readonly ExpertsDbContext _dbContext;
-    public CreateExpertsHandler(ExpertsDbContext dbContext)
+    private readonly CoPartnerDbContext _dbContext;
+    public CreateExpertsHandler(CoPartnerDbContext dbContext)
     {
         _dbContext = dbContext;
     }

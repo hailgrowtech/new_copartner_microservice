@@ -65,6 +65,20 @@ public class ExpertsController : ControllerBase
         return NotFound(response);
     }
 
+    [HttpPut("{Id:guid}")]
+    public async Task<object> Put(Guid Id, ExpertsCreateDto expertsCreateDto)
+    {
+        var response = await _logic.Put(Id, expertsCreateDto);
+
+        if (response.IsSuccess)
+        {
+            Guid guid = (Guid)response.Data.GetType().GetProperty("Id").GetValue(response.Data);
+
+            return Ok(response);
+        }
+        return NotFound(response);
+    }
+
     [HttpPatch]
     public async Task<object> Patch(Guid Id, [FromBody] JsonPatchDocument<ExpertsCreateDto> expertsDtoPatch)
     {
