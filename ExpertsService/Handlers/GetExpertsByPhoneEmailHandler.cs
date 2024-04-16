@@ -1,14 +1,14 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using ExpertService.Data;
-using ExpertService.Models;
 using ExpertService.Queries;
+using MigrationDB.Data;
+using MigrationDB.Models;
 
 namespace ExpertService.Handlers;
 public class GetExpertsByMobileEmailHandler : IRequestHandler<GetExpertsByMobileNumberOrEmailQuery, Experts>
 {
-    private readonly ExpertsDbContext _dbContext;
-    public GetExpertsByMobileEmailHandler(ExpertsDbContext dbContext)
+    private readonly CoPartnerDbContext _dbContext;
+    public GetExpertsByMobileEmailHandler(CoPartnerDbContext dbContext)
     {
         _dbContext = dbContext;
     }

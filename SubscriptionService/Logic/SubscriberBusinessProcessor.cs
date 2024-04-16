@@ -124,5 +124,39 @@ namespace SubscriptionService.Logic
             var userReadDto = _mapper.Map<ResponseDto>(user);
             return userReadDto;
         }
+
+        public async Task<ResponseDto> Put(Guid id, SubscriberCreateDto request)
+        {
+            var subscriber = _mapper.Map<Subscriber>(request);
+
+            var existingSubscriber = await _sender.Send(new GetSubscriberIdQuery(id));
+            if (existingSubscriber == null)
+            {
+                return new ResponseDto()
+                {
+                    IsSuccess = false,
+                    Data = _mapper.Map<SubscriberReadDto>(existingSubscriber),
+                    ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
+                };
+            }
+            subscriber.Id = id; // Assigning the provided Id to the subscription
+            var result = await _sender.Send(new PutSubscriberCommand(subscriber));
+            if (result == null)
+            {
+                return new ResponseDto()
+                {
+                    IsSuccess = false,
+                    Data = _mapper.Map<SubscriberReadDto>(existingSubscriber),
+                    ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
+                };
+            }
+
+            var resultDto = _mapper.Map<SubscriberReadDto>(result);
+            return new ResponseDto()
+            {
+                Data = resultDto,
+                DisplayMessage = AppConstants.Expert_ExpertCreated
+            };
+        }
     }
 }

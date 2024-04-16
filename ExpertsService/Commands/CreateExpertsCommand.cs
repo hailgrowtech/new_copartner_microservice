@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using ExpertService.Models;
+using MigrationDB.Models;
 
 namespace ExpertService.Commands;
 

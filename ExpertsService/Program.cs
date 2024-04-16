@@ -9,6 +9,7 @@ using ExpertService.Configuration;
 using ExpertService.Data;
 using ExpertService.Logic;
 using ExpertService.Profiles;
+using MigrationDB.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
