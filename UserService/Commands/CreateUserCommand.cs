@@ -1,5 +1,6 @@
 ﻿using MediatR;
-using UserService.Models;
+using MigrationDB.Models;
+
 
 namespace UserService.Commands;
 

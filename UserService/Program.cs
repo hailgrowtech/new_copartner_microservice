@@ -4,6 +4,7 @@ using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using MigrationDB.Data;
 using Serilog;
 using System.Reflection;
 using UserService.Configuration;
@@ -98,14 +99,14 @@ builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 //builder.Services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationPipelineBehaviour<,>));
 
 ////Resolve Dependencies Ends
-if (builder.Environment.IsProduction())
-{
-    builder.Services.AddDbContext<UserDbContextProd>();
-}
-else
-{
-    builder.Services.AddDbContext<UserDbContextProd, UserDbContext>();
-}
+//if (builder.Environment.IsProduction())
+//{
+//    builder.Services.AddDbContext<UserDbContextProd>();
+//}
+//else
+//{
+    builder.Services.AddDbContext<CoPartnerDbContextProd, CoPartnerDbContext>();
+//}
 
 
 builder.Services.AddCors();

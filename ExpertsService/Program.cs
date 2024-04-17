@@ -21,7 +21,7 @@ var logger = new LoggerConfiguration()
     //.WriteTo.File()
     .CreateLogger();
 
-builder.Logging.ClearProviders();
+builder.Logging.ClearProviders(); 
 builder.Logging.AddSerilog(logger);
 
 // Add services to the container.

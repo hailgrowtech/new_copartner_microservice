@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using CommonLibrary;
 using CommonLibrary.CommonDTOs;
+using MassTransit.Courier.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.JsonPatch;
+using MigrationDB.Models;
 using UserService.Commands;
 using UserService.Dtos;
-using UserService.Models;
+
 using UserService.Queries;
 
 namespace UserService.Logic;
@@ -128,6 +130,40 @@ public class UserBusinessProcessor : IUserBusinessProcessor
         //TODO : Encrypt Password. Make sure old and new password are not same. Make sure password is a combination of Alpha Numeric Char with Special Char and minmum 8 chars.
         // Write these validations in a seperate method
         return true;
+    }
+
+    public async Task<ResponseDto> Put(Guid id, UserCreateDto request)
+    {
+        var users = _mapper.Map<User>(request);
+
+        var existingSubscription = await _sender.Send(new GetUserByIdQuery(id));
+        if (existingSubscription == null)
+        {
+            return new ResponseDto()
+            {
+                IsSuccess = false,
+                Data = _mapper.Map<UserReadDto>(existingSubscription),
+                ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
+            };
+        }
+        users.Id = id; // Assigning the provided Id to the subscription
+        var result = await _sender.Send(new PutUserCommand(users));
+        if (result == null)
+        {
+            return new ResponseDto()
+            {
+                IsSuccess = false,
+                Data = _mapper.Map<UserReadDto>(existingSubscription),
+                ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
+            };
+        }
+
+        var resultDto = _mapper.Map<UserReadDto>(result);
+        return new ResponseDto()
+        {
+            Data = resultDto,
+            DisplayMessage = AppConstants.Expert_ExpertCreated
+        };
     }
 }
 

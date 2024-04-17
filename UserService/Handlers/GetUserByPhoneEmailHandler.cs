@@ -1,14 +1,16 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using MigrationDB.Data;
+using MigrationDB.Models;
 using UserService.Data;
-using UserService.Models;
+
 using UserService.Queries;
 
 namespace UserService.Handlers;
 public class GetUserByMobileEmailHandler : IRequestHandler<GetUserByMobileNumberOrEmailQuery, User>
 {
-    private readonly UserDbContext _dbContext;
-    public GetUserByMobileEmailHandler(UserDbContext dbContext)
+    private readonly CoPartnerDbContext _dbContext;
+    public GetUserByMobileEmailHandler(CoPartnerDbContext dbContext)
     {
         _dbContext = dbContext;
     }

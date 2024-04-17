@@ -1,14 +1,16 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
+using MigrationDB.Data;
+using MigrationDB.Models;
 using UserService.Data;
-using UserService.Models;
+
 using UserService.Queries;
 
 namespace UserService.Handlers;
 public class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, User>
 {
-    private readonly UserDbContext _dbContext;
-    public GetUserByIdHandler(UserDbContext dbContext)
+    private readonly CoPartnerDbContext _dbContext;
+    public GetUserByIdHandler(CoPartnerDbContext dbContext)
     {
         _dbContext = dbContext;
     }

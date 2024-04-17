@@ -1,13 +1,15 @@
 ﻿using MediatR;
+using MigrationDB.Data;
+using MigrationDB.Models;
 using UserService.Commands;
 using UserService.Data;
-using UserService.Models;
+
 
 namespace UserService.Handlers;
 public class CreateUserHandler : IRequestHandler<CreateUserCommand, User>
 {
-    private readonly UserDbContext _dbContext;
-    public CreateUserHandler(UserDbContext dbContext)
+    private readonly CoPartnerDbContext _dbContext;
+    public CreateUserHandler(CoPartnerDbContext dbContext)
     {
         _dbContext = dbContext;
     }
