@@ -22,5 +22,6 @@ namespace Publication;
         var _sections = _config.GetSection(nameof(AppSettings));
         return _sections;
     }
+
 }
 

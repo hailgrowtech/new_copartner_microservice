@@ -1,9 +1,8 @@
 {
   "AppSettings": {
-    "SID": "HXIN1737767674IN",
-    "apiKey": "A4e5665d88e6ee4c326b654cfac87dde2",
-    "sender": "HSBOON",
-    "template_id": "1207162079538531004"
+    "message_id": "167406",
+    "apiKey": "1UGuIy5W4D3vA2wZfB90ibrcsOCeYS7nptj8EVhLodKJqxXNMHLIermYdE6vHzpBRaXOl274SfAbsw5Z",
+    "sender_id": "COPTNR"
   },
   "ApplicationInsights": {
     "InstrumentationKey": "78c9035e-c55a-457c-b782-b3aa1a3c72d8"

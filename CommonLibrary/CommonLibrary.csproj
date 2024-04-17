@@ -4,6 +4,7 @@
     <TargetFramework>net8.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <GenerateDocumentationFile>False</GenerateDocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -19,6 +20,15 @@
 
   <ItemGroup>
     <None Include="D:\Dave\Projects\HailGrowTech\CoPartnerAPI\CommonLibrary\.editorconfig" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="commonAppsettings.Development.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="commonAppsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

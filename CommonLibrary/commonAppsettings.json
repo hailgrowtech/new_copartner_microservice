@@ -1,6 +1,6 @@
 {
   "AppSettings": {
-    "Secret": "copartner_web_api_key",
+    "Secret": "copartner_web_api_key_01012024_dev",
     "RefreshTokenTTL": 2
   },
   "ApplicationInsights": {

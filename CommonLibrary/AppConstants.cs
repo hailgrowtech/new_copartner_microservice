@@ -27,17 +27,17 @@ public static class AppConstants
     #endregion
 
 
-    #region SignUp
+    #region SignIn
     //Messages
-    public const string SignUp_InvalidMobileNumber = "Invalid Mobile number.";
-    public const string SignUp_UnableToGenOtp = "Unable to Generate OTP.";
-    public const string SignUp_UnableToSendOtp = "Unable to Send OTP at this moment.";
-    public const string SignUp_OtpGeneratedSucess = "OTP generated successfully.";
-    public const string SignUp_OtpValidateSucess = "OTP validation successfully.";
-    public const string SignUp_NoOTPFoundInDB = "Couldn't find any OTP for this mobile number.";
-    public const string SignUp_InvalidOTP = "Invalid OTP.";
-    public const string SignUp_OTPExpired = "OTP Expired.";
-    public const string SignUp_OTPAlreadyUsed = "OTP is already used.";
+    public const string SignIn_InvalidMobileNumber = "Invalid Mobile number.";
+    public const string SignIn_UnableToGenOtp = "Unable to Generate OTP.";
+    public const string SignIn_UnableToSendOtp = "Unable to Send OTP at this moment.";
+    public const string SignIn_OtpGeneratedSucess = "OTP generated successfully.";
+    public const string SignIn_OtpValidateSucess = "OTP validation successfully.";
+    public const string SignIn_NoOTPFoundInDB = "Couldn't find any OTP for this mobile number.";
+    public const string SignIn_InvalidOTP = "Invalid OTP.";
+    public const string SignIn_OTPExpired = "OTP Expired.";
+    public const string SignIn_OTPAlreadyUsed = "OTP is already used.";
 
     #endregion
 

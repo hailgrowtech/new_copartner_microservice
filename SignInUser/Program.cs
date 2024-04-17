@@ -1,0 +1,118 @@
+using CommonLibrary.ErrorHandler;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using Serilog;
+using SignInService.Data;
+using SignInService.JWToken;
+using SignInService.Logic;
+using System.Reflection;
+
+var builder = WebApplication.CreateBuilder(args);
+
+
+
+// Adding Serilog
+var logger = new LoggerConfiguration()
+    .ReadFrom.Configuration(builder.Configuration)
+    .Enrich.FromLogContext()
+    .WriteTo.Console()
+    //.WriteTo.File()
+    .CreateLogger();
+
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog(logger);
+
+// Add services to the container.
+
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
+builder.Services.AddCors();
+builder.Services.AddControllers();
+builder.Services.AddApplicationInsightsTelemetry();
+
+
+
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "SignIn Service API",
+        Version = "v1",
+        Description = "An API to perform SignIn operations",
+        TermsOfService = new Uri("https://hailgrotech.com"),
+        Contact = new OpenApiContact
+        {
+            Name = "Hailgrotech",
+            Email = "hailgrotech.com",
+            Url = new Uri("https://hailgrotech.com"),
+        },
+        License = new OpenApiLicense
+        {
+            Name = "Hailgrotech API LICX",
+            Url = new Uri("https://hailgrotech.com"),
+        }
+    });
+    // Set the comments path for the Swagger JSON and UI.
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
+});
+
+//User Service Dependencies
+builder.Services.AddScoped<ISignInBusinessProcessor, SignInBusinessProcessor>();
+builder.Services.AddScoped<IJwtUtils, JwtUtils>();
+
+//AutoMapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+//Resolve Dependencies Ends
+
+//if (builder.Environment.IsProduction())
+//{
+//    builder.Services.AddDbContext<SignUpDbContextProd>();
+//}
+//else
+//{
+builder.Services.AddDbContext<SignInDbContextProd, SignInDbContext>();
+//}TODO:Deepak
+  
+
+
+var app = builder.Build();
+
+// migrate any database changes on startup (includes initial db creation)
+using (var scope = app.Services.CreateScope())
+{
+    var dataContext = scope.ServiceProvider.GetRequiredService<SignInDbContext>();
+    //dataContext.Database.Migrate();
+}
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
+{
+    app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "SignIn Service API V1");
+    });
+}
+
+// global cors policy
+app.UseCors(x => x
+    .SetIsOriginAllowed(origin => true)
+    .AllowAnyMethod()
+    .AllowAnyHeader()
+    .AllowCredentials());
+
+// global error handler //TODO : Implement error handling
+app.UseMiddleware<ErrorHandlerMiddleware>();
+
+app.UseHttpsRedirection();
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
