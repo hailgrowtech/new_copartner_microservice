@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using UserService.Models;
+using MigrationDB.Models;
 
 namespace UserService.Queries;
 public record GetUserByMobileNumberOrEmailQuery(User User) : IRequest<User>;

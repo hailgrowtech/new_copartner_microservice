@@ -1,15 +1,17 @@
 ﻿using MediatR;
+using MigrationDB.Data;
+using MigrationDB.Models;
 using UserService.Commands;
 using UserService.Data;
-using UserService.Models;
+
 using UserService.Profiles;
 
 namespace UserService.Handlers;
 public class PatchUserHandler : IRequestHandler<PatchUserCommand, User>
 {
-    private readonly UserDbContext _dbContext;
+    private readonly CoPartnerDbContext _dbContext;
     private readonly IJsonMapper _jsonMapper;
-    public PatchUserHandler(UserDbContext dbContext,
+    public PatchUserHandler(CoPartnerDbContext dbContext,
                             IJsonMapper jsonMapper)
     {
         _dbContext = dbContext;

@@ -1,7 +1,8 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.JsonPatch;
+using MigrationDB.Models;
 using UserService.Dtos;
-using UserService.Models;
+
 
 namespace UserService.Commands;
 

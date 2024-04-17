@@ -73,6 +73,21 @@ public class UserController : ControllerBase
         return NotFound(response);
     }
 
+    [HttpPut("{Id:guid}")]
+    public async Task<object> Put(Guid Id, UserCreateDto userCreateDto)
+    {
+        var response = await _logic.Put(Id, userCreateDto);
+
+        if (response.IsSuccess)
+        {
+            Guid guid = (Guid)response.Data.GetType().GetProperty("Id").GetValue(response.Data);
+
+            return Ok(response);
+        }
+        return NotFound(response);
+    }
+
+
     [HttpPatch]
     public async Task<object> Patch(Guid Id, [FromBody] JsonPatchDocument<UserCreateDto> userDtoPatch)
     {
