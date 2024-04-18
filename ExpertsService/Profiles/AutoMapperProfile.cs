@@ -1,8 +1,8 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
 using ExpertService.Dtos;
-using ExpertService.Models;
 using CommonLibrary.CommonDTOs;
+using MigrationDB.Models;
 
 namespace ExpertService.Profiles;
 public class AutoMapperProfile : Profile

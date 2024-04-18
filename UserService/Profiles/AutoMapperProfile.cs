@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
+using MigrationDB.Models;
 using UserService.Dtos;
-using UserService.Models;
 
 namespace UserService.Profiles;
 public class AutoMapperProfile : Profile

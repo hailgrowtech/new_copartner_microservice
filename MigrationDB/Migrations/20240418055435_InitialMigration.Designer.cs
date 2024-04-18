@@ -12,8 +12,8 @@ using MigrationDB.Data;
 namespace MigrationDB.Migrations
 {
     [DbContext(typeof(CoPartnerDbContext))]
-    [Migration("20240412074153_IntialMigration")]
-    partial class IntialMigration
+    [Migration("20240418055435_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
