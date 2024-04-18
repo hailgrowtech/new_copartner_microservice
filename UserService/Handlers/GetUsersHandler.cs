@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using MigrationDB.Data;
 using MigrationDB.Models;
-using UserService.Data;
 
 using UserService.Queries;
 
