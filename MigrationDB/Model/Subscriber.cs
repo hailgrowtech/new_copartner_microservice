@@ -19,6 +19,9 @@ namespace MigrationDB.Model
         [Precision(18, 2)]
         public decimal TotalAmount { get; set; }
         public string PaymentMode { get; set; }
+        public string? TransactionId { get; set; }
+        public DateTime? TransactionDate { get; set; }
+
         public bool isActive { get; set; }
 
     }
