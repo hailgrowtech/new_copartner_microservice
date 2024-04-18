@@ -45,6 +45,7 @@
   <ItemGroup>
     <ProjectReference Include="..\CommonLibrary\CommonLibrary.csproj" />
     <ProjectReference Include="..\MigrationDB\MigrationDB.csproj" />
+    <ProjectReference Include="..\Publication\Publication.csproj" />
   </ItemGroup>
 
 </Project>
