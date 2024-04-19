@@ -13,7 +13,7 @@ public class GetExpertsHandler : IRequestHandler<GetExpertsQuery, IEnumerable<Ex
 
     public async Task<IEnumerable<Experts>> Handle(GetExpertsQuery request, CancellationToken cancellationToken)
     {
-        var entities =  await _dbContext.Experts.ToListAsync(cancellationToken: cancellationToken);
+        var entities =  await _dbContext.Experts.Where(x => x.IsDeleted != true).ToListAsync(cancellationToken: cancellationToken);
         if (entities == null) return null; 
         return entities;      
     }
