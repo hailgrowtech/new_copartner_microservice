@@ -163,5 +163,12 @@ public class ExpertsBusinessProcessor : IExpertsBusinessProcessor
             DisplayMessage = AppConstants.Expert_ExpertCreated
         };
     }
+
+    public async Task<ResponseDto> Delete(Guid id)
+    {
+        var expert = await _sender.Send(new DeleteExpertsCommand(id));
+        var expertReadDto = _mapper.Map<ResponseDto>(expert);
+        return expertReadDto;
+    }
 }
 

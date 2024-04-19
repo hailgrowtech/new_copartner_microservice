@@ -19,7 +19,7 @@ public class GetExpertsByIdHandler : IRequestHandler<GetExpertsByIdQuery, Expert
 
     public async Task<Experts> Handle(GetExpertsByIdQuery request, CancellationToken cancellationToken)
     {
-        var expertsList = await _dbContext.Experts.Where(a => a.Id == request.Id).SingleOrDefaultAsync(cancellationToken: cancellationToken);
+        var expertsList = await _dbContext.Experts.Where(a => a.Id == request.Id && a.IsDeleted != true).SingleOrDefaultAsync(cancellationToken: cancellationToken);
         return expertsList;
     }
 }

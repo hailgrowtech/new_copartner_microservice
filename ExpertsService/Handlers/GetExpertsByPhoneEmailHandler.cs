@@ -15,7 +15,7 @@ public class GetExpertsByMobileEmailHandler : IRequestHandler<GetExpertsByMobile
 
     public async Task<Experts> Handle(GetExpertsByMobileNumberOrEmailQuery request, CancellationToken cancellationToken)
     {
-        var experts = await _dbContext.Experts.Where(x => x.Email == request.Experts.Email || x.MobileNumber == request.Experts.MobileNumber).SingleOrDefaultAsync(cancellationToken: cancellationToken);
+        var experts = await _dbContext.Experts.Where(x => x.Email == request.Experts.Email || x.MobileNumber == request.Experts.MobileNumber && x.IsDeleted != true).SingleOrDefaultAsync(cancellationToken: cancellationToken);
         return experts;
     }
 }
