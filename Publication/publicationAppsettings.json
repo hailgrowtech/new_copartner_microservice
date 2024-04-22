@@ -12,5 +12,10 @@
       "Default": "Information",
       "Microsoft.AspNetCore": "Warning"
     }
+  },
+  "Razorpay": {
+    "KeyId": "YOUR_KEY_ID",
+    "KeySecret": "YOUR_KEY_SECRET"
   }
+
 }
