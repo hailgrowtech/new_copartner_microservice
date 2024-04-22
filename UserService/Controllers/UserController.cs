@@ -1,4 +1,5 @@
-﻿using MassTransit;
+﻿using CommonLibrary.Authorization;
+using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,7 @@ using UserService.Logic;
 
 namespace UserService.Controllers;
 
-//[Authorize]
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class UserController : ControllerBase

@@ -3,10 +3,11 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using ExpertService.Dtos;
 using ExpertService.Logic;
+using CommonLibrary.Authorization;
 
 namespace ExpertService.Controllers;
 
-//[Authorize]
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class ExpertsController : ControllerBase

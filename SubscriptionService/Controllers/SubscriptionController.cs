@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using CommonLibrary.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using SubscriptionService.Dtos;
@@ -6,6 +7,7 @@ using SubscriptionService.Logic;
 
 namespace SubscriptionService.Controllers;
 
+[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class SubscriptionController : ControllerBase

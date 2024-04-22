@@ -5,12 +5,12 @@
         public static int GenerateOTP4Digit()
         {
             Random generator = new Random();
-            return generator.Next(100, 9999);
+            return generator.Next(1000, 9999);
         }
         public static int GenerateOTP6Digit()
         {
             Random generator = new Random();
-            return generator.Next(1000, 669999);
+            return generator.Next(100000, 999999);
         }
     }
 }
