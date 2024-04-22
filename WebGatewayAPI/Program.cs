@@ -20,7 +20,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.ConfigureLogging(logging => logging.AddConsole());
 builder.Configuration.SetBasePath(builder.Environment.ContentRootPath)
-    .AddJsonFile(($"ocelot.{env}.json"), optional: false, reloadOnChange: true)
+    //.AddJsonFile(($"ocelot.{env}.json"), optional: false, reloadOnChange: true)
+    .AddJsonFile(("ocelot.json"), optional: false, reloadOnChange: true)
     .AddEnvironmentVariables();
 builder.Services.AddOcelot(builder.Configuration)
 .AddSingletonDefinedAggregator<VisitAndBookingAggregator>(); // Added for aggregator sample

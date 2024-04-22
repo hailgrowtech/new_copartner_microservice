@@ -1,20 +1,28 @@
 {
   "Routes": [
     {
-      "DownstreamPathTemplate": "/api/SignUp",
+      "DownstreamPathTemplate": "/api/SignIn/GenerateOTP",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7102
+          "Host": "copartners.in",
+          "Port": 5181
         }
       ],
-      "UpstreamPathTemplate": "/gateway/SignUp",
-      "UpstreamHttpMethod": [ "POST", "PATCH" ]
-      //"AuthenticationOptions": {
-      //  "AuthenticationProviderKey": "Bearer",
-      //  "AllowedScopes": []
-      //}
+      "UpstreamPathTemplate": "/CoPartnerGateway/SignIn/GenerateOTP",
+      "UpstreamHttpMethod": [ "POST" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/SignIn/ValidateOTP",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5181
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/SignIn/ValidateOTP",
+      "UpstreamHttpMethod": [ "POST" ]
     },
     //For UserController
     {
@@ -22,64 +30,105 @@
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7093
+          "Host": "copartners.in",
+          "Port": 5131
         }
       ],
-      "UpstreamPathTemplate": "/gateway/Users",
-      "UpstreamHttpMethod": [ "POST", "PUT", "GET", "PATCH" ]
+      "UpstreamPathTemplate": "/CoPartnerGateway/Users",
+      "UpstreamHttpMethod": [ "POST", "GET", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
     },
     {
       "DownstreamPathTemplate": "/api/User/{id}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7093
+          "Host": "copartners.in",
+          "Port": 5131
         }
       ],
-      "UpstreamPathTemplate": "/gateway/Users/{id}",
-      "UpstreamHttpMethod": [ "GET", "DELETE" ]
+      "UpstreamPathTemplate": "/CoPartnerGateway/Users/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ]
     },
     {
-      "DownstreamPathTemplate": "/api/Lead",
+      "DownstreamPathTemplate": "/api/Experts",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7093
+          "Host": "copartners.in",
+          "Port": 5132
         }
       ],
-      "UpstreamPathTemplate": "/gateway/PotentialLead",
-      "UpstreamHttpMethod": [ "GET" ]
+      "UpstreamPathTemplate": "/CoPartnerGateway/Experts",
+      "UpstreamHttpMethod": [ "POST", "GET", "PATCH" ]
     },
     {
-      "DownstreamPathTemplate": "/api/UserUtil/{phoneNumber}",
+      "DownstreamPathTemplate": "/api/Experts/{id}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7093
+          "Host": "copartners.in",
+          "Port": 5132
         }
       ],
-      "UpstreamPathTemplate": "/gateway/UserUtility",
-      "UpstreamHttpMethod": [ "GET" ]
+      "UpstreamPathTemplate": "/CoPartnerGateway/Experts/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ]
     },
     {
-      "DownstreamPathTemplate": "/api/UserUtil/",
+      "DownstreamPathTemplate": "/api/Subscription/",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
-          "Host": "localhost",
-          "Port": 7093
+          "Host": "copartners.in",
+          "Subscriber": null,
+          "Port": 5009
         }
       ],
-      "UpstreamPathTemplate": "/gateway/UserUtility",
-      "UpstreamHttpMethod": [ "PATCH" ]
+      "UpstreamPathTemplate": "/CoPartnerGateway/Subscription",
+      "UpstreamHttpMethod": [ "POST", "GET", "PATCH" ]
     },
-
     {
-      "DownstreamPathTemplate": "/api/Visit/GetVisitsByOwnerId/{id}",
+      "DownstreamPathTemplate": "/api/Subscription/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5009
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/Subscription/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Subscriber/",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Subscriber": null,
+          "Port": 5009
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/Subscriber",
+      "UpstreamHttpMethod": [ "POST", "GET", "PATCH" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Subscriber/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5009
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/Subscriber/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/Booking/GetVisitsByOwnerId/{id}",
       "UpstreamPathTemplate": "/gateway/Visit/{id}",
       "UpstreamHttpMethod": [
         "Get"
@@ -131,6 +180,6 @@
     //end here
   ],
   "GlobalConfiguration": {
-    "BaseUrl": "http://localhost:5021"
+    "BaseUrl": "https://copartners.in:7188"
   }
 }
