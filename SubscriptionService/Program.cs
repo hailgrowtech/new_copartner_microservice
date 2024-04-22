@@ -8,6 +8,9 @@ using SubscriptionService.Profiles;
 using System.Reflection;
 using SubscriptionService.Configuration;
 using CommonLibrary.Authorization;
+using Ocelot.Values;
+using Publication.Factory;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -109,6 +112,10 @@ builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 
 
 builder.Services.AddCors();
+
+
+
+builder.Services.Configure<RazorpayConfiguration>(Configuration.GetSection("Razorpay"));
 
 
 //Mass Transit RabbitMQ
