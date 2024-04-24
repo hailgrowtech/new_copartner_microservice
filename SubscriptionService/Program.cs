@@ -1,14 +1,11 @@
 using FluentValidation;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using MigrationDB.Data;
 using Serilog;
 using SubscriptionService.Logic;
 using SubscriptionService.Profiles;
-using System.Reflection;
 using SubscriptionService.Configuration;
 using CommonLibrary.Authorization;
-using Ocelot.Values;
 using Publication.Factory;
 using System.Configuration;
 
@@ -134,7 +131,7 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "User Service API V1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Subscription Service API V1");
     });
 }
 
