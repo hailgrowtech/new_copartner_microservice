@@ -48,7 +48,7 @@ namespace AffiliatePartnerService
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
-                    Title = "Experts Service API",
+                    Title = "Affiliate Partner Service API",
                     Version = "v1",
                     Description = "An API to perform Experts operations",
                     TermsOfService = new Uri("https://hailgrotech.com/"),
