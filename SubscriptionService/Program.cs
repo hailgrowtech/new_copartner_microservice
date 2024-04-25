@@ -112,7 +112,7 @@ builder.Services.AddCors();
 
 
 
-builder.Services.Configure<RazorpayConfiguration>(Configuration.GetSection("Razorpay"));
+//builder.Services.Configure<RazorpayConfiguration>(Configuration.GetSection("Razorpay"));
 
 
 //Mass Transit RabbitMQ
