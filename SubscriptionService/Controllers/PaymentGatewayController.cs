@@ -33,8 +33,8 @@ public class PaymentGatewayController : ControllerBase
         {
             // Assuming _razorpayClient.Payment.Create(options) is the correct method to create a payment.
             // If this method does not exist, you'll need to consult the Razorpay SDK documentation for .NET.
-            var payment = _razorpayClient.Payment.Create(options);
-            return Ok(new { message = "Payment successful", transactionId = payment["id"] });
+            //var payment = _razorpayClient.Payment.Create(options);
+            return Ok(new { message = "Payment successful", /*transactionId = payment["id"]*/ });
         }
         catch (Exception e) // Catch a general exception
         {
