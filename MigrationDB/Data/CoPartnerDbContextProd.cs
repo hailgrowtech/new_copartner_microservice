@@ -23,6 +23,7 @@ public class CoPartnerDbContextProd : DbContext
     public DbSet<CourseStatus> CourseStatus { get; set; }
     public DbSet<Subscription> Subscriptions { get; set; }
     public DbSet<Subscriber> Subscribers { get; set; }
+    public DbSet<AffiliatePartner> AffiliatePartners { get; set; }
 
 
 }

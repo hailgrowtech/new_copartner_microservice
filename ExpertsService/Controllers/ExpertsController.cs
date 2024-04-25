@@ -7,7 +7,7 @@ using CommonLibrary.Authorization;
 
 namespace ExpertService.Controllers;
 
-[Authorize]
+//[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class ExpertsController : ControllerBase
