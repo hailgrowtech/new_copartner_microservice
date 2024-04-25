@@ -2,10 +2,12 @@
 using AuthenticationService.DTOs;
 using AuthenticationService.JWToken;
 using AuthenticationService.Models;
+using AuthenticationService.Profiles;
 using AuthenticationService.Queries;
 using CommonLibrary;
 using CommonLibrary.CommonDTOs;
 using CommonLibrary.ExceptionHandler;
+using MassTransit;
 using MediatR;
 using Microsoft.Extensions.Options;
 using System.Net;
@@ -16,12 +18,14 @@ public class AuthenticationBusinessProcessor : IAuthenticationBusinessProcessor
     private readonly ISender _sender;
     private readonly IJwtUtils _jwtUtils;
     private readonly AppSettings _appSettings;
+    private readonly AuthMapperProfile _authMapper;
 
-    public AuthenticationBusinessProcessor(IOptions<AppSettings> appSettings, ISender sender, IJwtUtils jwtUtils)
+    public AuthenticationBusinessProcessor(IOptions<AppSettings> appSettings, ISender sender, IJwtUtils jwtUtils, AuthMapperProfile authMapper)
     {
         this._sender = sender;
         this._jwtUtils = jwtUtils;
         this._appSettings = appSettings.Value;
+        this._authMapper = authMapper;
     }
     public string GetUserIp()
     {
@@ -42,6 +46,21 @@ public class AuthenticationBusinessProcessor : IAuthenticationBusinessProcessor
     }
     public async Task<ResponseDto> Authenticate(AuthenticationRequestDTO request)
     {
+        // Map AuthenticationRequestDTO to UserCreatedEventDTO
+        var userCreatedEventDto = new UserCreatedEventDTO
+        {
+            // Assuming AuthenticationRequestDTO contains these properties
+            UserId = Guid.NewGuid(),
+            Mobile = request.Mobile,
+            Email = request.Email,
+            Password = "password"
+        };
+        var authDetailEntity = _authMapper.ToCreateAuthDetailEntity(userCreatedEventDto);//.ToCreateAuthDetailEntity();
+        var authDetails = await SaveUserAuthDetails(authDetailEntity);
+        //  var message = context.Message.UserId;
+        var authEntity = _authMapper.ToCreateAuthEntity(userCreatedEventDto);//.ToCreateAuthDetailEntity();
+        var responseAuth = await SaveUserAuth(authEntity);
+
         AuthenticationDetail authDetailsToValidate = new AuthenticationDetail()
         {
             MobileNumber = request.Mobile,
@@ -76,7 +95,7 @@ public class AuthenticationBusinessProcessor : IAuthenticationBusinessProcessor
         }
 
         //Can we use BCrypt.EnhancedVerify here??
-        if (!BCrypt.Net.BCrypt.Verify(request.PasswordHash, authDtls.PasswordHash.ToString()))// probably wrong code. Deepak bhai check it. TODO
+        if (!BCrypt.Net.BCrypt.Verify(request.PasswordHash, authDtls.PasswordHash.ToString()))// probably wrong code.
         {
             return new ResponseDto()
             {

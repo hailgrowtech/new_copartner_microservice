@@ -44,7 +44,7 @@ public class AuthMapperProfile
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(password, salt),
             IsLoginUsingOtpRequest = true,
             UserIpAddress = string.Empty,
-            OTP = "1234"
+           // OTP = "1234"
         };
 
         return result;

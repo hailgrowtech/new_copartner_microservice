@@ -4,12 +4,14 @@ using AuthenticationService.DTOs;
 using AuthenticationService.Helpers;
 using AuthenticationService.JWToken;
 using AuthenticationService.Logic;
+using AuthenticationService.Profiles;
 using CommonLibrary.ErrorHandler;
 using FluentValidation;
 using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Ocelot.Values;
 using Serilog;
 using System.Reflection;
 using System.Text.Json.Serialization;
@@ -90,15 +92,18 @@ builder.Services.AddScoped<IAuthenticationBusinessProcessor, AuthenticationBusin
 
 //Resolve Dependencies Ends
 
-if (builder.Environment.IsProduction())
-{
-    builder.Services.AddDbContext<AuthenticationDbContextProd>();
-}
-else
-{
+//if (builder.Environment.IsProduction())
+//{
+//    builder.Services.AddDbContext<AuthenticationDbContextProd>();
+//}
+//else
+//{
     builder.Services.AddDbContext<AuthenticationDbContextProd, AuthenticationDbContext>();
-}
+//}
 
+//AutoMapper
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddSingleton<AuthMapperProfile>();
 // add services to DI container
 {
     builder.Services.AddDbContext<DataContext>();
@@ -113,11 +118,11 @@ else
 var app = builder.Build();
 
 // migrate any database changes on startup (includes initial db creation)
-using (var scope = app.Services.CreateScope())
-{
-    var dataContext = scope.ServiceProvider.GetRequiredService<AuthenticationDbContext>();
-    dataContext.Database.Migrate();
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var dataContext = scope.ServiceProvider.GetRequiredService<AuthenticationDbContext>();
+//    dataContext.Database.Migrate();
+//}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

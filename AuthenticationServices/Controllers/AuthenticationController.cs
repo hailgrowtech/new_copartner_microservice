@@ -34,6 +34,7 @@ public class AuthenticationController : ControllerBase
     public async Task<object> Authenticate(AuthenticationRequestDTO request)
     {
         request.UserIpAddress = ipAddress();
+        
         var response = await _authenticationBusinessProcessor.Authenticate(request);
         if (response.IsSuccess == true)
         {
@@ -52,21 +53,28 @@ public class AuthenticationController : ControllerBase
     // GET: api/Authentication
     [AllowAnonymous]
     [HttpPost("refresh-token")]
-    public IActionResult RefreshToken()
+    public async Task<IActionResult> RefreshToken()
     {
         var refreshToken = Request.Cookies[AppConstants.cookies_RefreshToken];
         if (refreshToken != null)
         {
-            var response = _authenticationBusinessProcessor.RefreshToken(refreshToken);
-            setTokenCookie(
-            new TokenRequestDTO()
+            var response = await _authenticationBusinessProcessor.RefreshToken(refreshToken);
+
+            // Assuming TokenRequestDTO has a property named RefreshToken
+            var refreshTokenValue = ((AuthenticationService.DTOs.AuthenticationResponseDTO)response.Data).RefreshToken;
+
+            if (string.IsNullOrEmpty(refreshTokenValue))
             {
-                Token = response.GetType().GetProperty("RefreshToken").GetValue(response).ToString()
-            });
+                return BadRequest(new { message = "Refresh Token Not Found in Response." });
+            }
+
+            setTokenCookie(new TokenRequestDTO { Token = refreshTokenValue });
             return Ok(response);
         }
         else
+        {
             return BadRequest(new { message = "Refresh Token Not Found for User." });
+        }
     }
 
     [HttpPost("revoke-token")]
@@ -90,14 +98,27 @@ public class AuthenticationController : ControllerBase
         });
     }
 
-
-
     [HttpGet("{id}/refresh-tokens")]
-    public IActionResult GetRefreshTokens(Guid id)
+    public async Task<IActionResult> GetRefreshTokens(Guid id)
     {
-        var auth = _authenticationBusinessProcessor.GetAuthUserById(id);
-        return Ok(auth.Result.GetType().GetProperty("RefreshToken").GetValue(auth.Result).ToString());
+        var auth = await _authenticationBusinessProcessor.GetAuthUserById(id);
+
+        if (auth == null)
+        {
+            return NotFound(); // Or appropriate error response
+        }
+
+        var refreshToken = ((AuthenticationService.DTOs.AuthenticationResponseDTO)auth.Data).RefreshToken;
+
+        if (string.IsNullOrEmpty(refreshToken))
+        {
+            return NotFound(); // Or appropriate error response
+        }
+
+        return Ok(refreshToken);
     }
+
+
 
     // helper methods
 

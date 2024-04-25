@@ -10,7 +10,7 @@ public class Authentication
     public Guid Id { get; set; }
     public Guid UserId { get; set; }
     [JsonIgnore]
-    public string PasswordSalt { get; set; }
+    public string? PasswordSalt { get; set; }
 
     public List<RefreshToken> RefreshTokens { get; set; }
 }
