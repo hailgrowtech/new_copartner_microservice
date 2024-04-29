@@ -6,24 +6,73 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MigrationDB.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialMigration : Migration
+    public partial class IntialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.CreateTable(
+                name: "AffiliatePartner",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    AffiliatePartnerImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MobileNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    GST = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    PAN = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ReferralCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AffiliatePartner", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Blog",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    BlogImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DeletedOn = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Blog", x => x.Id);
+                });
+
             migrationBuilder.CreateTable(
                 name: "Experts",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExpertImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ExpertTypeId = table.Column<int>(type: "int", nullable: true),
                     SEBIRegNo = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Experience = table.Column<int>(type: "int", nullable: true),
                     Rating = table.Column<int>(type: "int", nullable: true),
                     MobileNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    TelegramChannel = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ChannelName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TelegramChannel = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PremiumTelegramChannel = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TelegramFollower = table.Column<int>(type: "int", nullable: true),
                     isCoPartner = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -59,10 +108,15 @@ namespace MigrationDB.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    UserImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     MobileNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SubscriptionType = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     SubscriptionId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    isKYC = table.Column<bool>(type: "bit", nullable: true),
+                    AadharCardImagePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ReferralCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AffiliatePartnerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
                     UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -183,6 +237,8 @@ namespace MigrationDB.Migrations
                     GSTAmount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     PaymentMode = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    TransactionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: true),
                     isActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -275,6 +331,12 @@ namespace MigrationDB.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "AffiliatePartner");
+
+            migrationBuilder.DropTable(
+                name: "Blog");
+
             migrationBuilder.DropTable(
                 name: "CourseStatus");
 
