@@ -29,7 +29,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SubscriptionService", "Subs
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SignInUserService", "SignInUser\SignInUserService.csproj", "{7C48D047-A29E-4BE9-875F-8E9E0440B868}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AffiliatePartnerService", "AffiliatePartnerService\AffiliatePartnerService.csproj", "{400D1293-B629-4596-800F-9F1C5C8B3CF7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AffiliatePartnerService", "AffiliatePartnerService\AffiliatePartnerService.csproj", "{400D1293-B629-4596-800F-9F1C5C8B3CF7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BlogService", "BlogService\BlogService.csproj", "{87DE145E-3662-410D-8212-E855EBEEC46B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -81,6 +83,10 @@ Global
 		{400D1293-B629-4596-800F-9F1C5C8B3CF7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{400D1293-B629-4596-800F-9F1C5C8B3CF7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{400D1293-B629-4596-800F-9F1C5C8B3CF7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87DE145E-3662-410D-8212-E855EBEEC46B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87DE145E-3662-410D-8212-E855EBEEC46B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87DE145E-3662-410D-8212-E855EBEEC46B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87DE145E-3662-410D-8212-E855EBEEC46B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -97,6 +103,7 @@ Global
 		{0C43064B-AFE4-4203-8442-63DBCE4E9A54} = {712147FE-0422-452C-BB6B-628829E2797E}
 		{7C48D047-A29E-4BE9-875F-8E9E0440B868} = {712147FE-0422-452C-BB6B-628829E2797E}
 		{400D1293-B629-4596-800F-9F1C5C8B3CF7} = {712147FE-0422-452C-BB6B-628829E2797E}
+		{87DE145E-3662-410D-8212-E855EBEEC46B} = {712147FE-0422-452C-BB6B-628829E2797E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9E070022-75FD-4AF3-92F9-19A8D3322D8B}
