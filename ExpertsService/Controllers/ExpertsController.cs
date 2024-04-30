@@ -22,6 +22,7 @@ public class ExpertsController : ControllerBase
         this._logger = logger;
        // this._topicProducer = topicProducer;
     }
+
     /// <summary>
     /// Gets the list of all Experts.
     /// </summary>
@@ -99,5 +100,33 @@ public class ExpertsController : ControllerBase
     {
         var expert = await _logic.Delete(Id);
         return expert != null ? Ok(expert) : NotFound();
+    }
+
+    /// <summary>
+    /// Gets income listing of all Experts.
+    /// </summary>
+    /// <returns>The Income list of Experts.</returns>
+    // GET: api/Experts
+    [HttpGet]
+    [Route("GetListing")]
+    public async Task<object> GetListing()
+    {
+        _logger.LogInformation("Fetching Dashboard Listing Data..");
+        var experts = await _logic.GetListing();
+        return Ok(experts);
+    }
+
+    /// <summary>
+    /// Gets income listing details of all Experts.
+    /// </summary>
+    /// <returns>The detail list of Experts.</returns>
+    // GET: api/Experts
+    [HttpGet]
+    [Route("GetListingDetails")]
+    public async Task<object> GetListingDetails()
+    {
+        _logger.LogInformation("Fetching Dashboard Listing Details Data..");
+        var experts = await _logic.Get();
+        return Ok(experts);
     }
 }

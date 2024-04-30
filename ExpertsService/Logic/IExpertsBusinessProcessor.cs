@@ -12,5 +12,7 @@ public interface IExpertsBusinessProcessor
     Task<ResponseDto> Put(Guid id, ExpertsCreateDto expertsCreateDto);
     Task<ResponseDto> Patch(Guid Id, JsonPatchDocument<ExpertsCreateDto> expertsDto);
     Task<ResponseDto> Delete(Guid id);
+    Task<ResponseDto> GetListing();
+    Task<ResponseDto> GetListingDetails();
     bool ResetPassword(ExpertsPasswordDTO expertsPasswordDTO);
 }

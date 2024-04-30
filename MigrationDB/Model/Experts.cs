@@ -23,6 +23,6 @@ public class Experts : BaseModel
     public int? TelegramFollower { get; set; }
     public bool isCoPartner { get; set; }
     public int? FixCommission { get; set; }
-    public string? DocumentsPath { get;}
+    public string? SEBIRegCertificatePath { get;}
 
 }

@@ -14,12 +14,12 @@ namespace ExpertService.Dtos
         public int? Experience { get; set; }
         public int? Rating { get; set; }
         public string? MobileNumber { get; set; }
-
         public string? ChannelName { get; set; }
         public string? TelegramChannel { get; set; }
         public string? PremiumTelegramChannel { get; set; }
-
         public int? TelegramFollower { get; set; }
         public bool isCoPartner { get; set; }
+        public int? FixCommission { get; set; }
+        public string? SEBIRegCertificatePath { get; set; }
     }
 }

@@ -3,6 +3,6 @@ using MigrationDB.Models;
 
 
 namespace ExpertService.Queries;
-public record GetExpertsQuery : IRequest<IEnumerable<Experts>>;
+public record GetExpertsListingQuery : IRequest<IEnumerable<Experts>>;
 
 

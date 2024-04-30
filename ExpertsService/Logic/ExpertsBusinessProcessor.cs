@@ -129,7 +129,6 @@ public class ExpertsBusinessProcessor : IExpertsBusinessProcessor
         // Write these validations in a seperate method
         return true;
     }
-
     public async Task<ResponseDto> Put(Guid id, ExpertsCreateDto request)
     {
         var experts = _mapper.Map<Experts>(request);
@@ -169,6 +168,26 @@ public class ExpertsBusinessProcessor : IExpertsBusinessProcessor
         var expert = await _sender.Send(new DeleteExpertsCommand(id));
         var expertReadDto = _mapper.Map<ResponseDto>(expert);
         return expertReadDto;
+    }
+    public async Task<ResponseDto> GetListing()
+    {
+        var expertsList = await _sender.Send(new GetExpertsQuery());
+        var expertsReadDtoList = _mapper.Map<List<ExpertReadDto>>(expertsList);
+        return new ResponseDto()
+        {
+            IsSuccess = true,
+            Data = expertsReadDtoList,
+        };
+    }
+    public async Task<ResponseDto> GetListingDetails()
+    {
+        var expertsList = await _sender.Send(new GetExpertsQuery());
+        var expertsReadDtoList = _mapper.Map<List<ExpertReadDto>>(expertsList);
+        return new ResponseDto()
+        {
+            IsSuccess = true,
+            Data = expertsReadDtoList,
+        };
     }
 }
 
