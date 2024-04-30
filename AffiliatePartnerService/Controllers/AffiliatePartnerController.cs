@@ -11,11 +11,15 @@ namespace AffiliatePartnerService.Controllers
     public class AffiliatePartnerController : ControllerBase
     {
         private readonly IAffiliatePartnerBusinessProcessor _logic;
+        private readonly IAPListingBusinessProcessor _logicAP;
+        private readonly IAPListingDetailsBusinessProcessor _logicAPDetails;
         private readonly ILogger<AffiliatePartnerController> _logger;
 
-        public AffiliatePartnerController(IAffiliatePartnerBusinessProcessor logic, ILogger<AffiliatePartnerController> logger)
+        public AffiliatePartnerController(IAffiliatePartnerBusinessProcessor logic, IAPListingBusinessProcessor logicAP, IAPListingDetailsBusinessProcessor logicAPDetails, ILogger<AffiliatePartnerController> logger)
         {
             _logic = logic;
+            _logicAP = logicAP;
+            _logicAPDetails = logicAPDetails;
             _logger = logger;
         }
 
@@ -102,6 +106,23 @@ namespace AffiliatePartnerService.Controllers
             _logger.LogInformation("Fetching Affiliate Partners Referral Link details for Id : " + Id.ToString());
             var affiliatePartners = await _logic.GenerateReferralLink(Id);
             return affiliatePartners != null ? (ActionResult<AffiliatePartnerReadDTO>)Ok(affiliatePartners) : NotFound();
+        }
+
+
+        [HttpGet("APListing", Name = "GetAPListing")]
+        public async Task<object> GetAPListing()
+        {
+            _logger.LogInformation("Fetching APListing Data..");
+            var apListing = await _logicAP.Get();
+            return Ok(apListing);
+        }
+
+        [HttpGet("APListingDetails", Name = "GetAPListingDetails")]
+        public async Task<object> GetAPListingDetails()
+        {
+            _logger.LogInformation("Fetching APListing Data..");
+            var apListing = await _logicAPDetails.Get();
+            return Ok(apListing);
         }
 
 

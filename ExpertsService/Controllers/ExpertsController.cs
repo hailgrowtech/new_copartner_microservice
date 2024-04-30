@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using ExpertService.Dtos;
 using ExpertService.Logic;
 using CommonLibrary.Authorization;
+using ExpertsService.Logic;
 
 namespace ExpertService.Controllers;
 
@@ -13,14 +14,17 @@ namespace ExpertService.Controllers;
 public class ExpertsController : ControllerBase
 {
     private readonly IExpertsBusinessProcessor _logic;
+    private readonly IRAListingBusinessProcessor _logicRA;
+    private readonly IRAListingDetailsBusinessProcessor _logicRADetails;
     private readonly ILogger<ExpertsController> _logger;
     //private readonly ITopicProducer<UserCreatedEventDTO> _topicProducer;
 
-    public ExpertsController(IExpertsBusinessProcessor logic, ILogger<ExpertsController> logger)//, ITopicProducer<UserCreatedEventDTO> topicProducer)
+    public ExpertsController(IExpertsBusinessProcessor logic, IRAListingBusinessProcessor logicRA, IRAListingDetailsBusinessProcessor logicRADetails, ILogger<ExpertsController> logger)
     {
-        this._logic = logic;
-        this._logger = logger;
-       // this._topicProducer = topicProducer;
+        _logic = logic;
+        _logicRA = logicRA;
+        _logicRADetails = logicRADetails;
+        _logger = logger;
     }
 
     /// <summary>
@@ -107,13 +111,12 @@ public class ExpertsController : ControllerBase
     /// </summary>
     /// <returns>The Income list of Experts.</returns>
     // GET: api/Experts
-    [HttpGet]
-    [Route("GetListing")]
-    public async Task<object> GetListing()
+    [HttpGet("RAListing", Name = "GetRAListing")]
+    public async Task<object> GetRAListing()
     {
-        _logger.LogInformation("Fetching Dashboard Listing Data..");
-        var experts = await _logic.GetListing();
-        return Ok(experts);
+        _logger.LogInformation("Fetching Dashboard RA Listing Data..");
+        var raListing = await _logicRA.Get();
+        return Ok(raListing);
     }
 
     /// <summary>
@@ -121,12 +124,11 @@ public class ExpertsController : ControllerBase
     /// </summary>
     /// <returns>The detail list of Experts.</returns>
     // GET: api/Experts
-    [HttpGet]
-    [Route("GetListingDetails")]
-    public async Task<object> GetListingDetails()
+    [HttpGet("RAListingDetails", Name = "GetRAListingDetails")]
+    public async Task<object> GetRAListingDetails()
     {
-        _logger.LogInformation("Fetching Dashboard Listing Details Data..");
-        var experts = await _logic.Get();
-        return Ok(experts);
+        _logger.LogInformation("Fetching Dashboard RA Listing Details Data..");
+        var raListing = await _logicRA.Get();
+        return Ok(raListing);
     }
 }
