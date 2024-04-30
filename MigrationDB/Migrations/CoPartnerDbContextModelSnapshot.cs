@@ -46,6 +46,12 @@ namespace MigrationDB.Migrations
                     b.Property<string>("Email")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<int?>("FixCommission1")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("FixCommission2")
+                        .HasColumnType("int");
+
                     b.Property<string>("GST")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -66,6 +72,9 @@ namespace MigrationDB.Migrations
 
                     b.Property<string>("ReferralCode")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReferralLink")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid?>("UpdatedBy")
@@ -429,6 +438,9 @@ namespace MigrationDB.Migrations
                     b.Property<int?>("ExpertTypeId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("FixCommission")
+                        .HasColumnType("int");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -525,6 +537,9 @@ namespace MigrationDB.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ReferralCode")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ReferralMode")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SubscriptionId")
