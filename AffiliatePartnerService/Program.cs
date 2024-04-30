@@ -95,6 +95,8 @@ namespace AffiliatePartnerService
 
             //Experts Service Dependencies
             builder.Services.AddScoped<IAffiliatePartnerBusinessProcessor, AffiliatePartnerBusinessProcessor>();
+            builder.Services.AddScoped<IAPListingBusinessProcessor, APListingBusinessProcessor>();
+            builder.Services.AddScoped<IAPListingDetailsBusinessProcessor, APListingDetailsBusinessProcessor>();
             builder.Services.AddScoped<IJsonMapper, JsonMapper>();
             //AutoMapper
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
