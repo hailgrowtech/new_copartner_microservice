@@ -25,6 +25,7 @@ public class CoPartnerDbContextProd : DbContext
     public DbSet<Subscriber> Subscribers { get; set; }
     public DbSet<AffiliatePartner> AffiliatePartners { get; set; }
     public DbSet<Blog> Blogs { get; set; }
+    public DbSet<AdvertisingAgency> AdvertisingAgencies { get; set; }
 
 
 }
