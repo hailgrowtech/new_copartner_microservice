@@ -1,12 +1,10 @@
-﻿using CommonLibrary.CommonModels;
+﻿using ExpertService.Models;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+using System.Numerics;
 
-namespace MigrationDB.Model
+namespace AdvertisingAgencyService.Dtos
 {
-
-    [Table("AdvertisingAgency")]
-    public class AdvertisingAgency : BaseModel
+    public class AdAgencyDetailsCreateDto
     {
         [Required]
         public string AgencyName { get; set; }
