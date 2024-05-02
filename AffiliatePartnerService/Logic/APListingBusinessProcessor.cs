@@ -20,11 +20,11 @@ namespace AffiliatePartnerService.Logic
         public async Task<ResponseDto> Get()
         {
             var apListingList = await _sender.Send(new GetAPListingQuery());
-            var apListingReadDtoList = _mapper.Map<List<APListingReadDto>>(apListingList);
+            //var apListingReadDtoList = _mapper.Map<List<APListingReadDto>>(apListingList);
             return new ResponseDto()
             {
                 IsSuccess = true,
-                Data = apListingReadDtoList,
+                Data = apListingList,
             };
         }
 

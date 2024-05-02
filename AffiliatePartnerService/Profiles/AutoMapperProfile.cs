@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
-using ExpertService.Dtos;
 using CommonLibrary.CommonDTOs;
 using MigrationDB.Models;
 using AffiliatePartnerService.Dtos;

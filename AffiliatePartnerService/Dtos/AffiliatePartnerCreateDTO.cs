@@ -11,5 +11,8 @@ namespace AffiliatePartnerService.Dtos
         public string GST { get; set; }
         public string PAN { get; set; }
         public string ReferralCode { get; set; }
+        public string? ReferralLink { get; set; } // Link
+        public int? FixCommission1 { get; set; }
+        public int? FixCommission2 { get; set; }
     }
 }
