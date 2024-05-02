@@ -13,5 +13,6 @@ namespace SubscriptionService.Logic
 
         Task<ResponseDto> Delete(Guid id);
         Task<ResponseDto> Patch(Guid Id, JsonPatchDocument<SubscriberCreateDto> subscriberCreateDto);
+        void ProcessSubscriberWallet(Guid subscriberId);
     }
 }
