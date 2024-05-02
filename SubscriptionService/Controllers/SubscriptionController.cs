@@ -7,7 +7,7 @@ using SubscriptionService.Logic;
 
 namespace SubscriptionService.Controllers;
 
-[Authorize]
+//[Authorize]
 [Route("api/[controller]")]
 [ApiController]
 public class SubscriptionController : ControllerBase

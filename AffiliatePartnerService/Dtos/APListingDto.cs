@@ -4,9 +4,9 @@
     {
         public string APName {  get; set; }
         public int UsersCount { get; set; }
-        public long UsersPayment { get; set; }
-        public long APEarning { get; set; }
-        public long RAEarning { get; set; }
-        public long CPEarning {  get; set; }
+        public int UsersPayment { get; set; }
+        public decimal? APEarning { get; set; }
+        public decimal? RAEarning { get; set; }
+        public decimal? CPEarning {  get; set; }
     }
 }

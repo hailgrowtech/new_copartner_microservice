@@ -1,7 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.JsonPatch;
-using ExpertService.Dtos;
-using MigrationDB.Models;
 using AffiliatePartnerService.Dtos;
 using MigrationDB.Model;
 

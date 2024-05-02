@@ -15,7 +15,7 @@ public class BaseModel
     [Key]
     public Guid Id { get; set; } = new Guid();
     public Guid CreatedBy { get; set; }
-    public DateTime CreatedOn { get; set; }
+    public DateTime CreatedOn { get; set; } = new DateTime();
     public Guid? UpdatedBy { get; set; }
     public DateTime? UpdatedOn { get; set; }
 

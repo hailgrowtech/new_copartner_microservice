@@ -125,7 +125,5 @@ namespace AffiliatePartnerService.Controllers
             return Ok(apListing);
         }
 
-
-
     }
 }
