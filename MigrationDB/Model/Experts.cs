@@ -24,5 +24,6 @@ public class Experts : BaseModel
     public bool isCoPartner { get; set; }
     public int? FixCommission { get; set; }
     public string? SEBIRegCertificatePath { get;}
+    public Guid RelationshipManagerId { get; set; }
 
 }
