@@ -17,6 +17,19 @@ public class AutoMapperProfile : Profile
         CreateMap<Blog, ResponseDto>()
             .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Blog entity to ResponseDto's Data property
 
+        // Source -> Target
+        CreateMap<MarketingContent, MarketingContentReadDto>().ReverseMap();
+        CreateMap<MarketingContent, MarketingContentCreateDto>().ReverseMap();
+        CreateMap<MarketingContent, JsonPatchDocument<MarketingContentCreateDto>>().ReverseMap();
+        CreateMap<MarketingContent, ResponseDto>()
+            .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Subscription entity to ResponseDto's Data property
+
+        // Source -> Target
+        CreateMap<AdvertisingAgency, AdAgencyDetailsReadDto>().ReverseMap();
+        CreateMap<AdvertisingAgency, AdAgencyDetailsCreateDto>().ReverseMap();
+        CreateMap<AdvertisingAgency, JsonPatchDocument<AdAgencyDetailsCreateDto>>().ReverseMap();
+        CreateMap<AdvertisingAgency, ResponseDto>()
+            .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Blog entity to ResponseDto's Data property
 
     }
 
