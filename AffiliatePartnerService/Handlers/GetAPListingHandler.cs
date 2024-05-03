@@ -17,52 +17,50 @@ namespace AffiliatePartnerService.Handlers
 
         public async Task<IEnumerable<APListingDto>> Handle(GetAPListingQuery request, CancellationToken cancellationToken)
         {
-            var earnings = (from ap in _dbContext.AffiliatePartners
-                            join u in _dbContext.Users.Where(u => u.ReferralMode == "AP") on ap.Id equals u.AffiliatePartnerId into userGroup
-                            from ug in userGroup.DefaultIfEmpty()
-                            join s in _dbContext.Subscribers on ug.Id equals s.UserId into subscriberGroup
-                            from sg in subscriberGroup.DefaultIfEmpty()
-                            join sub in _dbContext.Subscriptions on sg.SubscriptionId equals sub.Id into subscriptionGroup
-                            from subg in subscriptionGroup.DefaultIfEmpty()
-                            join e in _dbContext.Experts on subg.ExpertsId equals e.Id into expertGroup
-                            from eg in expertGroup.DefaultIfEmpty()
-                            group new { ap, sg, subg, eg } by new { ap.Name, sg.UserId, sg.TotalAmount, ap.FixCommission1, ap.FixCommission2, eg.FixCommission } into g
-                            select new
-                            {
-                                APName = g.Key.Name,
-                                APEarning = g.Sum(x => x.sg.TotalAmount > 0 ? x.sg.TotalAmount * (decimal)(x.ap.FixCommission1 / 100) : x.sg.TotalAmount * (decimal)(x.ap.FixCommission2 / 100)),
-                                RAEarning = g.Sum(x => x.sg.TotalAmount > 0 ? x.sg.TotalAmount * (decimal)(x.eg.FixCommission / 100) : 0),
-                                TotalAmount = g.Sum(x => x.sg.TotalAmount),
-                                UsersCount = g.Select(x => x.sg.UserId).Distinct().Count(),
-                                UsersPayment = g.Sum(x => x.sg.TotalAmount > 0 ? 1 : 0)
-                            }).ToList();
+            var apName = await _dbContext.AffiliatePartners
+                .Where(ap => !ap.IsDeleted)
+                .Select(ap => ap.Name)
+                .FirstOrDefaultAsync();
 
-            var result = from e in earnings
-                         group e by e.APName into g
-                         select new APListingDto
-                         {
-                             APName = g.Key,
-                             APEarning = g.Sum(x => x.APEarning),
-                             RAEarning = g.Sum(x => x.RAEarning),
-                             CPEarning = g.Sum(x => x.TotalAmount) - (g.Sum(x => x.APEarning) + g.Sum(x => x.RAEarning)),
-                             UsersCount = g.Sum(x => x.UsersCount),
-                             UsersPayment = g.Sum(x => x.UsersPayment)
-                         };
-
-            return result.ToList();
+            var userCount = await _dbContext.Users
+                .CountAsync(u => u.ReferralMode == "AP" && !u.IsDeleted);
 
 
-            //var resultList = result.Select(x => new APListingDto
-            //{
-            //    APName = x.APName,
-            //    UsersCount = x.TotalUsersCount,
-            //    UsersPayment = x.TotalUsersPayment,
-            //    APEarning = x.TotalAPEarning,
-            //    RAEarning = x.TotalRAEarning,
-            //    CPEarning = x.TotalCPEarning
-            //}).ToList();
+            var userPayQuery = from sub in _dbContext.Subscribers
+                               where !sub.IsDeleted
+                               join wallet in _dbContext.Wallets on sub.Id equals wallet.SubscriberId into walletGroup
+                               select new { SubscriberId = sub.Id, WalletCount = walletGroup.Select(w => w.Id).Distinct().Count() };
 
-           // return result;
+
+            var userPayResult = await userPayQuery.FirstOrDefaultAsync();
+            var userPay = userPayResult != null ? userPayResult.WalletCount : 0;
+            var subscriberId = userPayResult != null ? userPayResult.SubscriberId : Guid.Empty;
+
+            var earnings = await _dbContext.Wallets
+                .Where(w => !w.IsDeleted)
+                .GroupBy(w => 1) // Grouping by a constant to get total sum
+                .Select(g => new
+                {
+                    RAEarning = g.Sum(w => w.RAAmount),
+                    APEarning = g.Sum(w => w.APAmount),
+                    CPEarning = g.Sum(w => w.CPAmount)
+                })
+                .FirstOrDefaultAsync();
+
+            var resultList = new List<APListingDto>
+    {
+        new APListingDto
+        {
+            APName = apName,
+            UsersCount = userCount,
+            UsersPayment = userPay,
+            APEarning = earnings != null ? earnings.APEarning : 0,
+            RAEarning = earnings != null ? earnings.RAEarning : 0,
+            CPEarning = earnings != null ? earnings.CPEarning : 0
+        }
+    };
+
+            return resultList;
         }
     }
 }
