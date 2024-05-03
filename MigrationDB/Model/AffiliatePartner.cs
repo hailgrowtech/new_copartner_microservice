@@ -18,5 +18,7 @@ namespace MigrationDB.Model
         public string? ReferralLink {  get; set; } // Link
         public int? FixCommission1 { get; set; }
         public int? FixCommission2 { get; set; }
+        public Guid RelationshipManagerId { get; set; }
+
     }
 }
