@@ -90,7 +90,11 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddScoped<IBlogBusinessProcessor, BlogBusinessProcessor>();
 builder.Services.AddScoped<IMarketingContentBusinessProcessor, MarketingContentBusinessProcessor>();
 builder.Services.AddScoped<IAdAgencyDetailsBusinessProcessor, AdAgencyDetailsBusinessProcessor>();
+<<<<<<< HEAD
 builder.Services.AddScoped<IExpertsAdAgencyBusinessProcessor, ExpertsAdAgencyBusinessProcessor>();
+=======
+builder.Services.AddScoped<IRelationshipManagerBusinessProcessor, RelationshipManagerBusinessProcessor>();
+>>>>>>> 7e1f96d719b081174c7ab45eb623d245e9d836f4
 builder.Services.AddScoped<IJsonMapper, JsonMapper>();
 //AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
