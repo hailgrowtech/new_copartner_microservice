@@ -31,6 +31,13 @@ public class AutoMapperProfile : Profile
         CreateMap<AdvertisingAgency, ResponseDto>()
             .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Blog entity to ResponseDto's Data property
 
+        // Source -> Target
+        CreateMap<RelationshipManager, RelationshipManagerReadDto>().ReverseMap();
+        CreateMap<RelationshipManager, RelationshipManagerCreateDto>().ReverseMap();
+        CreateMap<RelationshipManager, JsonPatchDocument<RelationshipManagerCreateDto>>().ReverseMap();
+        CreateMap<RelationshipManager, ResponseDto>()
+            .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Blog entity to ResponseDto's Data property
+
     }
 
 }
