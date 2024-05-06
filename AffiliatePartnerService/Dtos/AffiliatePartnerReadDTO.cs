@@ -10,7 +10,7 @@
         public string GST { get; set; }
         public string PAN { get; set; }
         public string ReferralCode { get; set; }
-        public Guid RelationshipManagerId { get; set; }
+        public Guid? RelationshipManagerId { get; set; }
 
     }
 }

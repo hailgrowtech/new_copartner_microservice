@@ -128,7 +128,7 @@ public class ExpertsController : ControllerBase
     public async Task<object> GetRAListingDetails()
     {
         _logger.LogInformation("Fetching Dashboard RA Listing Details Data..");
-        var raListing = await _logicRA.Get();
-        return Ok(raListing);
+        var raListingDetails = await _logicRADetails.Get();
+        return Ok(raListingDetails);
     }
 }

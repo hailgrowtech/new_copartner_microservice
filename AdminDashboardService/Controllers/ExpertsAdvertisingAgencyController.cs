@@ -10,12 +10,12 @@ namespace AdminDashboardService.Controllers;
 //[Authorize]
 [Route("api/[controller]")]
 [ApiController]
-public class AdvertisingAgencyController : ControllerBase
+public class ExpertsAdvertisingAgencyController : ControllerBase
 {
-    private readonly IAdAgencyDetailsBusinessProcessor _logic;
-    private readonly ILogger<AdvertisingAgencyController> _logger;
+    private readonly IExpertsAdAgencyBusinessProcessor _logic;
+    private readonly ILogger<ExpertsAdvertisingAgencyController> _logger;
 
-    public AdvertisingAgencyController(IAdAgencyDetailsBusinessProcessor logic, ILogger<AdvertisingAgencyController> logger)
+    public ExpertsAdvertisingAgencyController(IExpertsAdAgencyBusinessProcessor logic, ILogger<ExpertsAdvertisingAgencyController> logger)
     {
         _logic = logic;
         _logger = logger;
@@ -24,12 +24,8 @@ public class AdvertisingAgencyController : ControllerBase
     //private readonly ITopicProducer<UserCreatedEventDTO> _topicProducer;
 
 
-    /// <summary>
-    /// Gets the list of all Experts.
-    /// </summary>
-    /// <returns>The list of Experts.</returns>
-    // GET: api/Experts
-    [HttpGet]
+   
+    [HttpGet(Name = "GetExpertsAdAgency")]
     public async Task<object> Get()
     {
             _logger.LogInformation("Fetching Ad Agencies Details Data..");
@@ -38,26 +34,26 @@ public class AdvertisingAgencyController : ControllerBase
     }
 
     /// <summary>
-    /// Get an Experts.
+    /// Get an Advertising Agency RA From Advertising Agency ID.
     /// </summary>
     /// <remarks>
     /// Sample request:
     /// 
-    ///     GET : api/Experts/1
+    ///     GET : api/GetExpertsByAdAgencyId/1
     /// </remarks>
     /// <param name="Id"></param>
-    [HttpGet("{Id}", Name = "Get")]
-    public async Task<ActionResult<AdAgencyDetailsDto>> Get(Guid Id)
+    [HttpGet("{Id}", Name = "GetExpertsByAdAgencyId")]
+    public async Task<ActionResult<ExpertsAdAgencyDto>> Get(Guid Id)
     {
         _logger.LogInformation("Fetching Ad Agencies details for Id : " + Id.ToString());
-        var adagency = await _logic.Get(Id);
-        return adagency != null ? (ActionResult<AdAgencyDetailsDto>)Ok(adagency) : NotFound();
+        var expertsAdagency = await _logic.Get(Id);
+        return expertsAdagency != null ? (ActionResult<ExpertsAdAgencyDto>)Ok(expertsAdagency) : NotFound();
     }
 
     [HttpPost]
-    public async Task<object> Post(AdAgencyDetailsCreateDto adAgencyDetailsCreateDto)
+    public async Task<object> Post(ExpertsAdAgencyCreateDto expertsAdAgencyCreateDto)
     {
-        var response = await _logic.Post(adAgencyDetailsCreateDto);
+        var response = await _logic.Post(expertsAdAgencyCreateDto);
 
         if (response.IsSuccess)
         {
@@ -69,9 +65,9 @@ public class AdvertisingAgencyController : ControllerBase
     }
 
     [HttpPut("{Id:guid}")]
-    public async Task<object> Put(Guid Id, AdAgencyDetailsCreateDto adAgencyDetailsCreateDto)
+    public async Task<object> Put(Guid Id, ExpertsAdAgencyCreateDto expertsAdAgencyCreateDto)
     {
-        var response = await _logic.Put(Id, adAgencyDetailsCreateDto);
+        var response = await _logic.Put(Id, expertsAdAgencyCreateDto);
 
         if (response.IsSuccess)
         {
@@ -83,9 +79,9 @@ public class AdvertisingAgencyController : ControllerBase
     }
 
     [HttpPatch]
-    public async Task<object> Patch(Guid Id, [FromBody] JsonPatchDocument<AdAgencyDetailsCreateDto> adAgencyPatch)
+    public async Task<object> Patch(Guid Id, [FromBody] JsonPatchDocument<ExpertsAdAgencyCreateDto> expertsAdAgencyPatch)
     {
-        var response = await _logic.Patch(Id, adAgencyPatch);
+        var response = await _logic.Patch(Id, expertsAdAgencyPatch);
         if (response.IsSuccess)
         {
             return Ok(response);
@@ -102,6 +98,5 @@ public class AdvertisingAgencyController : ControllerBase
         var adAgency = await _logic.Delete(Id);
         return adAgency != null ? Ok(adAgency) : NotFound();
     }
-
 }
  

@@ -35,6 +35,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CommonLibrary\CommonLibrary.csproj" />
+    <ProjectReference Include="..\MigrationDB\MigrationDB.csproj" />
   </ItemGroup>
 
 </Project>

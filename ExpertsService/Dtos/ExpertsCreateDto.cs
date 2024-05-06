@@ -21,7 +21,7 @@ namespace ExpertService.Dtos
         public bool isCoPartner { get; set; }
         public int? FixCommission { get; set; }
         public string? SEBIRegCertificatePath { get; set; }
-        public Guid RelationshipManagerId { get; set; }
+        public Guid? RelationshipManagerId { get; set; }
 
     }
 }

@@ -113,16 +113,20 @@ namespace AffiliatePartnerService.Controllers
         public async Task<object> GetAPListing()
         {
             _logger.LogInformation("Fetching APListing Data..");
-            var apListing = await _logicAP.Get();
-            return Ok(apListing);
+            var response = await _logicAP.Get();
+            if (response.IsSuccess)
+                return Ok(response);
+            return NotFound(response);
         }
 
         [HttpGet("APListingDetails", Name = "GetAPListingDetails")]
         public async Task<object> GetAPListingDetails()
         {
             _logger.LogInformation("Fetching APListing Data..");
-            var apListing = await _logicAPDetails.Get();
-            return Ok(apListing);
+            var response = await _logicAPDetails.Get();
+            if (response.IsSuccess)
+                return Ok(response);
+            return NotFound(response);
         }
 
     }

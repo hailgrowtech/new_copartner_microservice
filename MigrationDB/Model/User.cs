@@ -18,4 +18,5 @@ public class User : BaseModel
     public string? ReferralMode { get; set; } // The referral Mode used by the AR,AP,CP
     public Guid? ExpertsID { get; set; }
     public Guid? AdvertisingAgencyId { get; set; }
+    public Guid? ExpertsAdvertisingAgencyId { get; set; }
 }

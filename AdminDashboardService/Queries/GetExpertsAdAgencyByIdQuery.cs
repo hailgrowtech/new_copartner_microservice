@@ -5,7 +5,7 @@ using MigrationDB.Models;
 
 
 namespace AdminDashboardService.Queries;
-public record GetAdAgencyDetailsQuery : IRequest<IEnumerable<AdAgencyDetailsDto>>;
+public record GetExpertsAdAgencyByIdQuery(Guid Id) : IRequest<IEnumerable<ExpertsAdAgencyDto>>;
 
 
  

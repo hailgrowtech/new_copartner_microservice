@@ -2,14 +2,18 @@
 
 namespace AdminDashboardService.Dtos
 {
-    public class AdAgencyDetailsDto
+    public class ExpertsAdAgencyDto
     {
-        public Guid Id { get; set; }
-        public DateTime? JoinDate { get; set; }
         [Required]
-        public string AgencyName { get; set; }
+        public Guid AdvertisingAgencyId { get; set; }
+     
+        public Guid? ExpertsId { get; set; }
+        public Guid? ExpertsAdAgencyId { get; set; }
+        public string? ExpertsName { get; set; }
+
         [Required]
         public string? Link { get; set; }
+
         public int? UsersCount { get; set; }
         public bool isActive { get; set; }
     }

@@ -4,11 +4,13 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MigrationDB.Model;
 
-[Table("AdvertisingAgency")]
-public class AdvertisingAgency : BaseModel
+[Table("ExpertsAdvertisingAgency")]
+public class ExpertsAdvertisingAgency : BaseModel
 {
     [Required]
-    public string AgencyName { get; set; }
+    public Guid AdvertisingAgencyId { get; set; }
+    [Required]
+    public Guid ExpertsId { get; set; }
     [Required]
     public string? Link { get; set; }
     public bool isActive { get; set; }

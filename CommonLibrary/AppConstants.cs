@@ -75,6 +75,7 @@ public static class AppConstants
 
     #region Common Messages 
     public const string Common_NoRecordFound = "No record founds. ";
+    public const string Common_RecordDeleted = "record's deleted successfully. ";
 
     #endregion
 
