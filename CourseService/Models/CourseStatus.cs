@@ -1,4 +1,5 @@
 ﻿using CommonLibrary.CommonModels;
+using MigrationDB.Models;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CourseService.Models

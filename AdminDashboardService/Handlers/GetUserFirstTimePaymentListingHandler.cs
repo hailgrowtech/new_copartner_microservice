@@ -13,28 +13,23 @@ namespace AdminDashboardService.Handlers
 
         public async Task<IEnumerable<UserFirstTimePaymentListingDto>> Handle(GetUserFirstTimePaymentListingQuery request, CancellationToken cancellationToken)
         {
-            var usersWithFirstPayment = await _dbContext.Users
-                    .Where(u => !u.IsDeleted)
-                    .Join(_dbContext.Subscribers,
-                        u => u.Id,
-                        sub => sub.UserId,
-                        (u, sub) => new { User = u, Subscriber = sub })
-                    .GroupBy(join => join.User, join => join.Subscriber, (user, subscribers) => new
-                    {
-                        User = user,
-                        Subscribers = subscribers.ToList() // Materialize subscribers into a list
-                    })
-                    .Where(group => group.Subscribers.Count == 1) // Filter for users with exactly one subscriber (one payment)
-                    .Select(group => new UserFirstTimePaymentListingDto
-                    {
-                        Date = group.Subscribers.FirstOrDefault().CreatedOn, // Assuming CreatedOn represents subscriber creation date
-                        Mobile = group.User.MobileNumber,
-                        Name = group.User.Name,
-                        Payment = group.Subscribers.FirstOrDefault().TotalAmount // Assuming TotalAmount represents the payment amount
-                    })
-                    .ToListAsync();
+            var usersWithFirstPayment = await (from u in _dbContext.Users
+                                               where !u.IsDeleted
+                                               join s in _dbContext.Subscribers on u.Id equals s.UserId into gj
+                                               from sub in gj.DefaultIfEmpty()
+                                               group sub by u into userGroup
+                                               where userGroup.Count() == 1 && userGroup.All(sub => sub != null)
+                                               select new UserFirstTimePaymentListingDto
+                                               {
+                                                   Date = userGroup.FirstOrDefault().CreatedOn, // Assuming CreatedOn represents subscriber creation date
+                                                   Mobile = userGroup.Key.MobileNumber,
+                                                   Name = userGroup.Key.Name,
+                                                   Payment = userGroup.FirstOrDefault().TotalAmount // Assuming TotalAmount represents the payment amount
+                                               }).ToListAsync(cancellationToken);
 
-            return  usersWithFirstPayment;
+
+            return usersWithFirstPayment;
+
         }
     }
 }
