@@ -1,17 +1,13 @@
-﻿using CommonLibrary.CommonModels;
+﻿
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MigrationDB.Model;
-
-[Table("Wallet")]
-public class Wallet : BaseModel
+namespace WalletService.Dtos;
+public class WalletDto
 {
+    public Guid Id { get; set; }
     [Required]
     public Guid SubscriberId { get; set; }
-    public Guid? AffiliatePartnerId { get; set; }
-    public Guid? ExpertsId { get; set; }
     [Precision(18, 2)]
     public decimal? RAAmount { get; set; }
     [Precision(18, 2)]
@@ -20,3 +16,4 @@ public class Wallet : BaseModel
     public decimal? CPAmount { get; set; }
     public DateTime TransactionDate { get; set; }
 }
+

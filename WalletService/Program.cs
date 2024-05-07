@@ -1,12 +1,12 @@
-using AdminDashboardService.Logic;
 using CommonLibrary.Authorization;
 using FluentValidation;
 using Microsoft.OpenApi.Models;
 using MigrationDB.Data;
 using Serilog;
 using System.Reflection;
-using AdminDashboardService.Profiles;
-using AdminDashboardService.Configuration;
+using WalletService.Profiles;
+using WalletService.Configuration;
+using WalletService.Logic;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -41,9 +41,9 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "Admin Dashboard Service API",
+        Title = "Wallet Service API",
         Version = "v1",
-        Description = "An API to perform Blogs operations",
+        Description = "An API to perform wallet operations",
         TermsOfService = new Uri("https://hailgrotech.com/"),
         Contact = new OpenApiContact
         {
@@ -87,10 +87,9 @@ builder.Services.AddSwaggerGen(c =>
 //Resolve Dependencies Start
 
 //Experts Service Dependencies
-builder.Services.AddScoped<IBlogBusinessProcessor, BlogBusinessProcessor>();
-builder.Services.AddScoped<IMarketingContentBusinessProcessor, MarketingContentBusinessProcessor>();
-builder.Services.AddScoped<IAdAgencyDetailsBusinessProcessor, AdAgencyDetailsBusinessProcessor>();
-builder.Services.AddScoped<IRelationshipManagerBusinessProcessor, RelationshipManagerBusinessProcessor>();
+
+builder.Services.AddScoped<IWithdrawalBusinessProcessor, WithdrawalBusinessProcessor>();
+builder.Services.AddScoped<IWalletBusinessProcessor, WalletBusinessProcessor>();
 builder.Services.AddScoped<IJsonMapper, JsonMapper>();
 //AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -129,7 +128,7 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Admin Dashboard Service API V1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Wallet Service API V1");
     });
 }
 
