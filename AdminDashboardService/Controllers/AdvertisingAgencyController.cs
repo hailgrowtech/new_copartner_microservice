@@ -25,10 +25,10 @@ public class AdvertisingAgencyController : ControllerBase
 
 
     /// <summary>
-    /// Gets the list of all Experts.
+    /// Gets the list of all AdvertisingAgency.
     /// </summary>
-    /// <returns>The list of Experts.</returns>
-    // GET: api/Experts
+    /// <returns>The list of AdvertisingAgency.</returns>
+    // GET: api/AdvertisingAgency
     [HttpGet]
     public async Task<object> Get()
     {
@@ -38,12 +38,12 @@ public class AdvertisingAgencyController : ControllerBase
     }
 
     /// <summary>
-    /// Get an Experts.
+    /// Get an AdvertisingAgency.
     /// </summary>
     /// <remarks>
     /// Sample request:
     /// 
-    ///     GET : api/Experts/1
+    ///     GET : api/AdvertisingAgency/1
     /// </remarks>
     /// <param name="Id"></param>
     [HttpGet("{Id}", Name = "Get")]

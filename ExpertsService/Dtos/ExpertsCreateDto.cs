@@ -12,7 +12,7 @@ namespace ExpertService.Dtos
         public string? SEBIRegNo { get; set; }
         public string? Email { get; set; }
         public int? Experience { get; set; }
-        public decimal? Rating { get; set; }
+        public int? Rating { get; set; }
         public string? MobileNumber { get; set; }
         public string? ChannelName { get; set; }
         public string? TelegramChannel { get; set; }

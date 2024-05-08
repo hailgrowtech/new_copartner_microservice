@@ -88,7 +88,7 @@ public class AdAgencyDetailsBusinessProcessor : IAdAgencyDetailsBusinessProcesso
             {
                 IsSuccess = false,
                 Data = _mapper.Map<AdAgencyDetailsReadDto>(adAgencyIndividual),
-                ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
+                ErrorMessages = new List<string>() { AppConstants.Common_FailedToCreateNewRecord }
             };
         }
 

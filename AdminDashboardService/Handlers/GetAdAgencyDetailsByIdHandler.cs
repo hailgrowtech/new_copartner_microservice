@@ -20,7 +20,7 @@ public class GetAdAgencyDetailsByIdHandler : IRequestHandler<GetAdAgencyDetailsB
     public async Task<AdAgencyDetailsDto> Handle(GetAdAgencyDetailsByIdQuery request, CancellationToken cancellationToken)
     {
         var query = _dbContext.AdvertisingAgencies
-            .Where(agency => agency.Id == request.Id && agency.IsDeleted!=true)
+            .Where(agency => agency.Id == request.Id)
             .GroupJoin(_dbContext.Users,
                 agency => agency.Id,
                 user => user.AdvertisingAgencyId,
