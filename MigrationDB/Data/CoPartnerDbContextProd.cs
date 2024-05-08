@@ -26,10 +26,11 @@ public class CoPartnerDbContextProd : DbContext
     public DbSet<AffiliatePartner> AffiliatePartners { get; set; }
     public DbSet<Blog> Blogs { get; set; }
     public DbSet<AdvertisingAgency> AdvertisingAgencies { get; set; }
+    public DbSet<ExpertsAdvertisingAgency> ExpertsAdvertisingAgencies { get; set; }
     public DbSet<MarketingContent> MarketingContents { get; set; }
     public DbSet<Wallet> Wallets { get; set; }
     public DbSet<Withdrawal> Withdrawals { get; set; }
-    public DbSet<WithdrawalPaymentMode> WithdrawalPaymentModes { get; set; }
+    public DbSet<WithdrawalMode> WithdrawalModes { get; set; }
     public DbSet<RelationshipManager> RelationshipManagers { get; set; }
 
 }

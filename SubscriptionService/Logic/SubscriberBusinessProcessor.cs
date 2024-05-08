@@ -206,7 +206,7 @@ namespace SubscriptionService.Logic
 
                  cpAmount = amount - raAmount;
 
-                InsertTransaction(subscriber.Id, raAmount, 0, cpAmount);
+                InsertTransaction(subscriber.Id, affiliatePartnerId, expertsId, raAmount, 0, cpAmount);
             }
             else if (referralMode == "AP")
             {
@@ -230,7 +230,7 @@ namespace SubscriptionService.Logic
 
                  cpAmount = amount - (apAmount + raAmount);
 
-                InsertTransaction(subscriber.Id, raAmount, apAmount, cpAmount);
+                InsertTransaction(subscriber.Id, affiliatePartnerId, expertsId, raAmount, apAmount, cpAmount);
             }
             else
             {
@@ -239,16 +239,18 @@ namespace SubscriptionService.Logic
                 {
                     raAmount = amount * ((decimal)(expert.FixCommission) / 100);
                     cpAmount = amount - raAmount;
-                    InsertTransaction(subscriber.Id, raAmount, apAmount, cpAmount);
+                    InsertTransaction(subscriber.Id, affiliatePartnerId, expertsId, raAmount, apAmount, cpAmount);
                 }
             }
         }
 
-        private void InsertTransaction(Guid subscriberId, decimal raAmount, decimal apAmount, decimal cpAmount)
+        private void InsertTransaction(Guid subscriberId,Guid? affiliatePartnerId,Guid? expertsId, decimal raAmount, decimal apAmount, decimal cpAmount)
         {
             var transaction = new Wallet
             {
                 SubscriberId = subscriberId,
+                AffiliatePartnerId = affiliatePartnerId,
+                ExpertsId = expertsId,
                 RAAmount = raAmount,
                 APAmount = apAmount,
                 CPAmount = cpAmount,

@@ -4,8 +4,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MigrationDB.Model;
 
-[Table("WithdrawalPaymentMode")]
-public class WithdrawalPaymentMode : BaseModel
+[Table("WithdrawalMode")]
+public class WithdrawalMode : BaseModel
 {
     [Required]
     public string PaymentMode { get; set; } = "Bank";  //Bank OR UPI
@@ -17,7 +17,5 @@ public class WithdrawalPaymentMode : BaseModel
     public string? IFSCCode { get; set; }
     public string? BankName { get; set; }
     public string? UPI_ID { get; set; }
-    [Required]
-    public bool isActive { get; set; } = true;
 
 }

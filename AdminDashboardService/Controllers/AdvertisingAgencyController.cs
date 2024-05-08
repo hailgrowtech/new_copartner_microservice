@@ -102,5 +102,6 @@ public class AdvertisingAgencyController : ControllerBase
         var adAgency = await _logic.Delete(Id);
         return adAgency != null ? Ok(adAgency) : NotFound();
     }
+
 }
  

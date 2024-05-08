@@ -2,16 +2,14 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace MigrationDB.Model
-{
+namespace MigrationDB.Model;
 
-    [Table("AdvertisingAgency")]
-    public class AdvertisingAgency : BaseModel
-    {
-        [Required]
-        public string AgencyName { get; set; }
-        [Required]
-        public string? Link { get; set; }
-        public bool isActive { get; set; }
-    }
+[Table("AdvertisingAgency")]
+public class AdvertisingAgency : BaseModel
+{
+    [Required]
+    public string AgencyName { get; set; }
+    [Required]
+    public string? Link { get; set; }
+    public bool isActive { get; set; }
 }
