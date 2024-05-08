@@ -13,10 +13,14 @@ builder.Services.AddSwaggerGen();
 if (builder.Environment.IsProduction())
 {
     builder.Services.AddDbContext<CoPartnerDbContextProd>();
+    builder.Services.AddDbContext<AuthenticationDbContextProd>();
+    builder.Services.AddDbContext<SignInDbContextProd>();
 }
 else
 {
     builder.Services.AddDbContext<CoPartnerDbContextProd, CoPartnerDbContext>();
+    builder.Services.AddDbContext<AuthenticationDbContextProd, AuthenticationDbContext >();
+    builder.Services.AddDbContext<SignInDbContextProd, SignInDbContext >();
 }
 var app = builder.Build();
 

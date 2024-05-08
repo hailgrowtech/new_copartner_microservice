@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using MigrationDB.Data;
 
@@ -11,9 +12,11 @@ using MigrationDB.Data;
 namespace MigrationDB.Migrations
 {
     [DbContext(typeof(CoPartnerDbContext))]
-    partial class CoPartnerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240506115657_akashLocal")]
+    partial class akashLocal
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
