@@ -13,8 +13,12 @@ public class Withdrawal : BaseModel
     [Precision(18, 2)]
     public decimal? Amount { get; set; }
     public Guid? WithdrawalModeId { get; set; }
-    public DateTime WithdrawalRequestDate { get; set; }  //Date When Withdrawal Request
+    public DateTime? WithdrawalRequestDate { get; set; }  //Date When Withdrawal Request
     [Required]
-    public bool isApproved { get; set; } = false;
-    public DateTime TransactionDate { get; set; }
+    [MaxLength(1)]
+    public string? RequestAction { get; set; }
+    public string? TransactionId { get; set; }
+    public DateTime? TransactionDate { get; set; }
+    [Column(TypeName = "text")]
+    public string? RejectReason { get; set; }
 }

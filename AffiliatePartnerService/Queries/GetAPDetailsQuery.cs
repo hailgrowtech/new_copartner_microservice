@@ -3,4 +3,4 @@ using MediatR;
 
 
 namespace AffiliatePartnerService.Queries;
-public record GetAPListingDetailsQuery : IRequest<IEnumerable<APListingDetailDto>>;
+public record GetAPDetailsQuery : IRequest<IEnumerable<APDetailDto>>;

@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace WalletService.Dtos;
 public class WithdrawalCreateDto
@@ -10,10 +11,14 @@ public class WithdrawalCreateDto
     [Precision(18, 2)]
     public decimal? Amount { get; set; }
     public Guid? WithdrawalModeId { get; set; }
-    public DateTime? WithdrawalRequestDate { get; set; } = DateTime.UtcNow;  //Date When Withdrawal Request
+    public DateTime? WithdrawalRequestDate { get; set; }  //Date When Withdrawal Request
     [Required]
-    public bool isApproved { get; set; } = false;
+    [MaxLength(1)]
+    public string? RequestAction { get; set; } = "P";
+    public string? TransactionId { get; set; }
     public DateTime? TransactionDate { get; set; }
+    [Column(TypeName = "text")]
+    public string? RejectReason { get; set; }
 }
 public class WithdrawalModeCreateDto
 {
