@@ -19,9 +19,9 @@ public class WithdrawalBusinessProcessor : IWithdrawalBusinessProcessor
         this._sender = sender;
         this._mapper = mapper;
     }
-    public async Task<ResponseDto> Get()
+    public async Task<ResponseDto> Get(int page, int pageSize,string RequestBy)
     {        
-            var withdrawalList = await _sender.Send(new GetWithdrawalQuery());
+            var withdrawalList = await _sender.Send(new GetWithdrawalQuery(page,pageSize,RequestBy));
             var withdrawalReadDtoList = _mapper.Map<List<WithdrawalReadDto>>(withdrawalList);
             return new ResponseDto()
             {
@@ -51,7 +51,7 @@ public class WithdrawalBusinessProcessor : IWithdrawalBusinessProcessor
                 ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
             };
         }
-        var withdrawalReadDto = _mapper.Map<WithdrawalReadDto>(withdrawal);
+        var withdrawalReadDto = _mapper.Map<WithdrawalDetailsReadDto>(withdrawal);
         return new ResponseDto()
         {
             IsSuccess = true,

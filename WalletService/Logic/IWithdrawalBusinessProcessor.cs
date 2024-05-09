@@ -6,7 +6,7 @@ namespace WalletService.Logic;
 
 public interface IWithdrawalBusinessProcessor
 {
-    Task<ResponseDto> Get();
+    Task<ResponseDto> Get(int page, int pageSize,string requestBy);
     Task<ResponseDto> GetWithdrawalMode();
     Task<ResponseDto> Get(Guid id);
     Task<ResponseDto> GetWithdrawalMode(Guid id);

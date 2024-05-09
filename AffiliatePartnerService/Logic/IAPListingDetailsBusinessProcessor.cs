@@ -7,6 +7,6 @@ namespace AffiliatePartnerService.Logic
     {
         Task<ResponseDto> Get();
         Task<ResponseDto> Get(Guid id);
-        Task<ResponseDto> Put(Guid id, APListingDetailDto aPListingDetailDto);
+        Task<ResponseDto> Put(Guid id, APDetailDto aPListingDetailDto);
     }
 }

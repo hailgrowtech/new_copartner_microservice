@@ -20,23 +20,21 @@ public class WithdrawalController : ControllerBase
     }
 
     /// <summary>
-    /// Gets the list of all Withdrawal.
+    /// Gets the list of all Withdrawal In Dashboard.
     /// </summary>
     /// <returns>The list of Withdrawal.</returns>
     // GET: api/GetBankUPIDetails
     [HttpGet]
-    public async Task<object> Get()
+    public async Task<object> Get(string RequestBy,int page = 1, int pageSize = 10)
     {
         _logger.LogInformation("Fetching Withdrawal Data..");
-        var experts = await _logic.Get();
+        var experts = await _logic.Get(page, pageSize, RequestBy);
         return Ok(experts);
     }
-
-    /// <summary>
-    /// Gets the list of all Banks & UPI.
-    /// </summary>
-    /// <returns>The list of UPI.</returns>
-    // GET: api/GetBankUPIDetails
+/// <summary>
+/// Get List Of All Bank and UPI saved
+/// </summary>
+/// <returns></returns>
     [HttpGet("GetBankUPIDetails", Name = "GetBankUPIDetails")]
     public async Task<object> GetBankUPIDetails()
     {
@@ -47,20 +45,20 @@ public class WithdrawalController : ControllerBase
 
 
     /// <summary>
-    /// Get an Experts.
+    /// Get withdrawal/transaction details in Dashboard
     /// </summary>
     /// <remarks>
     /// Sample request:
     /// 
-    ///     GET : api/Experts/1
+    ///     GET : api/Withdrawal/8AE6AF68-05FC-438D-3FA2-08DC70094B91
     /// </remarks>
     /// <param name="Id"></param>
     [HttpGet("{Id}")]
     public async Task<ActionResult<WithdrawalReadDto>> Get(Guid Id)
     {
-        _logger.LogInformation("Fetching blogs details for Id : " + Id.ToString());
-        var blogs = await _logic.Get(Id);
-        return blogs != null ? (ActionResult<WithdrawalReadDto>)Ok(blogs) : NotFound();
+        _logger.LogInformation("Fetching withdrawal details for Id : " + Id.ToString());
+        var withdrawal = await _logic.Get(Id);
+        return withdrawal != null ? (ActionResult<WithdrawalReadDto>)Ok(withdrawal) : NotFound();
     }
 
     /// <summary>
@@ -81,12 +79,12 @@ public class WithdrawalController : ControllerBase
     }
 
     /// <summary>
-    /// Create Withdrawal Request
+    /// Create Withdrawal Request From AP/RA Screen. 
     /// </summary>
     /// /// <remarks>
     /// Sample request:
     /// 
-    /// POST : api/Post
+    /// POST : api/Post For Action Put Pending 'P'
     /// </remarks>
     /// <param name="bankUPIDto"></param>
     /// <returns></returns>
@@ -105,7 +103,7 @@ public class WithdrawalController : ControllerBase
     }
 
     /// <summary>
-    /// Create Data for Bank/UPI
+    /// Create Data for Bank/UPI - Adding Bank and UPI
     /// </summary>
     /// /// <remarks>
     /// Sample request:
@@ -128,6 +126,16 @@ public class WithdrawalController : ControllerBase
         return NotFound(response);
     }
 
+    /// <summary>
+    /// Action / Reason & TransactionID for Withdrawal Request In Dashboard
+    /// </summary>
+    /// /// <remarks>
+    /// Sample request:
+    /// 
+    /// PUT : api/Put: For Reject - 'R', Accept - 'A' , Pending 'P'
+    /// </remarks>
+    /// <param name="bankUPIDto"></param>
+    /// <returns></returns>
     [HttpPut("{Id:guid}")]
     public async Task<object> Put(Guid Id, WithdrawalCreateDto withdrawalDto)
     {

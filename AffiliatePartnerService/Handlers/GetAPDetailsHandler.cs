@@ -7,11 +7,11 @@ using MigrationDB.Model;
 
 namespace AffiliatePartnerService.Handlers
 {
-    public class GetAPListingDetailsHandler : IRequestHandler<GetAPListingDetailsQuery, IEnumerable<APListingDetailDto>>
+    public class GetAPDetailsHandler : IRequestHandler<GetAPDetailsQuery, IEnumerable<APDetailDto>>
     {
         private readonly CoPartnerDbContext _dbContext;
-        public GetAPListingDetailsHandler(CoPartnerDbContext dbContext) => _dbContext = dbContext;
-        public async Task<IEnumerable<APListingDetailDto>> Handle(GetAPListingDetailsQuery request, CancellationToken cancellationToken)
+        public GetAPDetailsHandler(CoPartnerDbContext dbContext) => _dbContext = dbContext;
+        public async Task<IEnumerable<APDetailDto>> Handle(GetAPDetailsQuery request, CancellationToken cancellationToken)
         {
             var query = from ap in _dbContext.AffiliatePartners
                         where !ap.IsDeleted
@@ -32,7 +32,7 @@ namespace AffiliatePartnerService.Handlers
                             ap.FixCommission1,
                             ap.FixCommission2
                         } into g
-                        select new APListingDetailDto
+                        select new APDetailDto
                         {
                             JoinDate = g.Key.CreatedOn,
                             APName = g.Key.Name,

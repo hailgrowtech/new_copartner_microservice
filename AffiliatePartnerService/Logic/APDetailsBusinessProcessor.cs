@@ -19,8 +19,8 @@ namespace AffiliatePartnerService.Logic
 
         public async Task<ResponseDto> Get()
         {
-            var apListingDetailsList = await _sender.Send(new GetAPListingDetailsQuery());
-            var apListingDetialsReadDtoList = _mapper.Map<List<APListingDetailReadDto>>(apListingDetailsList);
+            var apListingDetailsList = await _sender.Send(new GetAPDetailsQuery());
+            var apListingDetialsReadDtoList = _mapper.Map<List<APDetailReadDto>>(apListingDetailsList);
             return new ResponseDto()
             {
                 IsSuccess = true,
@@ -33,7 +33,7 @@ namespace AffiliatePartnerService.Logic
             throw new NotImplementedException();
         }
 
-        public Task<ResponseDto> Put(Guid id, APListingDetailDto aPListingDetailDto)
+        public Task<ResponseDto> Put(Guid id, APDetailDto aPListingDetailDto)
         {
             throw new NotImplementedException();
         }
