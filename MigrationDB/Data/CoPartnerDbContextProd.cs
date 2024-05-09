@@ -32,5 +32,6 @@ public class CoPartnerDbContextProd : DbContext
     public DbSet<Withdrawal> Withdrawals { get; set; }
     public DbSet<WithdrawalMode> WithdrawalModes { get; set; }
     public DbSet<RelationshipManager> RelationshipManagers { get; set; }
+    public DbSet<Join> Joins { get; set; }
 
 }
