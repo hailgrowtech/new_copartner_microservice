@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CommonLibrary;
 using CommonLibrary.CommonDTOs;
 using ExpertService.Queries;
 using ExpertsService.Dtos;
@@ -17,9 +18,9 @@ namespace ExpertsService.Logic
             _mapper = mapper;
         }
 
-        public async Task<ResponseDto> Get()
+        public async Task<ResponseDto> Get(int page = 1, int pageSize = 10)
         {
-            var raListingList = await _sender.Send(new GetRAListingQuery());
+            var raListingList = await _sender.Send(new GetRAListingQuery(page, pageSize));
             var raListingReadDtoList = _mapper.Map<List<RAListingReadDto>>(raListingList);
             return new ResponseDto()
             {
@@ -28,9 +29,24 @@ namespace ExpertsService.Logic
             };
         }
 
-        public Task<ResponseDto> Get(Guid id)
+        public async Task<ResponseDto> Get(Guid id, int page = 1, int pageSize = 10)
         {
-            throw new NotImplementedException();
+            var raListingData = await _sender.Send(new GetRAListingByIdQuery(id, page, pageSize));
+            if (raListingData == null)
+            {
+                return new ResponseDto()
+                {
+                    IsSuccess = false,
+                    Data = null,
+                    ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
+                };
+            }
+           // var raListingReadDto = _mapper.Map<RAListingDataReadDto>(raListingData);
+            return new ResponseDto()
+            {
+                IsSuccess = true,
+                Data = raListingData,
+            };
         }
 
         public Task<ResponseDto> Put(Guid id, RAListingDto rAListingDto)

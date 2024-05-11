@@ -14,16 +14,12 @@ namespace ExpertService.Controllers;
 public class ExpertsController : ControllerBase
 {
     private readonly IExpertsBusinessProcessor _logic;
-    private readonly IRAListingBusinessProcessor _logicRA;
-    private readonly IRAListingDetailsBusinessProcessor _logicRADetails;
     private readonly ILogger<ExpertsController> _logger;
     //private readonly ITopicProducer<UserCreatedEventDTO> _topicProducer;
 
-    public ExpertsController(IExpertsBusinessProcessor logic, IRAListingBusinessProcessor logicRA, IRAListingDetailsBusinessProcessor logicRADetails, ILogger<ExpertsController> logger)
+    public ExpertsController(IExpertsBusinessProcessor logic, ILogger<ExpertsController> logger)
     {
         _logic = logic;
-        _logicRA = logicRA;
-        _logicRADetails = logicRADetails;
         _logger = logger;
     }
 
@@ -106,29 +102,4 @@ public class ExpertsController : ControllerBase
         return expert != null ? Ok(expert) : NotFound();
     }
 
-    /// <summary>
-    /// Gets income listing of all Experts.
-    /// </summary>
-    /// <returns>The Income list of Experts.</returns>
-    // GET: api/Experts
-    [HttpGet("RAListing", Name = "GetRAListing")]
-    public async Task<object> GetRAListing()
-    {
-        _logger.LogInformation("Fetching Dashboard RA Listing Data..");
-        var raListing = await _logicRA.Get();
-        return Ok(raListing);
-    }
-
-    /// <summary>
-    /// Gets income listing details of all Experts.
-    /// </summary>
-    /// <returns>The detail list of Experts.</returns>
-    // GET: api/Experts
-    [HttpGet("RAListingDetails", Name = "GetRAListingDetails")]
-    public async Task<object> GetRAListingDetails()
-    {
-        _logger.LogInformation("Fetching Dashboard RA Listing Details Data..");
-        var raListingDetails = await _logicRADetails.Get();
-        return Ok(raListingDetails);
-    }
 }
