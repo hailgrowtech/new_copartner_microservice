@@ -6,21 +6,21 @@ using MediatR;
 
 namespace ExpertsService.Logic
 {
-    public class RAListingDetailsBusinessProcessor : IRAListingDetailsBusinessProcessor
+    public class RADetailsBusinessProcessor : IRADetailsBusinessProcessor
     {
         private readonly ISender _sender;
         private readonly IMapper _mapper;
 
-        public RAListingDetailsBusinessProcessor(ISender sender, IMapper mapper)
+        public RADetailsBusinessProcessor(ISender sender, IMapper mapper)
         {
             _sender = sender;
             _mapper = mapper;
         }
 
-        public async Task<ResponseDto> Get()
+        public async Task<ResponseDto> Get(int page = 1, int pageSize = 10)
         {
-            var raListingDetailsList = await _sender.Send(new GetRAListingDetailsQuery());
-            var raListingDetailsReadDtoList = _mapper.Map<List<RAListingDetailsReadDto>>(raListingDetailsList);
+            var raListingDetailsList = await _sender.Send(new GetRADetailsQuery(page,pageSize));
+            var raListingDetailsReadDtoList = _mapper.Map<List<RADetailsReadDto>>(raListingDetailsList);
             return new ResponseDto()
             {
                 IsSuccess = true,
@@ -28,12 +28,12 @@ namespace ExpertsService.Logic
             };
         }
 
-        public Task<ResponseDto> Get(Guid id)
+        public Task<ResponseDto> Get(Guid id, int page = 1, int pageSize = 10)
         {
             throw new NotImplementedException();
         }
 
-        public Task<ResponseDto> Put(Guid id, RAListingDetailsDto rAListingDetailsDto)
+        public Task<ResponseDto> Put(Guid id, RADetailsDto rAListingDetailsDto)
         {
             throw new NotImplementedException();
         }

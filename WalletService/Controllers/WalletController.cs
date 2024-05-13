@@ -19,7 +19,7 @@ public class WalletController : ControllerBase
         _logger = logger;
     }
     /// <summary>
-    /// Gets the list of all Withdrawal.
+    /// Gets the list of Wallet.
     /// </summary>
     /// <returns>The list of Withdrawal.</returns>
     // GET: api/GetBankUPIDetails
@@ -32,7 +32,7 @@ public class WalletController : ControllerBase
     }
 
     /// <summary>
-    /// Get Wallet Transaction By RA/AP ID.
+    /// Get Wallet Balance by id.
     /// </summary>
     /// <remarks>
     /// Sample request:

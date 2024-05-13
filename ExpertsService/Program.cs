@@ -91,7 +91,7 @@ builder.Services.AddSwaggerGen(c =>
 //Experts Service Dependencies
 builder.Services.AddScoped<IExpertsBusinessProcessor, ExpertsBusinessProcessor>();
 builder.Services.AddScoped<IRAListingBusinessProcessor, RAListingBusinessProcessor>();
-builder.Services.AddScoped<IRAListingDetailsBusinessProcessor, RAListingDetailsBusinessProcessor>();
+builder.Services.AddScoped<IRADetailsBusinessProcessor, RADetailsBusinessProcessor>();
 builder.Services.AddScoped<IJsonMapper, JsonMapper>();
 //AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

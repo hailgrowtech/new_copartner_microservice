@@ -1,7 +1,8 @@
 ﻿namespace ExpertsService.Dtos
 {
-    public class RAListingDetailsReadDto
+    public class RADetailsReadDto
     {
+        public Guid? Id { get; set; }
         public DateTime JoinDate { get; set; }
         public string Name { get; set; }
         public string SEBINo { get; set; }

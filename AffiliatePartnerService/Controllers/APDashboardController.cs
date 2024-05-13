@@ -11,31 +11,59 @@ namespace AffiliatePartnerService.Controllers
     public class APDashboardController : ControllerBase
     {
         private readonly IAPListingBusinessProcessor _logicAP;
-        private readonly IAPListingDetailsBusinessProcessor _logicAPDetails;
+        private readonly IAPDetailsBusinessProcessor _logicAPDetails;
         private readonly ILogger<AffiliatePartnerController> _logger;
 
-        public APDashboardController(IAPListingBusinessProcessor logicAP, IAPListingDetailsBusinessProcessor logicAPDetails, ILogger<AffiliatePartnerController> logger)
+        public APDashboardController(IAPListingBusinessProcessor logicAP, IAPDetailsBusinessProcessor logicAPDetails, ILogger<AffiliatePartnerController> logger)
         {
             _logicAP = logicAP;
             _logicAPDetails = logicAPDetails;
             _logger = logger;
         }
 
-        [HttpGet("APListing", Name = "GetAPListing")]
-        public async Task<object> GetAPListing()
+        /// <summary>
+        /// Gets AP Listing Data For particular AP and AP Details Screen in Dashboard.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     GET : api/GetDashboardRAListingData/1
+        /// </remarks>
+        /// <param name="Id"></param>
+        /// /// <param name="Id">RA Guid</param>
+        [HttpGet("DashboardAPListing", Name = "GetAPListing")]
+        public async Task<object> GetDashboardAPListing(int page = 1, int pageSize = 10)
         {
             _logger.LogInformation("Fetching APListing Data..");
-            var response = await _logicAP.Get();
+            var response = await _logicAP.Get(page, pageSize);
             if (response.IsSuccess)
                 return Ok(response);
             return NotFound(response);
         }
 
-        [HttpGet("APDetails", Name = "GetAPDetails")]
-        public async Task<object> GetAPDetails()
+        /// <summary>
+        /// Gets AP Listing Data For particular AP and AP Details Screen in Dashboard.
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        /// 
+        ///     GET : api/GetDashboardRAListingData/1
+        /// </remarks>
+        /// <param name="Id"></param>
+        /// /// <param name="Id">RA Guid</param>
+        [HttpGet("GetDashboardAPListingData/{Id}", Name = "GetDashboardAPListingData")]
+        public async Task<ActionResult<APListingDataDto>> GetDashboardAPListingData(Guid Id, int page = 1, int pageSize = 10)
         {
-            _logger.LogInformation("Fetching APListing Data..");
-            var response = await _logicAPDetails.Get();
+            _logger.LogInformation("Fetching Dashboard AP details for Id : " + Id.ToString());
+            var experts = await _logicAP.Get(Id,page,pageSize);
+            return experts != null ? (ActionResult<APListingDataDto>)Ok(experts) : NotFound();
+        }
+
+        [HttpGet("DashobaordAPDetails", Name = "GetDashboardAPDetails")]
+        public async Task<object> GetDashboardAPDetails(int page = 1, int pageSize = 10)
+        {
+            _logger.LogInformation("Fetching Dashboard AP DetailsData..");
+            var response = await _logicAPDetails.Get(page, pageSize);
             if (response.IsSuccess)
                 return Ok(response);
             return NotFound(response);

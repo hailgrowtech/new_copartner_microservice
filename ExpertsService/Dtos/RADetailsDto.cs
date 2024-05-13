@@ -2,8 +2,9 @@
 
 namespace ExpertsService.Dtos
 {
-    public class RAListingDetailsDto
+    public class RADetailsDto
     {
+        public Guid? Id { get; set; }
         public DateTime JoinDate { get; set; }
         public string Name {  get; set; }
         public string? SEBINo {  get; set; }
@@ -11,4 +12,5 @@ namespace ExpertsService.Dtos
         [Precision(18, 2)]
         public decimal? RAEarning {  get; set; }
     }
+
 }

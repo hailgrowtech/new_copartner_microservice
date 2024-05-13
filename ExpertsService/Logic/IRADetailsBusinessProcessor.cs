@@ -3,10 +3,10 @@ using ExpertsService.Dtos;
 
 namespace ExpertsService.Logic
 {
-    public interface IRAListingBusinessProcessor
+    public interface IRADetailsBusinessProcessor
     {
         Task<ResponseDto> Get(int page = 1, int pageSize = 10);
         Task<ResponseDto> Get(Guid id, int page = 1, int pageSize = 10);
-        Task<ResponseDto> Put(Guid id, RAListingDto rAListingDto);
+        Task<ResponseDto> Put(Guid id, RADetailsDto rAListingDetailsDto);
     }
 }
