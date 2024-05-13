@@ -12,11 +12,10 @@ namespace AffiliatePartnerService.Handlers
     public class GetAPListingHandler : IRequestHandler<GetAPListingQuery, IEnumerable<APListingDto>>
     {
         private readonly CoPartnerDbContext _dbContext;
-
         public GetAPListingHandler(CoPartnerDbContext dbContext) => _dbContext = dbContext;
-
         public async Task<IEnumerable<APListingDto>> Handle(GetAPListingQuery request, CancellationToken cancellationToken)
         {
+            int skip = (request.Page - 1) * request.PageSize;
             var query = _dbContext.Users
     .Where(u => u.ReferralMode == "AP")
     .GroupJoin(_dbContext.AffiliatePartners.Where(ap => !ap.IsDeleted),
@@ -41,9 +40,10 @@ namespace AffiliatePartnerService.Handlers
         uasw => uasw.wallets.DefaultIfEmpty(),
         (uasw, wallet) => new { uasw.user, uasw.affiliatePartner, uasw.subscriber, wallet })
     .GroupBy(
-        result => new { APName = result.affiliatePartner.Name, result.user.ReferralMode })
+        result => new { APName = result.affiliatePartner.Name, result.affiliatePartner.Id, result.user.ReferralMode })
     .Select(group => new APListingDto
     {
+        Id = group.Key.Id,
         APName = group.Key.APName,
         UsersCount = group.Select(g => g.user.Id).Distinct().Count(),
         UsersPayment = group.Select(g => g.subscriber.UserId).Distinct().Count(),
@@ -51,21 +51,8 @@ namespace AffiliatePartnerService.Handlers
         APEarning = group.Sum(g => g.wallet.APAmount),
         CPEarning = group.Sum(g => g.wallet.CPAmount)
     });
-
-
-            var result = await query.ToListAsync();
+            var result = await query.Skip(skip).Take(request.PageSize).ToListAsync();
             return result;
-
-            //return result.Select(item => new APListingDto
-            //{
-            //    APName = item.APName,
-            //    UsersCount = item.UserCount,
-            //    UsersPayment = item.UserPay,
-            //    RAEarning = item.RAEarning,
-            //    APEarning = item.APEarning,
-            //    CPEarning = item.CPEarning
-            //});
         }
-
     }
 }

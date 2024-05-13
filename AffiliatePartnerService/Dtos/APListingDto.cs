@@ -4,6 +4,7 @@ namespace AffiliatePartnerService.Dtos
 {
     public class APListingDto
     {
+        public Guid? Id { get; set; }
         public string APName {  get; set; }
         public int UsersCount { get; set; }
         public int UsersPayment { get; set; }

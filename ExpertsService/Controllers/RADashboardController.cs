@@ -5,6 +5,7 @@ using ExpertService.Dtos;
 using ExpertService.Logic;
 using CommonLibrary.Authorization;
 using ExpertsService.Logic;
+using ExpertsService.Dtos;
 
 namespace ExpertService.Controllers;
 
@@ -31,7 +32,7 @@ public class RADashboardController : ControllerBase
     /// <returns>The RA Listing in Dashboard</returns>
     // GET: api/Experts
     [HttpGet("DashboardRAListing", Name = "GetDashboardRAListing")]
-    public async Task<object> GetRADashboardListing(int page = 1, int pageSize = 10)
+    public async Task<object> GetDashboardRAListing(int page = 1, int pageSize = 10)
     {
         _logger.LogInformation("Fetching Dashboard RA Listing Data..");
         var raListing = await _logicRA.Get(page, pageSize);
@@ -39,7 +40,7 @@ public class RADashboardController : ControllerBase
     }
 
     /// <summary>
-    /// Gets RA Listing Data For perticular RA & RA Details Screen in Dashboard.
+    /// Gets RA Listing Data For particular RA & RA Details Screen in Dashboard.
     /// </summary>
     /// <remarks>
     /// Sample request:
@@ -49,11 +50,11 @@ public class RADashboardController : ControllerBase
     /// <param name="Id"></param>
     /// /// <param name="Id">RA Guid</param>
     [HttpGet("GetDashboardRAListingData/{Id}", Name = "GetDashboardRAListingData")]
-    public async Task<ActionResult<ExpertReadDto>> GetDashboardRAListingData(Guid Id, int page = 1, int pageSize = 10)
+    public async Task<ActionResult<RAListingDataDto>> GetDashboardRAListingData(Guid Id, int page = 1, int pageSize = 10)
     {
         _logger.LogInformation("Fetching experts details for Id : " + Id.ToString());
-        var experts = await _logicRA.Get(Id);
-        return experts != null ? (ActionResult<ExpertReadDto>)Ok(experts) : NotFound();
+        var experts = await _logicRA.Get(Id, page, pageSize);
+        return experts != null ? (ActionResult<RAListingDataDto>)Ok(experts) : NotFound();
     }
 
     /// <summary>
@@ -61,8 +62,8 @@ public class RADashboardController : ControllerBase
     /// </summary>
     /// <returns>The detail list of Experts.</returns>
     // GET: api/Experts
-    [HttpGet("DashboardRADetails", Name = "GetRAListingDetails")]
-    public async Task<object> GetRAListingDetails(int page = 1, int pageSize = 10)
+    [HttpGet("DashboardRADetails", Name = "GetDashboardRADetails")]
+    public async Task<object> GetDashboardRADetails(int page = 1, int pageSize = 10)
     {
         _logger.LogInformation("Fetching Dashboard RA Listing Details Data..");
         var raListingDetails = await _logicRADetails.Get(page, pageSize);

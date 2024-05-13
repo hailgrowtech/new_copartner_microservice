@@ -6,7 +6,7 @@ using MediatR;
 
 namespace AffiliatePartnerService.Logic
 {
-    public class APListingDetailsBusinessProcessor : IAPListingDetailsBusinessProcessor
+    public class APListingDetailsBusinessProcessor : IAPDetailsBusinessProcessor
     {
         private readonly ISender _sender;
         private readonly IMapper _mapper;
@@ -17,7 +17,7 @@ namespace AffiliatePartnerService.Logic
             _mapper = mapper;
         }
 
-        public async Task<ResponseDto> Get()
+        public async Task<ResponseDto> Get(int page = 1, int pageSize = 10)
         {
             var apListingDetailsList = await _sender.Send(new GetAPDetailsQuery());
             var apListingDetialsReadDtoList = _mapper.Map<List<APDetailReadDto>>(apListingDetailsList);

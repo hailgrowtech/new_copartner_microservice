@@ -18,7 +18,7 @@ public class RAListingDataReadDto
     public string RAName { get; set; }
     public DateTime? Date { get; set; }
     public string? UserMobileNo { get; set; }
-    public string? ComeFrom { get; set; }
+    public string? APName { get; set; }
 
     public decimal? Amount { get; set; }
     public string Subscription { get; set; }
