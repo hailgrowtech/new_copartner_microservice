@@ -41,7 +41,8 @@ namespace ExpertsService.Handlers
                             Name = g.Key.Name,
                             SEBINo = g.Select(x => x.expert.SEBIRegNo).SingleOrDefault(),
                             FixCommission = g.Key.FixCommission,
-                            RAEarning = g.Sum(x => x.subscriberWallet.RAAmount)
+                            RAEarning = g.Sum(x => x.subscriberWallet.RAAmount),
+                            
                         };
 
             var result = await query.Skip(skip).Take(request.PageSize).ToListAsync();
