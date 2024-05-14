@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using MigrationDB.Models;
+using SignInService.Models;
 
 namespace MigrationDB.Data;
 public class SignInDbContextProd : DbContext

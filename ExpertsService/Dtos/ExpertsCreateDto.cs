@@ -22,6 +22,8 @@ namespace ExpertService.Dtos
         public int? FixCommission { get; set; }
         public string? SEBIRegCertificatePath { get; set; }
         public Guid? RelationshipManagerId { get; set; }
+        public bool isActive { get; set; }
+
 
     }
 }

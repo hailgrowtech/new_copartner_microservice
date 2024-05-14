@@ -11,6 +11,8 @@ public class RAListingReadDto
     public decimal? RAEarning { get; set; }
     [Precision(18, 2)]
     public decimal? CPEarning { get; set; }
+    public bool isActive { get; set; }
+
 }
 
 public class RAListingDataReadDto
@@ -22,4 +24,6 @@ public class RAListingDataReadDto
 
     public decimal? Amount { get; set; }
     public string Subscription { get; set; }
+    public bool isActive { get; set; }
+
 }

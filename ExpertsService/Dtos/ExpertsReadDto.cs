@@ -23,5 +23,7 @@ public class ExpertReadDto
     public int? FixCommission { get; set; }
     public string? SEBIRegCertificatePath { get; }
     public Guid RelationshipManagerId { get; set; }
+    public bool isActive { get; set; }
+
 
 }

@@ -14,8 +14,8 @@ public class Experts : BaseModel
     public int? ExpertTypeId { get; set; }
     public string? SEBIRegNo { get; set; }
     public string? Email { get; set; }
-    public int? Experience { get; set; }
-    public int? Rating { get; set; }
+    public decimal? Experience { get; set; }
+    public decimal? Rating { get; set; }
     public string? MobileNumber { get; set; }
     public string? ChannelName { get; set; }
     public string? TelegramChannel { get; set; }
@@ -25,5 +25,7 @@ public class Experts : BaseModel
     public int? FixCommission { get; set; }
     public string? SEBIRegCertificatePath { get;}
     public Guid? RelationshipManagerId { get; set; }
+    public bool isActive { get; set; }
+
 
 }

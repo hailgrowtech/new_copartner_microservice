@@ -8,5 +8,7 @@
         public string SEBINo { get; set; }
         public int? FixCommission { get; set; }
         public long RAEarning { get; set; }
+        public bool isActive { get; set; }
+
     }
 }

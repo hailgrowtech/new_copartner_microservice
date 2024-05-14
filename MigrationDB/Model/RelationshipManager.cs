@@ -12,6 +12,8 @@ namespace MigrationDB.Model
         public string Email { get; set; }
         public string? ImagePath { get; set; }
         public string? DocumentPath { get; set; }
+        public bool isActive { get; set; }
+
     }
 
 }

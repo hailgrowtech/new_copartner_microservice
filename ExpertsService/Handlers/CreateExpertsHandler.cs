@@ -20,6 +20,7 @@ public class  CreateExpertsHandler : IRequestHandler<CreateExpertsCommand, Exper
         await _dbContext.Experts.AddAsync(entity);
         await _dbContext.SaveChangesAsync(cancellationToken);
         request.Experts.Id = entity.Id;
+        //request.Experts.isActive = entity.isActive;
         return request.Experts;
     }
 }

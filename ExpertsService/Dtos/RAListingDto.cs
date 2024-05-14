@@ -11,6 +11,7 @@ public class RAListingDto
     public decimal? RAEarning {  get; set; }
     [Precision(18, 2)]
     public decimal? CPEarning { get; set; }
+
 }
 public class RAListingDataDto
 {
