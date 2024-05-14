@@ -14,7 +14,7 @@ namespace ExpertsService.Handlers
         {
             int skip = (request.Page - 1) * request.PageSize;
             var query = from expert in _dbContext.Experts
-                        where !expert.IsDeleted
+                        where !expert.IsDeleted && expert.isCoPartner == request.IsCoPartner
                         join subscription in _dbContext.Subscriptions
                             on expert.Id equals subscription.ExpertsId into expertSubscriptions
                         from expertSubscription in expertSubscriptions.DefaultIfEmpty()
@@ -26,6 +26,7 @@ namespace ExpertsService.Handlers
                         from subscriberWallet in subscriberWallets.DefaultIfEmpty()
                         group new { expert, subscriberWallet } by new
                         {
+                            expert.isCoPartner,
                             expert.Id,
                             expert.CreatedOn,
                             expert.Name,
@@ -33,7 +34,7 @@ namespace ExpertsService.Handlers
                             expert.FixCommission,
                             expert.IsDeleted
                         } into g
-                        where !g.Key.IsDeleted
+                        where !g.Key.IsDeleted && g.Key.isCoPartner == request.IsCoPartner
                         select new RADetailsDto
                         {
                             Id = g.Key.Id,
@@ -42,7 +43,7 @@ namespace ExpertsService.Handlers
                             SEBINo = g.Select(x => x.expert.SEBIRegNo).SingleOrDefault(),
                             FixCommission = g.Key.FixCommission,
                             RAEarning = g.Sum(x => x.subscriberWallet.RAAmount),
-                            
+                            isCoPartner = g.Key.isCoPartner
                         };
 
             var result = await query.Skip(skip).Take(request.PageSize).ToListAsync();
