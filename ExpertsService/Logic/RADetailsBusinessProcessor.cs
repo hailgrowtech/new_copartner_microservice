@@ -17,9 +17,9 @@ namespace ExpertsService.Logic
             _mapper = mapper;
         }
 
-        public async Task<ResponseDto> Get(int page = 1, int pageSize = 10)
+        public async Task<ResponseDto> Get(bool isCoPartner, int page = 1, int pageSize = 10)
         {
-            var raListingDetailsList = await _sender.Send(new GetRADetailsQuery(page,pageSize));
+            var raListingDetailsList = await _sender.Send(new GetRADetailsQuery(isCoPartner,page, pageSize));
             var raListingDetailsReadDtoList = _mapper.Map<List<RADetailsReadDto>>(raListingDetailsList);
             return new ResponseDto()
             {

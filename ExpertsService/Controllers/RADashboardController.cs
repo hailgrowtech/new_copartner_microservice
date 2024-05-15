@@ -63,10 +63,10 @@ public class RADashboardController : ControllerBase
     /// <returns>The detail list of Experts.</returns>
     // GET: api/Experts
     [HttpGet("DashboardRADetails", Name = "GetDashboardRADetails")]
-    public async Task<object> GetDashboardRADetails(int page = 1, int pageSize = 10)
+    public async Task<object> GetDashboardRADetails(bool isCoPartner,int page = 1, int pageSize = 10)
     {
         _logger.LogInformation("Fetching Dashboard RA Listing Details Data..");
-        var raListingDetails = await _logicRADetails.Get(page, pageSize);
+        var raListingDetails = await _logicRADetails.Get(isCoPartner,page, pageSize);
         return Ok(raListingDetails);
     }
 }

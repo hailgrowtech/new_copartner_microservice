@@ -1,4 +1,5 @@
 ﻿using CommonLibrary.CommonModels;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -14,7 +15,9 @@ public class Experts : BaseModel
     public int? ExpertTypeId { get; set; }
     public string? SEBIRegNo { get; set; }
     public string? Email { get; set; }
+    [Precision(18, 2)]
     public decimal? Experience { get; set; }
+    [Precision(18, 2)]
     public decimal? Rating { get; set; }
     public string? MobileNumber { get; set; }
     public string? ChannelName { get; set; }
@@ -26,6 +29,5 @@ public class Experts : BaseModel
     public string? SEBIRegCertificatePath { get;}
     public Guid? RelationshipManagerId { get; set; }
     public bool isActive { get; set; }
-
 
 }

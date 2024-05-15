@@ -12,7 +12,7 @@ namespace ExpertsService.Dtos
         [Precision(18, 2)]
         public decimal? RAEarning {  get; set; }
         public bool isActive { get; set; }
-
+        public bool isCoPartner { get; set; }
     }
 
 }
