@@ -1,4 +1,3 @@
-using AuthenticationService.Consumers;
 using AuthenticationService.Data;
 using AuthenticationService.DTOs;
 using AuthenticationService.Helpers;
@@ -89,7 +88,7 @@ builder.Services.AddSwaggerGen(c =>
 // configure DI for Authentication services
 builder.Services.AddScoped<IJwtUtils, JwtUtils>();
 builder.Services.AddScoped<IAuthenticationBusinessProcessor, AuthenticationBusinessProcessor>();
-
+builder.Services.AddScoped<IUserBusinessProcessor, UserBusinessProcessor>();
 //Resolve Dependencies Ends
 
 //if (builder.Environment.IsProduction())
@@ -98,7 +97,7 @@ builder.Services.AddScoped<IAuthenticationBusinessProcessor, AuthenticationBusin
 //}
 //else
 //{
-    builder.Services.AddDbContext<AuthenticationDbContextProd, AuthenticationDbContext>();
+builder.Services.AddDbContext<AuthenticationDbContextProd, AuthenticationDbContext>();
 //}
 
 //AutoMapper

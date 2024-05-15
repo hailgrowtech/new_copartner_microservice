@@ -1,5 +1,4 @@
-﻿namespace UserService.Dtos;
-
+﻿namespace AuthenticationService.Dtos;
 public class UserPasswordDTO
 {
     public Guid Id { get; set; }
@@ -7,3 +6,4 @@ public class UserPasswordDTO
     public string NewPassword { get; set; }
     public DateTime LastPasswordUpdateDate { get; set; } = DateTime.Now;
 }
+

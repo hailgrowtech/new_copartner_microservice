@@ -3,11 +3,10 @@ using MassTransit;
 using MediatR;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using UserService.Dtos;
-using UserService.Logic;
+using AuthenticationService.Dtos;
+using AuthenticationService.Logic;
 
-namespace UserService.Controllers;
-
+namespace AuthenticationService.Controllers;
 //[Authorize]
 [Route("api/[controller]")]
 [ApiController]
@@ -25,15 +24,15 @@ public class UserController : ControllerBase
        // this._topicProducer = topicProducer;
     }
     /// <summary>
-    /// Gets the list of all Users.
+    /// Gets the list of all Users - RA/AP/SubAdmin. 
     /// </summary>
     /// <returns>The list of Users.</returns>
     // GET: api/User
     [HttpGet]
-    public async Task<object> Get()
+    public async Task<object> Get(string userType, int page = 1, int pageSize = 10)
     {
         _logger.LogInformation("Fetching User Data..");
-        var users = await _logic.Get();
+        var users = await _logic.Get(userType, page, pageSize);
         return Ok(users);
     }
 
@@ -46,7 +45,7 @@ public class UserController : ControllerBase
     ///     GET : api/User/1
     /// </remarks>
     /// <param name="Id"></param>
-    [HttpGet("{Id}", Name = "Get")]
+    [HttpGet("{Id}")]
     public async Task<ActionResult<UserReadDto>> Get(Guid Id)
     {
         _logger.LogInformation("Fetching user details for Id : " + Id.ToString());
@@ -55,9 +54,9 @@ public class UserController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<object> Post(UserCreateDto userDto)
+    public async Task<object> Post(UserCreateDto stackholderDto)
     {
-        var response = await _logic.Post(userDto);
+        var response = await _logic.Post(stackholderDto);
 
         if (response.IsSuccess)
         {
@@ -75,9 +74,9 @@ public class UserController : ControllerBase
     }
 
     [HttpPut("{Id:guid}")]
-    public async Task<object> Put(Guid Id, UserCreateDto userCreateDto)
+    public async Task<object> Put(Guid Id, UserCreateDto stackholderCreateDto)
     {
-        var response = await _logic.Put(Id, userCreateDto);
+        var response = await _logic.Put(Id, stackholderCreateDto);
 
         if (response.IsSuccess)
         {
@@ -90,9 +89,9 @@ public class UserController : ControllerBase
 
 
     [HttpPatch]
-    public async Task<object> Patch(Guid Id, [FromBody] JsonPatchDocument<UserCreateDto> userDtoPatch)
+    public async Task<object> Patch(Guid Id, [FromBody] JsonPatchDocument<UserCreateDto> stackholderDtoPatch)
     {
-        var response = await _logic.Patch(Id, userDtoPatch);
+        var response = await _logic.Patch(Id, stackholderDtoPatch);
         if (response.IsSuccess)
         {
             return Ok(response);
@@ -108,12 +107,5 @@ public class UserController : ControllerBase
     {
         var user = await _logic.Delete(Id);
         return user != null ? Ok(user) : NotFound();
-    }
-    [HttpPut("{Id:guid}")]
-    public bool ResetPassword(UserPasswordDTO userPasswordDTO)
-    {
-        //TODO : Encrypt Password. Make sure old and new password are not same. Make sure password is a combination of Alpha Numeric Char with Special Char and minmum 8 chars.
-        // Write these validations in a seperate method
-        return true;
     }
 }

@@ -46,20 +46,20 @@ public class AuthenticationBusinessProcessor : IAuthenticationBusinessProcessor
     }
     public async Task<ResponseDto> Authenticate(AuthenticationRequestDTO request)
     {
-        // Map AuthenticationRequestDTO to UserCreatedEventDTO
-        var userCreatedEventDto = new UserCreatedEventDTO
-        {
-            // Assuming AuthenticationRequestDTO contains these properties
-            UserId = Guid.NewGuid(),
-            Mobile = request.Mobile,
-            Email = request.Email,
-            Password = "password"
-        };
-        var authDetailEntity = _authMapper.ToCreateAuthDetailEntity(userCreatedEventDto);//.ToCreateAuthDetailEntity();
-        var authDetails = await SaveUserAuthDetails(authDetailEntity);
-        //  var message = context.Message.UserId;
-        var authEntity = _authMapper.ToCreateAuthEntity(userCreatedEventDto);//.ToCreateAuthDetailEntity();
-        var responseAuth = await SaveUserAuth(authEntity);
+        //// Map AuthenticationRequestDTO to UserCreatedEventDTO
+        //var userCreatedEventDto = new UserCreatedEventDTO
+        //{
+        //    // Assuming AuthenticationRequestDTO contains these properties
+        //    UserId = Guid.NewGuid(),
+        //    Mobile = request.Mobile,
+        //    Email = request.Email,
+        //    Password = "password"
+        //};
+        //var authDetailEntity = _authMapper.ToCreateAuthDetailEntity(userCreatedEventDto);//.ToCreateAuthDetailEntity();
+        //var authDetails = await SaveUserAuthDetails(authDetailEntity);
+        ////  var message = context.Message.UserId;
+        //var authEntity = _authMapper.ToCreateAuthEntity(userCreatedEventDto);//.ToCreateAuthDetailEntity();
+        //var responseAuth = await SaveUserAuth(authEntity);
 
         AuthenticationDetail authDetailsToValidate = new AuthenticationDetail()
         {

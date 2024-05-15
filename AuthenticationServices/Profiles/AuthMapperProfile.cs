@@ -1,27 +1,40 @@
-﻿using AuthenticationService.DTOs;
+﻿using AuthenticationService.Dtos;
+using AuthenticationService.DTOs;
 using AuthenticationService.Models;
+using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 
 namespace AuthenticationService.Profiles;
 
-public class AuthMapperProfile
+public class AuthMapperProfile :Profile
 {
+    public AuthMapperProfile()
+    {
+        // Source -> Target
+        CreateMap<AuthenticationDetail, UserReadDto>().ReverseMap();
+        CreateMap<AuthenticationDetail, UserCreateDto>().ReverseMap();
+        CreateMap<AuthenticationDetail, JsonPatchDocument<UserCreateDto>>().ReverseMap();
+    }
     //ToDo Implement Automapper TechDebt
-    public AuthenticationDetail ToCreateAuthDetailEntity(UserCreatedEventDTO user)
+    public AuthenticationDetail ToCreateAuthDetailEntity(UserCreateDto user)
     {
         string password = user.Password;
         string salt = BCrypt.Net.BCrypt.GenerateSalt();
         var result = new AuthenticationDetail
         {
+            UserType = user.UserType,
             UserId = user.UserId,
+            Name = user.Name,
             Email = user.Email,
-            MobileNumber = user.Mobile,
-            PasswordHash = BCrypt.Net.BCrypt.HashPassword(password, salt)
+            MobileNumber = user.MobileNo,
+            PasswordHash = BCrypt.Net.BCrypt.HashPassword(password, salt),
+            IsActive = user.IsActive
         };
 
         return result;
     }
 
-    public Authentication ToCreateAuthEntity(UserCreatedEventDTO user)
+    public Authentication ToCreateAuthEntity(UserCreateDto user)
     {
         string salt = BCrypt.Net.BCrypt.GenerateSalt();
         var result = new Authentication
@@ -33,13 +46,13 @@ public class AuthMapperProfile
         return result;
     }
 
-    public AuthenticationRequestDTO ToCreateAuthRequestDto(UserCreatedEventDTO user)
+    public AuthenticationRequestDTO ToCreateAuthRequestDto(UserCreateDto user)
     {
         string password = user.Password;
         string salt = BCrypt.Net.BCrypt.GenerateSalt();
         var result = new AuthenticationRequestDTO
         {
-            Mobile = user.Mobile,
+            Mobile = user.MobileNo,
             Email = user.Email,
             PasswordHash = BCrypt.Net.BCrypt.HashPassword(password, salt),
             IsLoginUsingOtpRequest = true,

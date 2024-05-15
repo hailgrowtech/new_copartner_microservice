@@ -43,7 +43,7 @@ builder.Services.AddSwaggerGen(c =>
         {
             Title = "User Service API",
             Version = "v1",
-            Description = "An API to perform User operations",
+            Description = "An API For User And  Dashboard User Credential Screen - RA/AP/SubAdmin",
             TermsOfService = new Uri("https://hailgrotech.com/"),
             Contact = new OpenApiContact
             {
@@ -76,6 +76,7 @@ builder.Services.AddSwaggerGen(c =>
             },
             new string[] {}
         }
+             
     });
         // Set the comments path for the Swagger JSON and UI.
         var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
