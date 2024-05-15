@@ -122,7 +122,7 @@ public class AdAgencyDetailsBusinessProcessor : IAdAgencyDetailsBusinessProcesso
             {
                 IsSuccess = false,
                 Data = _mapper.Map<AdAgencyDetailsReadDto>(existingAdagency),
-                ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
+                ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_FailedToCreateAffiliatePartner }
             };
         }
 

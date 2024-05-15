@@ -154,7 +154,7 @@ public class UserBusinessProcessor : IUserBusinessProcessor
             {
                 IsSuccess = false,
                 Data = _mapper.Map<UserReadDto>(existingSubscription),
-                ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
+                ErrorMessages = new List<string>() { AppConstants.User_FailedToUpdateUser }
             };
         }
 
@@ -162,7 +162,7 @@ public class UserBusinessProcessor : IUserBusinessProcessor
         return new ResponseDto()
         {
             Data = resultDto,
-            DisplayMessage = AppConstants.Expert_ExpertCreated
+            DisplayMessage = AppConstants.User_UserUpdated
         };
     }
 }
