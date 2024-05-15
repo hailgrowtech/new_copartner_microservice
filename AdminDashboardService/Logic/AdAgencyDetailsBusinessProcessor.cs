@@ -24,11 +24,11 @@ public class AdAgencyDetailsBusinessProcessor : IAdAgencyDetailsBusinessProcesso
     public async Task<ResponseDto> Get()
     {        
             var adAgencyDetailsList = await _sender.Send(new GetAdAgencyDetailsQuery());
-            var adAgencyDetailsReadDtoList = _mapper.Map<List<AdAgencyDetailsReadDto>>(adAgencyDetailsList);
+            //var adAgencyDetailsReadDtoList = _mapper.Map<List<AdAgencyDetailsReadDto>>(adAgencyDetailsList);
             return new ResponseDto()
             {
                 IsSuccess = true,
-                Data = adAgencyDetailsReadDtoList,
+                Data = adAgencyDetailsList,
             };           
     }
     public async Task<ResponseDto> Get(Guid id)
@@ -43,11 +43,11 @@ public class AdAgencyDetailsBusinessProcessor : IAdAgencyDetailsBusinessProcesso
                 ErrorMessages = new List<string>() { AppConstants.Expert_ExpertNotFound }
             };
         }
-        var adAgencyDetailsReadDto = _mapper.Map<AdAgencyDetailsReadDto>(adAgencyDetails);
+       // var adAgencyDetailsReadDto = _mapper.Map<AdAgencyDetailsReadDto>(adAgencyDetails);
         return new ResponseDto()
         {
             IsSuccess = true,
-            Data = adAgencyDetailsReadDto,
+            Data = adAgencyDetails,
         };
     }
     /// <inheritdoc/>
@@ -88,7 +88,7 @@ public class AdAgencyDetailsBusinessProcessor : IAdAgencyDetailsBusinessProcesso
             {
                 IsSuccess = false,
                 Data = _mapper.Map<AdAgencyDetailsReadDto>(adAgencyIndividual),
-                ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
+                ErrorMessages = new List<string>() { AppConstants.Common_FailedToCreateNewRecord }
             };
         }
 
@@ -136,32 +136,32 @@ public class AdAgencyDetailsBusinessProcessor : IAdAgencyDetailsBusinessProcesso
 
     public async Task<ResponseDto> Patch(Guid Id, JsonPatchDocument<AdAgencyDetailsCreateDto> request)
     {
-        var adagency = _mapper.Map<AdvertisingAgency>(request);
+        //var adagency = _mapper.Map<AdvertisingAgency>(request);
 
-        var existingAdagency = await _sender.Send(new GetAdAgencyDetailsByIdQuery(Id));
-        if (existingAdagency == null)
-        {
-            return new ResponseDto()
-            {
-                IsSuccess = false,
-                ErrorMessages = new List<string>() { AppConstants.Expert_ExpertNotFound }
-            };
-        }
+        //var existingAdagency = await _sender.Send(new GetAdAgencyDetailsByIdQuery(Id));
+        //if (existingAdagency == null)
+        //{
+        //    return new ResponseDto()
+        //    {
+        //        IsSuccess = false,
+        //        ErrorMessages = new List<string>() { AppConstants.Expert_ExpertNotFound }
+        //    };
+        //}
 
-        var result = await _sender.Send(new PatchAdAgencyDetailsCommand(Id, request, existingAdagency));
-        if (result == null)
-        {
-            return new ResponseDto()
-            {
-                IsSuccess = false,
-                Data = _mapper.Map<AdAgencyDetailsReadDto>(existingAdagency),
-                ErrorMessages = new List<string>() { AppConstants.Expert_FailedToUpdateExpert }
-            };
-        }
+        //var result = await _sender.Send(new PatchAdAgencyDetailsCommand(Id, request, existingAdagency));
+        //if (result == null)
+        //{
+        //    return new ResponseDto()
+        //    {
+        //        IsSuccess = false,
+        //        Data = _mapper.Map<AdAgencyDetailsReadDto>(existingAdagency),
+        //        ErrorMessages = new List<string>() { AppConstants.Expert_FailedToUpdateExpert }
+        //    };
+        //}
 
         return new ResponseDto()
         {
-            Data = _mapper.Map<AdAgencyDetailsReadDto>(result),
+            Data = null,//_mapper.Map<AdAgencyDetailsReadDto>(result),
             DisplayMessage = AppConstants.Expert_ExpertUpdated
         };
     }

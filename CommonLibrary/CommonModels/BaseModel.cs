@@ -15,13 +15,16 @@ public class BaseModel
     [Key]
     public Guid Id { get; set; } = new Guid();
     public Guid CreatedBy { get; set; }
-    public DateTime CreatedOn { get; set; } = new DateTime();
+    [Column(TypeName = "datetime")]
+    public DateTime CreatedOn { get; set; } =  DateTime.UtcNow;
     public Guid? UpdatedBy { get; set; }
+    [Column(TypeName = "datetime")]
     public DateTime? UpdatedOn { get; set; }
 
     [DefaultValue("false")]
     public bool IsDeleted { get; set; }
     public Guid? DeletedBy { get; set; }
+    [Column(TypeName = "datetime")]
     public DateTime? DeletedOn { get; set; }
 }
 

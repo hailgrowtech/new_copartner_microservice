@@ -12,55 +12,47 @@ namespace AffiliatePartnerService.Handlers
     public class GetAPListingHandler : IRequestHandler<GetAPListingQuery, IEnumerable<APListingDto>>
     {
         private readonly CoPartnerDbContext _dbContext;
-
         public GetAPListingHandler(CoPartnerDbContext dbContext) => _dbContext = dbContext;
-
         public async Task<IEnumerable<APListingDto>> Handle(GetAPListingQuery request, CancellationToken cancellationToken)
         {
-            var apName = await _dbContext.AffiliatePartners
-                .Where(ap => !ap.IsDeleted)
-                .Select(ap => ap.Name)
-                .FirstOrDefaultAsync();
-
-            var userCount = await _dbContext.Users
-                .CountAsync(u => u.ReferralMode == "AP" && !u.IsDeleted);
-
-
-            var userPayQuery = from sub in _dbContext.Subscribers
-                               where !sub.IsDeleted
-                               join wallet in _dbContext.Wallets on sub.Id equals wallet.SubscriberId into walletGroup
-                               select new { SubscriberId = sub.Id, WalletCount = walletGroup.Select(w => w.Id).Distinct().Count() };
-
-
-            var userPayResult = await userPayQuery.FirstOrDefaultAsync();
-            var userPay = userPayResult != null ? userPayResult.WalletCount : 0;
-            var subscriberId = userPayResult != null ? userPayResult.SubscriberId : Guid.Empty;
-
-            var earnings = await _dbContext.Wallets
-                .Where(w => !w.IsDeleted)
-                .GroupBy(w => 1) // Grouping by a constant to get total sum
-                .Select(g => new
-                {
-                    RAEarning = g.Sum(w => w.RAAmount),
-                    APEarning = g.Sum(w => w.APAmount),
-                    CPEarning = g.Sum(w => w.CPAmount)
-                })
-                .FirstOrDefaultAsync();
-
-            var resultList = new List<APListingDto>
+            int skip = (request.Page - 1) * request.PageSize;
+            var query = _dbContext.Users
+    .Where(u => u.ReferralMode == "AP")
+    .GroupJoin(_dbContext.AffiliatePartners.Where(ap => !ap.IsDeleted),
+        user => user.AffiliatePartnerId,
+        affiliatePartner => affiliatePartner.Id,
+        (user, affiliatePartner) => new { user, affiliatePartner })
+    .SelectMany(
+        ua => ua.affiliatePartner.DefaultIfEmpty(),
+        (ua, affiliatePartner) => new { ua.user, affiliatePartner })
+    .GroupJoin(_dbContext.Subscribers,
+        ua => ua.user.Id,
+        subscriber => subscriber.UserId,
+        (ua, subscribers) => new { ua.user, ua.affiliatePartner, subscribers })
+    .SelectMany(
+        uas => uas.subscribers.DefaultIfEmpty(),
+        (uas, subscriber) => new { uas.user, uas.affiliatePartner, subscriber })
+    .GroupJoin(_dbContext.Wallets,
+        uas => uas.subscriber.Id,
+        wallet => wallet.SubscriberId,
+        (uas, wallets) => new { uas.user, uas.affiliatePartner, uas.subscriber, wallets })
+    .SelectMany(
+        uasw => uasw.wallets.DefaultIfEmpty(),
+        (uasw, wallet) => new { uasw.user, uasw.affiliatePartner, uasw.subscriber, wallet })
+    .GroupBy(
+        result => new { APName = result.affiliatePartner.Name, result.affiliatePartner.Id, result.user.ReferralMode })
+    .Select(group => new APListingDto
     {
-        new APListingDto
-        {
-            APName = apName,
-            UsersCount = userCount,
-            UsersPayment = userPay,
-            APEarning = earnings != null ? earnings.APEarning : 0,
-            RAEarning = earnings != null ? earnings.RAEarning : 0,
-            CPEarning = earnings != null ? earnings.CPEarning : 0
-        }
-    };
-
-            return resultList;
+        Id = group.Key.Id,
+        APName = group.Key.APName,
+        UsersCount = group.Select(g => g.user.Id).Distinct().Count(),
+        UsersPayment = group.Select(g => g.subscriber.UserId).Distinct().Count(),
+        RAEarning = group.Sum(g => g.wallet.RAAmount),
+        APEarning = group.Sum(g => g.wallet.APAmount),
+        CPEarning = group.Sum(g => g.wallet.CPAmount)
+    });
+            var result = await query.Skip(skip).Take(request.PageSize).ToListAsync();
+            return result;
         }
     }
 }

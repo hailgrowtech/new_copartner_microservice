@@ -8,7 +8,8 @@ public class CreateAdAgencyDetailsCommandValidator : AbstractValidator<CreateAdA
     public CreateAdAgencyDetailsCommandValidator()
     {
         //RuleFor(x => x.User.Id).NotEmpty();
-        RuleFor(x => x.AdvertisingAgency.AgencyName).NotEmpty().MaximumLength(300);
-       // RuleFor(x => x.User.LastName).NotEmpty().MaximumLength(100);
+        RuleFor(x => x.AdvertisingAgency.AgencyName).NotEmpty().MaximumLength(500);
+        RuleFor(x => x.AdvertisingAgency.Link).NotEmpty().MaximumLength(500);
     }
+
 }

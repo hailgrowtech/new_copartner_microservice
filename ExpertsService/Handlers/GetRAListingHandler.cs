@@ -1,53 +1,70 @@
 ﻿using ExpertService.Queries;
 using ExpertsService.Dtos;
+using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MigrationDB.Data;
 
-namespace ExpertsService.Handlers
+namespace ExpertsService.Handlers;
+public class GetRAListingHandler : IRequestHandler<GetRAListingQuery, IEnumerable<RAListingDto>>
 {
-    public class GetRAListingHandler : IRequestHandler<GetRAListingQuery, IEnumerable<RAListingDto>>
+    private readonly CoPartnerDbContext _dbContext;
+    public GetRAListingHandler(CoPartnerDbContext dbContext) => _dbContext = dbContext;
+
+    public async Task<IEnumerable<RAListingDto>> Handle(GetRAListingQuery request, CancellationToken cancellationToken)
     {
-        private readonly CoPartnerDbContext _dbContext;
-        public GetRAListingHandler(CoPartnerDbContext dbContext) => _dbContext = dbContext;
+        // Calculate the number of records to skip
+        int skip = (request.Page - 1) * request.PageSize;
+        var query = _dbContext.Users
+            .GroupJoin(_dbContext.Subscribers,
+                user => user.Id,
+                subscriber => subscriber.UserId,
+                (user, subscribers) => new { user, subscribers })
+            .SelectMany(
+                us => us.subscribers.DefaultIfEmpty(),
+                (us, subscriber) => new { us.user, subscriber })
+            .GroupJoin(_dbContext.Wallets,
+                us => us.subscriber.Id,
+                wallet => wallet.SubscriberId,
+                (us, wallets) => new { us.user, us.subscriber, wallets })
+            .SelectMany(
+                usw => usw.wallets.DefaultIfEmpty(),
+                (usw, wallet) => new { usw.user, usw.subscriber, wallet })
+            .GroupJoin(_dbContext.Subscriptions,
+                usw => usw.subscriber.SubscriptionId,
+                subscription => subscription.Id,
+                (usw, subscriptions) => new { usw.user, usw.subscriber, usw.wallet, subscriptions })
+            .SelectMany(
+                usws => usws.subscriptions.DefaultIfEmpty(),
+                (usws, subscription) => new { usws.user, usws.subscriber, usws.wallet, subscription })
+            .Join(_dbContext.Experts.Where(expert => !expert.IsDeleted),
+                uswss => uswss.subscription.ExpertsId,
+                expert => expert.Id,
+                (uswss, expert) => new { uswss.user, uswss.subscriber, uswss.wallet, expert,uswss.subscription })
+            .Where(uew => uew.expert != null && uew.expert.IsDeleted == false)
+            .GroupBy(
+                result => new { RAName = result.expert.Name,Id=result.subscription.ExpertsId, result.expert.IsDeleted })
+            .Select(group => new {
+                Id=group.Key.Id,
+                Name = group.Key. RAName,
+                UserCount = group.Select(g => g.subscriber.Id).Distinct().Count(),
+                RAEarning = group.Sum(g => g.wallet.RAAmount),
+                CPEarning = group.Sum(g => g.wallet.CPAmount),
+                
+            });
 
-        public async Task<IEnumerable<RAListingDto>> Handle(GetRAListingQuery request, CancellationToken cancellationToken)
+        var result = await query.Skip(skip).Take(request.PageSize).ToListAsync();
+
+        return result.Select(expert => new RAListingDto
         {
-            var expert = await _dbContext.Experts
-                .Where(exp => !exp.IsDeleted)
-                .Select(exp => new { Name = exp.Name })
-                .FirstOrDefaultAsync();
-
-            var userCount = await _dbContext.Users
-                .CountAsync(u => u.ReferralMode == "RA" && !u.IsDeleted);
-
-            var subscriberIdQuery = from sub in _dbContext.Subscribers
-                                    where !sub.IsDeleted
-                                    join wallet in _dbContext.Wallets on sub.Id equals wallet.SubscriberId into walletGroup
-                                    select sub.Id;
-
-            var subscriberId = await subscriberIdQuery.FirstOrDefaultAsync();
-
-            var earnings = await _dbContext.Wallets
-                .Where(w => !w.IsDeleted)
-                .GroupBy(w => 1) // Grouping by a constant to get total sum
-                .Select(g => new
-                {
-                    RAAmount = g.Sum(w => w.RAAmount),
-                    CPAmount = g.Sum(w => w.CPAmount)
-                })
-                .FirstOrDefaultAsync();
-
-            var result = new RAListingDto
-            {
-                Name = expert != null ? expert.Name : null,
-                UsersCount = userCount,
-                RAEarning = earnings != null ? earnings.RAAmount : 0,
-                CPEarning = earnings != null ? earnings.CPAmount : 0
-            };
-
-            return new List<RAListingDto> { result };
-        }
+            Id = expert.Id,
+            Name = expert.Name,
+            UsersCount = expert.UserCount,
+            RAEarning = expert != null ? expert.RAEarning : Convert.ToDecimal(0),
+            CPEarning = expert != null ? expert.CPEarning : Convert.ToDecimal(0),
+            
+        });
 
     }
+
 }

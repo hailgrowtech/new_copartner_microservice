@@ -90,8 +90,9 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddScoped<IBlogBusinessProcessor, BlogBusinessProcessor>();
 builder.Services.AddScoped<IMarketingContentBusinessProcessor, MarketingContentBusinessProcessor>();
 builder.Services.AddScoped<IAdAgencyDetailsBusinessProcessor, AdAgencyDetailsBusinessProcessor>();
+builder.Services.AddScoped<IExpertsAdAgencyBusinessProcessor, ExpertsAdAgencyBusinessProcessor>();
 builder.Services.AddScoped<IRelationshipManagerBusinessProcessor, RelationshipManagerBusinessProcessor>();
-builder.Services.AddScoped<IUserDataListingBusinessProcessor, UserDataListingBusinessProcessor>();
+builder.Services.AddScoped<IJoinBusinessProcessor, JoinBusinessProcessor>();
 builder.Services.AddScoped<IJsonMapper, JsonMapper>();
 //AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -118,11 +119,11 @@ builder.Services.AddCors();
 var app = builder.Build();
 
 //migrate any database changes on startup (includes initial db creation)
-using (var scope = app.Services.CreateScope())
-{
-    var dataContext = scope.ServiceProvider.GetRequiredService<CoPartnerDbContext>();
-    //dataContext.Database.Migrate();
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var dataContext = scope.ServiceProvider.GetRequiredService<CoPartnerDbContext>();
+//    //dataContext.Database.Migrate();
+//}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() || app.Environment.IsProduction())

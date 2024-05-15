@@ -1,4 +1,5 @@
 ﻿using ExpertService.Models;
+using Microsoft.EntityFrameworkCore;
 using System.Numerics;
 
 namespace ExpertService.Dtos
@@ -11,7 +12,9 @@ namespace ExpertService.Dtos
         public int? ExpertTypeId { get; set; }
         public string? SEBIRegNo { get; set; }
         public string? Email { get; set; }
-        public int? Experience { get; set; }
+        [Precision(18, 2)]
+        public decimal? Experience { get; set; }
+        [Precision(18, 2)]
         public decimal? Rating { get; set; }
         public string? MobileNumber { get; set; }
         public string? ChannelName { get; set; }
@@ -21,7 +24,9 @@ namespace ExpertService.Dtos
         public bool isCoPartner { get; set; }
         public int? FixCommission { get; set; }
         public string? SEBIRegCertificatePath { get; set; }
-        public Guid RelationshipManagerId { get; set; }
+        public Guid? RelationshipManagerId { get; set; }
+        public bool isActive { get; set; }
+
 
     }
 }
