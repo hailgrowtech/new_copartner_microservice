@@ -88,7 +88,7 @@ public class ExpertsAdAgencyBusinessProcessor : IExpertsAdAgencyBusinessProcesso
             {
                 IsSuccess = false,
                 Data = _mapper.Map<ExpertsAdAgencyReadDto>(expertsAdAgencyIndividual),
-                ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
+                ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_FailedToCreateAffiliatePartner }
             };
         }
 
@@ -122,7 +122,7 @@ public class ExpertsAdAgencyBusinessProcessor : IExpertsAdAgencyBusinessProcesso
             {
                 IsSuccess = false,
                 Data = _mapper.Map<ExpertsAdAgencyReadDto>(existingAdagency),
-                ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
+                ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_FailedToCreateAffiliatePartner }
             };
         }
 

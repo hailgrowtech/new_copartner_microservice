@@ -73,7 +73,7 @@ public class ExpertsBusinessProcessor : IExpertsBusinessProcessor
             {
                 IsSuccess = false,
                 Data = _mapper.Map<ExpertReadDto>(existingExperts),
-                ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
+                ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_FailedToCreateAffiliatePartner }
             };
         }
 
@@ -151,7 +151,7 @@ public class ExpertsBusinessProcessor : IExpertsBusinessProcessor
             {
                 IsSuccess = false,
                 Data = _mapper.Map<ExpertReadDto>(existingExperts),
-                ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
+                ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_FailedToCreateAffiliatePartner }
             };
         }
 

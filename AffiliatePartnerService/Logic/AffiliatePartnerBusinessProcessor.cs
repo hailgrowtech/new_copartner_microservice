@@ -84,7 +84,7 @@ namespace AffiliatePartnerService.Logic
                 {
                     IsSuccess = false,
                     Data = null,
-                    ErrorMessages = new List<string>() { AppConstants.Expert_ExpertNotFound }
+                    ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_AffiliatePartnerNotFound }
                 };
             }
             var affiliatePartnersReadDto = _mapper.Map<AffiliatePartnerReadDTO>(affiliatePartners);
@@ -106,7 +106,7 @@ namespace AffiliatePartnerService.Logic
                 {
                     IsSuccess = false,
                     //   Data = _mapper.Map<ExpertsReadDto>(existingExperts),
-                    ErrorMessages = new List<string>() { AppConstants.Expert_ExpertNotFound }
+                    ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_AffiliatePartnerNotFound }
                 };
             }
 
@@ -117,14 +117,14 @@ namespace AffiliatePartnerService.Logic
                 {
                     IsSuccess = false,
                     Data = _mapper.Map<AffiliatePartnerReadDTO>(existingAffiliatePartners),
-                    ErrorMessages = new List<string>() { AppConstants.Expert_FailedToUpdateExpert }
+                    ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_FailedToUpdateAffiliatePartner }
                 };
             }
 
             return new ResponseDto()
             {
                 Data = _mapper.Map<AffiliatePartnerReadDTO>(result),
-                DisplayMessage = AppConstants.Expert_ExpertUpdated
+                DisplayMessage = AppConstants.AffiliatePartner_AffiliatePartnerUpdated
             };
         }
 
@@ -139,7 +139,7 @@ namespace AffiliatePartnerService.Logic
                 {
                     IsSuccess = false,
                     Data = _mapper.Map<AffiliatePartnerReadDTO>(existingaffiliatePartners),
-                    ErrorMessages = new List<string>() { AppConstants.Expert_ExpertExistsWithMobileOrEmail }
+                    ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_AffiliatePartnerExistsWithMobileOrEmail }
                 };
             }
 
@@ -150,7 +150,7 @@ namespace AffiliatePartnerService.Logic
                 {
                     IsSuccess = false,
                     Data = _mapper.Map<AffiliatePartnerReadDTO>(existingaffiliatePartners),
-                    ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
+                    ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_FailedToCreateAffiliatePartner }
                 };
             }
 
@@ -158,7 +158,7 @@ namespace AffiliatePartnerService.Logic
             return new ResponseDto()
             {
                 Data = resultDto,
-                DisplayMessage = AppConstants.Expert_ExpertCreated
+                DisplayMessage = AppConstants.AffiliatePartner_AffiliatePartnerCreated
             };
         }
 
@@ -184,7 +184,7 @@ namespace AffiliatePartnerService.Logic
                 {
                     IsSuccess = false,
                     Data = _mapper.Map<AffiliatePartnerReadDTO>(existingaffiliatePartners),
-                    ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
+                    ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_FailedToCreateAffiliatePartner }
                 };
             }
 
@@ -192,7 +192,7 @@ namespace AffiliatePartnerService.Logic
             return new ResponseDto()
             {
                 Data = resultDto,
-                DisplayMessage = AppConstants.Expert_ExpertCreated
+                DisplayMessage = AppConstants.AffiliatePartner_AffiliatePartnerCreated
             };
         }
     }

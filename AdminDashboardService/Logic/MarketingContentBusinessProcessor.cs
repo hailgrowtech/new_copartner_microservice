@@ -73,7 +73,7 @@ public class MarketingContentBusinessProcessor : IMarketingContentBusinessProces
             {
                 IsSuccess = false,
                 Data = _mapper.Map<MarketingContentReadDto>(existingmarketingContent),
-                ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
+                ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_FailedToCreateAffiliatePartner }
             };
         }
 
@@ -138,7 +138,7 @@ public class MarketingContentBusinessProcessor : IMarketingContentBusinessProces
             {
                 IsSuccess = false,
                 Data = _mapper.Map<MarketingContentReadDto>(existingmarketingContent),
-                ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
+                ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_FailedToCreateAffiliatePartner }
             };
         }
 
