@@ -56,7 +56,7 @@ public static class AppConstants
 
     public const string Expert_ExpertNotFound = "Unable to find experts. ";
     public const string Expert_ExpertExistsWithMobileOrEmail = "Experts already exists for given mobile and email.";
-    public const string Expert_FailedToCreateNewExpert = "Failed to create new experts.";
+    public const string AffiliatePartner_FailedToCreateAffiliatePartner = "Failed to create new experts.";
     public const string Expert_FailedToUpdateExpert = "Failed to update Expert.";
     public const string Expert_ExpertCreated = "Expert created successfully.";
     public const string Expert_ExpertUpdated = "Expert updated successfully.";
@@ -73,6 +73,38 @@ public static class AppConstants
 
     #endregion
 
+    #region Affiliate Partner Service
+
+    public const string AffiliatePartner_AffiliatePartnerNotFound = "Unable to find Affiliate Partners. ";
+    public const string AffiliatePartner_AffiliatePartnerExistsWithMobileOrEmail = "Affiliate Partner already exists for given mobile and email.";
+    public const string AffiliatePartner_FailedToCreateNewAffiliatePartner = "Failed to create new Affiliate Partner.";
+    public const string AffiliatePartner_FailedToUpdateAffiliatePartner = "Failed to update Affiliate Partner.";
+    public const string AffiliatePartner_AffiliatePartnerCreated = "Affiliate Partner created successfully.";
+    public const string AffiliatePartner_AffiliatePartnerUpdated = "Affiliate Partner updated successfully.";
+    #endregion
+
+
+    #region Subscriber Service
+
+    public const string Subscriber_SubscriberNotFound = "Unable to find Subscribers. ";
+    public const string Subscriber_FailedToCreateNewSubscriber = "Failed to create new Subscriber.";
+    public const string Subscriber_FailedToUpdateSubscriber = "Failed to update Subscriber.";
+    public const string Subscriber_SubscriberCreated = "Subscriber created successfully.";
+    public const string Subscriber_SubscriberUpdated = "Subscriber updated successfully.";
+
+    #endregion
+
+    #region Subscription Service
+
+    public const string Subscription_SubscriberNotFound = "Unable to find Subscription. ";
+    public const string Subscription_FailedToCreateNewSubscription = "Failed to create new Subscription.";
+    public const string Subscription_FailedToUpdateSubscription = "Failed to update Subscription.";
+    public const string Subscription_SubscriptionCreated = "Subscription created successfully.";
+    public const string Subscription_SubscriptionUpdated = "Subscription updated successfully.";
+
+    #endregion
+
+
     #region Common Messages 
     public const string Common_NoRecordFound = "No record founds. ";
     public const string Common_RecordDeleted = "Record's deleted successfully. ";
@@ -80,6 +112,7 @@ public static class AppConstants
     public const string Common_FailedToCreateNewRecord = "Failed to create new record's.";
     public const string Common_AlreadyExistsRecord = "Record's already exists.";
     #endregion
+
 
 
     #region Enumerators

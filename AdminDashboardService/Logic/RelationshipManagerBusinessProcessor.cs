@@ -111,7 +111,7 @@ namespace AdminDashboardService.Logic
                 {
                     IsSuccess = false,
                     Data = _mapper.Map<RelationshipManagerReadDto>(existingrelationshipManager),
-                    ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
+                    ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_FailedToCreateAffiliatePartner }
                 };
             }
 
@@ -145,7 +145,7 @@ namespace AdminDashboardService.Logic
                 {
                     IsSuccess = false,
                     Data = _mapper.Map<RelationshipManagerReadDto>(existingrelationshipManager),
-                    ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
+                    ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_FailedToCreateAffiliatePartner }
                 };
             }
 

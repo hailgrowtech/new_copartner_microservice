@@ -114,7 +114,7 @@ namespace AdminDashboardService.Logic
                 {
                     IsSuccess = false,
                     Data = _mapper.Map<JoinReadDto>(existingJoins),
-                    ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
+                    ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_FailedToCreateAffiliatePartner }
                 };
             }
 
@@ -148,7 +148,7 @@ namespace AdminDashboardService.Logic
                 {
                     IsSuccess = false,
                     Data = _mapper.Map<JoinReadDto>(existingjoins),
-                    ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
+                    ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_FailedToCreateAffiliatePartner }
                 };
             }
 

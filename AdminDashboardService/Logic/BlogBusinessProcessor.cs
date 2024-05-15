@@ -79,7 +79,7 @@ public class BlogBusinessProcessor : IBlogBusinessProcessor
             {
                 IsSuccess = false,
                 Data = _mapper.Map<BlogReadDto>(blogsExperts),
-                ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
+                ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_FailedToCreateAffiliatePartner }
             };
         }
 
@@ -113,7 +113,7 @@ public class BlogBusinessProcessor : IBlogBusinessProcessor
             {
                 IsSuccess = false,
                 Data = _mapper.Map<BlogReadDto>(existingblogs),
-                ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
+                ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_FailedToCreateAffiliatePartner }
             };
         }
 

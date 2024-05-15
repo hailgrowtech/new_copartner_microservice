@@ -110,7 +110,7 @@ namespace SubscriptionService.Logic
                 {
                     IsSuccess = false,
                     Data = _mapper.Map<SubscriberReadDto>(existingsubscribers),
-                    ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
+                    ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_FailedToCreateAffiliatePartner }
                 };
             }
 
@@ -150,7 +150,7 @@ namespace SubscriptionService.Logic
                 {
                     IsSuccess = false,
                     Data = _mapper.Map<SubscriberReadDto>(existingSubscriber),
-                    ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
+                    ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_FailedToCreateAffiliatePartner }
                 };
             }
 
