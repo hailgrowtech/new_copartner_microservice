@@ -20,7 +20,7 @@ namespace UserService.Handlers
             var entity = request.user;
             User existingEntity;
 
-            if (string.IsNullOrEmpty(entity.MobileNumber))
+            if (string.IsNullOrEmpty(request.MobileNo))
             {
                 existingEntity = await _dbContext.Users.FindAsync(entity.Id);
             }
