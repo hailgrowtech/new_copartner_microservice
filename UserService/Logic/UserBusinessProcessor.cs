@@ -32,7 +32,7 @@ public class UserBusinessProcessor : IUserBusinessProcessor
             Data = userReadDtoList,
         };
     }
-    public async Task<ResponseDto> Get(Guid id)
+    public async Task<ResponseDto> Get(Guid? id)
     {
         var user = await _sender.Send(new GetUserByIdQuery(id));
         if (user == null)
@@ -137,38 +137,60 @@ public class UserBusinessProcessor : IUserBusinessProcessor
         return null;
     }
 
-    public async Task<ResponseDto> Put(Guid id, UserCreateDto request)
+    public async Task<ResponseDto> Put(Guid? id, string? mobileNo, UserCreateDto request)
     {
         var users = _mapper.Map<User>(request);
-
-        var existingSubscription = await _sender.Send(new GetUserByIdQuery(id));
-        if (existingSubscription == null)
+        if (string.IsNullOrEmpty(mobileNo))
         {
+            var existingSubscription = await _sender.Send(new GetUserByIdQuery(id));
+            if (existingSubscription == null)
+            {
+                return new ResponseDto()
+                {
+                    IsSuccess = false,
+                    Data = null, // No need to map existingSubscription if it's null
+                    ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
+                };
+            }
+
+            users.Id = (Guid)id; // Assigning the provided Id to the subscription
+            var result = await _sender.Send(new PutUserCommand(mobileNo, users));
+            if (result == null)
+            {
+                return new ResponseDto()
+                {
+                    IsSuccess = false,
+                    Data = null, // No need to map result if it's null
+                    ErrorMessages = new List<string>() { AppConstants.User_FailedToUpdateUser }
+                };
+            }
+            var resultDto = _mapper.Map<UserReadDto>(result);
             return new ResponseDto()
             {
-                IsSuccess = false,
-                Data = _mapper.Map<UserReadDto>(existingSubscription),
-                ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
+                Data = resultDto,
+                DisplayMessage = AppConstants.User_UserUpdated
             };
         }
-        users.Id = id; // Assigning the provided Id to the subscription
-        var result = await _sender.Send(new PutUserCommand(users));
-        if (result == null)
+        else
         {
+            var result = await _sender.Send(new PutUserCommand(mobileNo,users));
+            if (result == null)
+            {
+                return new ResponseDto()
+                {
+                    IsSuccess = false,
+                    Data = null, // No need to map result if it's null
+                    ErrorMessages = new List<string>() { AppConstants.User_FailedToUpdateUser }
+                };
+            }
+            var resultDto = _mapper.Map<UserReadDto>(result);
             return new ResponseDto()
             {
-                IsSuccess = false,
-                Data = _mapper.Map<UserReadDto>(existingSubscription),
-                ErrorMessages = new List<string>() { AppConstants.User_FailedToUpdateUser }
+                Data = resultDto,
+                DisplayMessage = AppConstants.User_UserUpdated
             };
         }
-
-        var resultDto = _mapper.Map<UserReadDto>(result);
-        return new ResponseDto()
-        {
-            Data = resultDto,
-            DisplayMessage = AppConstants.User_UserUpdated
-        };
     }
+
 }
 

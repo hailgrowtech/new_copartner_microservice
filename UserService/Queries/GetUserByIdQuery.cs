@@ -3,7 +3,7 @@ using MigrationDB.Models;
 
 
 namespace UserService.Queries;
-public record GetUserByIdQuery(Guid Id) : IRequest<User>;
+public record GetUserByIdQuery(Guid? Id) : IRequest<User>;
 
 
  

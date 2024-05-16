@@ -5,6 +5,6 @@ using MigrationDB.Models;
 namespace UserService.Commands
 {
 
-    public record PutUserCommand(User user) : IRequest<User>;
+    public record PutUserCommand(string?MobileNo,User user) : IRequest<User>;
 
 }

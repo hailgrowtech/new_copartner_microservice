@@ -74,10 +74,10 @@ public class UserController : ControllerBase
         return NotFound(response);
     }
 
-    [HttpPut("{Id:guid}")]
-    public async Task<object> Put(Guid Id, UserCreateDto userCreateDto)
+    [HttpPut]
+    public async Task<object> Put(Guid? Id,string?MobileNo, UserCreateDto userCreateDto)
     {
-        var response = await _logic.Put(Id, userCreateDto);
+        var response = await _logic.Put(Id,MobileNo, userCreateDto);
 
         if (response.IsSuccess)
         {
