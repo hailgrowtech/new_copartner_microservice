@@ -71,7 +71,7 @@ public class ExpertsAdAgencyBusinessProcessor : IExpertsAdAgencyBusinessProcesso
         var expertsAdAgency = _mapper.Map<ExpertsAdvertisingAgency>(request);
 
         var expertsAdAgencyIndividual = await _sender.Send(new GetExpertsAdAgencyByIdQuery(expertsAdAgency.Id));
-        if (expertsAdAgencyIndividual != null || expertsAdAgencyIndividual.ToList().Count > 0)
+        if (expertsAdAgencyIndividual.ToList().Count > 0)
         {
             return new ResponseDto()
             {
@@ -88,7 +88,7 @@ public class ExpertsAdAgencyBusinessProcessor : IExpertsAdAgencyBusinessProcesso
             {
                 IsSuccess = false,
                 Data = _mapper.Map<ExpertsAdAgencyReadDto>(expertsAdAgencyIndividual),
-                ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_FailedToCreateAffiliatePartner }
+                ErrorMessages = new List<string>() { AppConstants.Common_FailedToCreateNewRecord }
             };
         }
 
