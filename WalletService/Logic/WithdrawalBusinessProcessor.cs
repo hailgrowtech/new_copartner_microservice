@@ -83,7 +83,6 @@ public class WithdrawalBusinessProcessor : IWithdrawalBusinessProcessor
     public async Task<ResponseDto> Post(WithdrawalCreateDto request)
     {
         var withdrawal = _mapper.Map<Withdrawal>(request);
-
         var response = await _sender.Send(new GetWithdrawalByIdQuery(withdrawal.Id));
         if (response != null)
         {

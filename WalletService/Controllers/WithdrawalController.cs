@@ -79,7 +79,7 @@ public class WithdrawalController : ControllerBase
     }
 
     /// <summary>
-    /// Create Withdrawal Request From AP/RA Screen. 
+    /// Create Withdrawal Request From AP/RA Screen Check Withdrawal Balance before making request using API api/Wallet/GetWalletWithdrawalBalance . 
     /// </summary>
     /// /// <remarks>
     /// Sample request:

@@ -25,7 +25,8 @@ public class GetWithdrawalByIdHandler : IRequestHandler<GetWithdrawalByIdQuery, 
                                where withdrawal.Id == request.Id
                                select withdrawalMode.AffiliatePartnerId != null ? "AP" : "RA")
                              .FirstOrDefaultAsync();
-
+        if (requestBy == null)
+            return null;
         IQueryable<WithdrawalDetailsReadDto> query = Enumerable.Empty<WithdrawalDetailsReadDto>().AsQueryable();
         if (requestBy == "RA")
         {
@@ -49,11 +50,12 @@ public class GetWithdrawalByIdHandler : IRequestHandler<GetWithdrawalByIdQuery, 
                     AccountNumber = combined.WithdrawalMode.AccountNumber,
                     IFSCCode = combined.WithdrawalMode.IFSCCode,
                     BankName = combined.WithdrawalMode.BankName,
-                    UPI_ID = combined.WithdrawalMode.UPI_ID
+                    UPI_ID = combined.WithdrawalMode.UPI_ID,
+                    RequestAction = combined.Withdrawal.RequestAction
                 });
         }
 
-        if (requestBy == "AP")
+       else if (requestBy == "AP")
         {
             query = _dbContext.Withdrawals
                 .Where(w => w.WithdrawalBy == "AP" && w.Id == request.Id)

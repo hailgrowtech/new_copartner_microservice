@@ -55,4 +55,5 @@ public class WithdrawalDetailsReadDto
     public string? IFSCCode { get; set; }
     public string? BankName { get; set; }
     public string? UPI_ID { get; set; }
+    public string? RequestAction { get; set; }
 }

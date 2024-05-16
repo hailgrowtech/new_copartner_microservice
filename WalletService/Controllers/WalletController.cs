@@ -32,14 +32,14 @@ public class WalletController : ControllerBase
     }
 
     /// <summary>
-    /// Get Wallet Balance by id.
+    /// Get Wallet Balance BY RA AP Id Used in RA AP Screen for shwoing wallet balance and withdrawal balance.
     /// </summary>
     /// <remarks>
     /// Sample request:
     /// 
     ///     GET : api/Wallet/1
     /// </remarks>
-    /// <param name="Id"></param>
+    /// <param name="Id">RA/AP Id</param>
     /// /// <param name="userType">RA or AP</param>
     [HttpGet("GetWalletWithdrawalBalance/{Id}", Name = "GetWalletWithdrawalBalance")]
     public async Task<ActionResult<WalletWithdrawalReadDto>> GetWalletWithdrawalBalance(Guid Id, string userType)

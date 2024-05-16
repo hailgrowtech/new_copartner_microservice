@@ -8,6 +8,7 @@ using MigrationDB.Model;
 using System.Drawing.Printing;
 using Ocelot.RequestId;
 using WalletService.Dtos;
+using Azure.Core;
 
 namespace WalletService.Handlers;
 
@@ -22,31 +23,20 @@ public class GetWalletByIdHandler : IRequestHandler<GetWalletByIdQuery, WalletWi
 
     public async Task<WalletWithdrawalReadDto> Handle(GetWalletByIdQuery request, CancellationToken cancellationToken)
     {
-        IQueryable<Wallet> query = _dbContext.Wallets.Where(w => !w.IsDeleted);
+        var walletBalance = _dbContext.Wallets
+    .Where(w => !w.IsDeleted &&
+    (request.userType == "RA" ? w.ExpertsId == request.Id : w.AffiliatePartnerId == request.Id))
+        .Sum(w => request.userType == "RA" ? w.RAAmount : w.APAmount);
 
-        if (request.userType == "RA")
-        {
-            query = query.Where(w => w.ExpertsId == request.Id);
-        }
-        else
-        {
-            query = query.Where(w => w.AffiliatePartnerId == request.Id);
-        }
-
-        var balances = await query
-            .GroupBy(w => 1) // Grouping by a constant to allow aggregate functions
-            .Select(g => new
-            {
-                RABalance = g.Sum(w => w.RAAmount),
-                APBalance = g.Sum(w => w.APAmount)
-            })
-            .FirstOrDefaultAsync();
+        var withdrawalBalance = _dbContext.Withdrawals
+            .Where(w => !w.IsDeleted && w.WithdrawalBy == request.userType)
+            .Sum(w => w.Amount);
 
         var dto = new WalletWithdrawalReadDto
         {
             Id = request.Id, // Assuming you want to assign the same ID from the request
-            WalletBalance = balances?.RABalance ?? 0,
-            WithdrawalBalance = balances?.APBalance ?? 0
+            WalletBalance = walletBalance,
+            WithdrawalBalance = walletBalance - withdrawalBalance
         };
 
         return dto;
