@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using CommonLibrary.CommonDTOs;
 using Microsoft.AspNetCore.JsonPatch;
 using MigrationDB.Models;
 using UserService.Dtos;
@@ -12,6 +13,8 @@ public class AutoMapperProfile : Profile
         CreateMap<User, UserReadDto>().ReverseMap();
         CreateMap<User, UserCreateDto>().ReverseMap();
         CreateMap<User, JsonPatchDocument<UserCreateDto>>().ReverseMap();
+        CreateMap<User, ResponseDto>()
+            .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src));
     }
 
 }

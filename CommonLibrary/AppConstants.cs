@@ -49,6 +49,7 @@ public static class AppConstants
     public const string User_FailedToUpdateUser = "Failed to update User.";
     public const string User_UserCreated = "User created successfully.";
     public const string User_UserUpdated = "User updated successfully.";
+    public const string User_UserDelete = "User deleted successfully.";
 
     #endregion
 

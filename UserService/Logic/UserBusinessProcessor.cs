@@ -122,14 +122,19 @@ public class UserBusinessProcessor : IUserBusinessProcessor
     {
         var user = await _sender.Send(new DeleteUserCommand(Id));
         var userReadDto = _mapper.Map<ResponseDto>(user);
-        return userReadDto;
+        return new ResponseDto()
+        {
+            IsSuccess = true,
+            DisplayMessage = AppConstants.User_UserDelete,
+            Data = userReadDto,
+        };
     }
 
-    public bool ResetPassword(UserPasswordDTO userPasswordDTO)
+    public async Task<ResponseDto> ResetPassword(UserPasswordDTO userPasswordDTO)
     {
         //TODO : Encrypt Password. Make sure old and new password are not same. Make sure password is a combination of Alpha Numeric Char with Special Char and minmum 8 chars.
         // Write these validations in a seperate method
-        return true;
+        return null;
     }
 
     public async Task<ResponseDto> Put(Guid id, UserCreateDto request)

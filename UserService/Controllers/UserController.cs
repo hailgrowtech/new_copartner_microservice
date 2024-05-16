@@ -103,17 +103,17 @@ public class UserController : ControllerBase
         }
     }
 
-    [HttpDelete("{id}")]
+    [HttpDelete("{Id:guid}")]
     public async Task<ActionResult> Delete(Guid Id)
     {
         var user = await _logic.Delete(Id);
         return user != null ? Ok(user) : NotFound();
     }
-    [HttpPut("{Id:guid}")]
-    public bool ResetPassword(UserPasswordDTO userPasswordDTO)
-    {
-        //TODO : Encrypt Password. Make sure old and new password are not same. Make sure password is a combination of Alpha Numeric Char with Special Char and minmum 8 chars.
-        // Write these validations in a seperate method
-        return true;
-    }
+    //[HttpPut("{Id:guid}",Name ="ResetPassword")]
+    //public async Task<object> ResetPassword(UserPasswordDTO userPasswordDTO)
+    //{
+    //    //TODO : Encrypt Password. Make sure old and new password are not same. Make sure password is a combination of Alpha Numeric Char with Special Char and minmum 8 chars.
+    //    // Write these validations in a seperate method
+    //    return true;
+    //}
 }
