@@ -22,7 +22,7 @@ public class BlogBusinessProcessor : IBlogBusinessProcessor
 
     public async Task<ResponseDto> Get(int page = 1, int pageSize = 10)
     {        
-            var expertsList = await _sender.Send(new GetBlogQuery(int page = 1, int pageSize = 10));
+            var expertsList = await _sender.Send(new GetBlogQuery(page , pageSize));
             var expertsReadDtoList = _mapper.Map<List<BlogReadDto>>(expertsList);
             return new ResponseDto()
             {
