@@ -92,6 +92,7 @@ builder.Services.AddScoped<IMarketingContentBusinessProcessor, MarketingContentB
 builder.Services.AddScoped<IAdAgencyDetailsBusinessProcessor, AdAgencyDetailsBusinessProcessor>();
 builder.Services.AddScoped<IExpertsAdAgencyBusinessProcessor, ExpertsAdAgencyBusinessProcessor>();
 builder.Services.AddScoped<IRelationshipManagerBusinessProcessor, RelationshipManagerBusinessProcessor>();
+builder.Services.AddScoped<IUserDataListingBusinessProcessor, UserDataListingBusinessProcessor>();
 builder.Services.AddScoped<IJoinBusinessProcessor, JoinBusinessProcessor>();
 builder.Services.AddScoped<IJsonMapper, JsonMapper>();
 //AutoMapper
