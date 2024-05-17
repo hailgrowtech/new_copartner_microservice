@@ -80,7 +80,7 @@ public class AuthenticationBusinessProcessor : IAuthenticationBusinessProcessor
 
         Authentication authRequestToValidate = new Authentication()
         {
-            UserId = authDtls.UserId
+            UserId = (Guid)authDtls.UserId
         };
 
         var auth = await _sender.Send(new GetUserAuthQuery(authRequestToValidate, null));

@@ -17,7 +17,9 @@ public class GetUserAuthDetailsHandler : IRequestHandler<GetUserAuthDetailsQuery
     {
         if (request.AuthenticationDetail != null)
         {
-            return await _dbContext.AuthenticationDetails.Where(a => a.MobileNumber == request.AuthenticationDetail.MobileNumber || a.Email == request.AuthenticationDetail.Email)
+            //return await _dbContext.AuthenticationDetails.Where(a => a.MobileNumber == request.AuthenticationDetail.MobileNumber || a.Email == request.AuthenticationDetail.Email)
+            //                                              .SingleOrDefaultAsync(cancellationToken: cancellationToken);
+            return await _dbContext.AuthenticationDetails.Where(a =>  a.Email == request.AuthenticationDetail.Email)
                                                           .SingleOrDefaultAsync(cancellationToken: cancellationToken);
         }
         return null;
