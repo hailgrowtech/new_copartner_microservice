@@ -61,6 +61,8 @@ public static class AppConstants
     public const string Expert_FailedToUpdateExpert = "Failed to update Expert.";
     public const string Expert_ExpertCreated = "Expert created successfully.";
     public const string Expert_ExpertUpdated = "Expert updated successfully.";
+    public const string Course_FailedToCreateExpert = "Failed to create new Expert.";
+
 
     #endregion
 
