@@ -30,10 +30,10 @@ public class AdvertisingAgencyController : ControllerBase
     /// <returns>The list of AdvertisingAgency.</returns>
     // GET: api/AdvertisingAgency
     [HttpGet]
-    public async Task<object> Get()
+    public async Task<object> Get(int page = 1, int pageSize = 10)
     {
             _logger.LogInformation("Fetching Ad Agencies Details Data..");
-            var experts = await _logic.Get();
+            var experts = await _logic.Get(page, pageSize);
             return Ok(experts);        
     }
 
