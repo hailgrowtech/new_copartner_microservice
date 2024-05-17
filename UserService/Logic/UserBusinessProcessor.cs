@@ -96,6 +96,7 @@ public class UserBusinessProcessor : IUserBusinessProcessor
             {
                 IsSuccess = false,
                 //   Data = _mapper.Map<UserReadDto>(existingUser),
+
                 ErrorMessages = new List<string>() { AppConstants.User_UserNotFound }
             };
         }
