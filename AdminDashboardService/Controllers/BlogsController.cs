@@ -31,10 +31,10 @@ public class BlogsController : ControllerBase
     /// <returns>The list of Experts.</returns>
     // GET: api/Experts
     [HttpGet(Name = "GetBlogs")]
-    public async Task<object> Get()
+    public async Task<object> Get(int page = 1, int pageSize = 10)
     {
             _logger.LogInformation("Fetching Blogs Data..");
-            var experts = await _logic.Get();
+            var experts = await _logic.Get(page, pageSize);
             return Ok(experts);        
     }
 
