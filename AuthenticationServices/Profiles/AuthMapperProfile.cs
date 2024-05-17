@@ -39,7 +39,7 @@ public class AuthMapperProfile :Profile
         string salt = BCrypt.Net.BCrypt.GenerateSalt();
         var result = new Authentication
         {
-            UserId = user.UserId,
+            UserId = (Guid)user.UserId,
             PasswordSalt = salt
         };
 
