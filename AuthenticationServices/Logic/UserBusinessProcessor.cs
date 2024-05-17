@@ -184,7 +184,7 @@ public class UserBusinessProcessor : IUserBusinessProcessor
             {
                 IsSuccess = false,
                 Data = _mapper.Map<UserReadDto>(existingSubscription),
-                ErrorMessages = new List<string>() { AppConstants.Expert_FailedToCreateNewExpert }
+                ErrorMessages = new List<string>() { AppConstants.Common_FailedToCreateNewRecord }
             };
         }
 
