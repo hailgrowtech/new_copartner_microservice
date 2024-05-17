@@ -87,6 +87,7 @@ public class UserBusinessProcessor : IUserBusinessProcessor
         {
             // Assuming AuthenticationRequestDTO contains these properties
             UserType = request.UserType,
+            StackholderId = request.StackholderId,
             UserId = Guid.NewGuid(),
             Name = request.Name,
             MobileNo = request.MobileNo,

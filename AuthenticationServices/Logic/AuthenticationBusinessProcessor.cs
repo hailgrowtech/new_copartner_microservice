@@ -165,6 +165,7 @@ public class AuthenticationBusinessProcessor : IAuthenticationBusinessProcessor
         return new AuthenticationResponseDTO()
         {
             Id = auth.UserId,
+            StackholderId= authDetails.StackholderId,
             Email = authDetails.Email,
             RefreshToken = refreshToken,
             JwtToken = jwtToken

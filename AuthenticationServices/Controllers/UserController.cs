@@ -52,7 +52,11 @@ public class UserController : ControllerBase
         var user = await _logic.Get(Id);
         return  user != null ? (ActionResult<UserReadDto>)Ok(user) : NotFound();
     }
-
+    /// <summary>
+    /// Create all Users - RA,AP,SubAdmin. In StackholderId put expertsId, APId, SAId 
+    /// </summary>
+    /// <returns>The list of Users.</returns>
+    // POST: api/User
     [HttpPost]
     public async Task<object> Post(UserCreateDto stackholderDto)
     {
