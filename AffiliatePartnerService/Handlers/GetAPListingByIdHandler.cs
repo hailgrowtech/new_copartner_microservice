@@ -33,7 +33,7 @@ public class GetAPListingByIdHandler : IRequestHandler<GetAPListingByIdQuery, IE
                         ReferralLink = aff.ReferralLink,
                         Date = sub.CreatedOn,
                         UserMobileNo = usr.MobileNumber,
-                        RAName = aff.Id.ToString().Length > 5 ? aff.Name : (usr.AffiliatePartnerId.ToString().Length > 5 ? "SELF" : "ORGANIC"),
+                        RAName = exp.Name,
                         Amount = wallet.RAAmount,
                         Subscription = subscr.ServiceType
                     };

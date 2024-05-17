@@ -32,7 +32,7 @@ public class GetRAListingByIdHandler : IRequestHandler<GetRAListingByIdQuery, IE
                         RAName = exp.Name,
                         Date = sub.CreatedOn,
                         UserMobileNo = usr != null ? usr.MobileNumber : null,
-                        APName = aff != null && aff.Id.ToString().Length > 5 ? aff.Name : (usr != null && usr.ExpertsID != null && usr.ExpertsID.ToString().Length > 5 ? "SELF" : "ORGANIC"),
+                        APName = aff != null && aff.Id.ToString().Length > 10 ? aff.Name : (usr != null && usr.ExpertsID != null && usr.ExpertsID.ToString().Length > 5 ? "SELF" : "ORGANIC"),
                         Amount = wallet.RAAmount,
                         Subscription = subscr.ServiceType
                     };
