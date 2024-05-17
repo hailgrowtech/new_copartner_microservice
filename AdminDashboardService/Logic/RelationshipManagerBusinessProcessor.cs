@@ -26,9 +26,9 @@ namespace AdminDashboardService.Logic
             throw new NotImplementedException();
         }
 
-        public async Task<ResponseDto> Get()
+        public async Task<ResponseDto> Get(int page = 1, int pageSize = 10)
         {
-            var relationshipManagerList = await _sender.Send(new GetRelationshipManagerQuery());
+            var relationshipManagerList = await _sender.Send(new GetRelationshipManagerQuery(page, pageSize));
             var relationshipManagerReadDtoList = _mapper.Map<List<RelationshipManagerReadDto>>(relationshipManagerList);
             return new ResponseDto()
             {

@@ -29,10 +29,10 @@ public class RelationshipManagerController : ControllerBase
     /// <returns>The list of Experts.</returns>
     // GET: api/Experts
     [HttpGet(Name = "GetRelationshipManager")]
-    public async Task<object> Get()
+    public async Task<object> Get(int page = 1, int pageSize = 10)
     {
         _logger.LogInformation("Fetching Relationship Manager Data..");
-        var marketingContent = await _logic.Get();
+        var marketingContent = await _logic.Get(page, pageSize);
         return Ok(marketingContent);
     }
 

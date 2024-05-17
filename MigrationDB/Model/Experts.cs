@@ -21,6 +21,7 @@ public class Experts : BaseModel
     public decimal? Rating { get; set; }
     public string? MobileNumber { get; set; }
     public string? ChannelName { get; set; }
+    public string ChannelId { get; set; }
     public string? TelegramChannel { get; set; }
     public string? PremiumTelegramChannel { get; set; }
     public int? TelegramFollower { get; set; }
