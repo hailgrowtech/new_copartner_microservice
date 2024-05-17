@@ -23,6 +23,7 @@ public class AuthMapperProfile :Profile
         var result = new AuthenticationDetail
         {
             UserType = user.UserType,
+            StackholderId = (Guid)user.StackholderId,
             UserId = user.UserId,
             Name = user.Name,
             Email = user.Email,

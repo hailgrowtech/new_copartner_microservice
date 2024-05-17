@@ -5,6 +5,7 @@ namespace AuthenticationService.Dtos
     public class UserCreateDto
     {
         public Guid? UserId { get; set; }
+        public Guid? StackholderId { get; set; }
         public string? UserType { get; set; }
         public string? Name { get; set; }
         [Required(ErrorMessage = "Email is required")]

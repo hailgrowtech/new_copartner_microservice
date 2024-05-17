@@ -42,7 +42,7 @@ builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo
     {
-        Title = "JWTToken Auth API",
+        Title = "JWTToken Auth & User Auth API",
         Version = "v1",
         Description = "An API to perform Authentication operations",
         TermsOfService = new Uri("https://hailgrotech.com/"),
