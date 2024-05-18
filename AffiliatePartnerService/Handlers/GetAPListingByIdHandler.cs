@@ -4,6 +4,7 @@ using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MigrationDB.Data;
+using MigrationDB.Model;
 
 namespace ExpertsService.Handlers;
 public class GetAPListingByIdHandler : IRequestHandler<GetAPListingByIdQuery, IEnumerable<APListingDataDto>>
@@ -15,27 +16,27 @@ public class GetAPListingByIdHandler : IRequestHandler<GetAPListingByIdQuery, IE
     {
         // Calculate the number of records to skip
         int skip = (request.page - 1) * request.pageSize;
-        var query = from wallet in _dbContext.Wallets
-                    where wallet.AffiliatePartnerId == request.Id
-                    join subscriber in _dbContext.Subscribers on wallet.SubscriberId equals subscriber.Id into subscriberJoin
+        var query = from usr in _dbContext.Users
+                    where usr.AffiliatePartnerId == request.Id
+                    join sub in _dbContext.Subscribers on usr.Id equals sub.UserId into subscriberJoin
                     from sub in subscriberJoin.DefaultIfEmpty()
-                    join user in _dbContext.Users on sub.UserId equals user.Id into userJoin
-                    from usr in userJoin.DefaultIfEmpty()
-                    join affiliatePartner in _dbContext.AffiliatePartners on usr.AffiliatePartnerId equals affiliatePartner.Id into affiliatePartnerJoin
+                    join wallet in _dbContext.Wallets on sub.Id equals wallet.SubscriberId into walletJoin
+                    from wallet in walletJoin.DefaultIfEmpty()
+                    join aff in _dbContext.AffiliatePartners on usr.AffiliatePartnerId equals aff.Id into affiliatePartnerJoin
                     from aff in affiliatePartnerJoin.DefaultIfEmpty()
-                    join expert in _dbContext.Experts on wallet.ExpertsId equals expert.Id into expertJoin
+                    join exp in _dbContext.Experts on wallet.ExpertsId equals exp.Id into expertJoin
                     from exp in expertJoin.DefaultIfEmpty()
-                    join subscription in _dbContext.Subscriptions on sub.SubscriptionId equals subscription.Id into subscriptionJoin
+                    join subscr in _dbContext.Subscriptions on sub.SubscriptionId equals subscr.Id into subscriptionJoin
                     from subscr in subscriptionJoin.DefaultIfEmpty()
                     select new APListingDataDto
                     {
                         APName = aff.Name,
                         ReferralLink = aff.ReferralLink,
-                        Date = sub.CreatedOn,
+                        Date = usr.CreatedOn,
                         UserMobileNo = usr.MobileNumber,
                         RAName = exp.Name,
                         Amount = wallet.RAAmount,
-                        Subscription = subscr.ServiceType
+                        Subscription = subscr.ServiceType ?? "0" // Handle potential NULL value
                     };
 
         var result = await query.Skip(skip).Take(request.pageSize).ToListAsync(cancellationToken);

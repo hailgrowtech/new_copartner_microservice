@@ -11,6 +11,6 @@ namespace AffiliatePartnerService.Dtos
         public string? RAName { get; set; }
         [Precision(18, 2)]
         public decimal? Amount { get; set; }
-        public string Subscription { get; set; }
+        public string? Subscription { get; set; }
     }
 }
