@@ -10,13 +10,13 @@ namespace AuthenticationService.Controllers;
 //[Authorize]
 [Route("api/[controller]")]
 [ApiController]
-public class UserController : ControllerBase
+public class UsersController : ControllerBase
 {
     private readonly IUserBusinessProcessor _logic;
-    private readonly ILogger<UserController> _logger;
+    private readonly ILogger<UsersController> _logger;
     //private readonly ITopicProducer<UserCreatedEventDTO> _topicProducer;
 
-    public UserController(IUserBusinessProcessor logic, ILogger<UserController> logger,IMediator mediator)//, ITopicProducer<UserCreatedEventDTO> topicProducer)
+    public UsersController(IUserBusinessProcessor logic, ILogger<UsersController> logger,IMediator mediator)//, ITopicProducer<UserCreatedEventDTO> topicProducer)
     {
         this._logic = logic;
         this._logger = logger;
