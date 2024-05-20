@@ -65,7 +65,7 @@ public class SubscriberController : ControllerBase
     public async Task<ActionResult<SubscriberReadDto>> GetByUserId(Guid Id)
     {
         _logger.LogInformation("Fetching subscribers details for Id : " + Id.ToString());
-        var subscribers = await _logic.Get(Id);
+        var subscribers = await _logic.GetByUserId(Id);
         return subscribers != null ? (ActionResult<SubscriberReadDto>)Ok(subscribers) : NotFound();
     }
 

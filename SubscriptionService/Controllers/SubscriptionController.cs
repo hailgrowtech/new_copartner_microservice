@@ -65,7 +65,7 @@ public class SubscriptionController : ControllerBase
     public async Task<ActionResult<SubscriptionReadDto>> GetByExpertsId(Guid Id)
     {
         _logger.LogInformation("Fetching Subscription details for Id : " + Id.ToString());
-        var subscriptionMsts = await _logic.Get(Id);
+        var subscriptionMsts = await _logic.GetByExpertsId(Id);
         return subscriptionMsts != null ? (ActionResult<SubscriptionReadDto>)Ok(subscriptionMsts) : NotFound();
     }
 
