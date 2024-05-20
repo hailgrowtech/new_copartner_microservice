@@ -61,7 +61,7 @@ public class SubscriptionController : ControllerBase
     ///     GET : api/Experts/1
     /// </remarks>
     /// <param name="Id"></param>
-    [HttpGet("{Id}", Name = "GetByExpertsId")]
+    [HttpGet("GetByExpertsId/{Id}", Name = "GetSubscriptionByExpertsId")]
     public async Task<ActionResult<SubscriptionReadDto>> GetByExpertsId(Guid Id)
     {
         _logger.LogInformation("Fetching Subscription details for Id : " + Id.ToString());
