@@ -11,7 +11,6 @@ namespace MigrationDB.Model
         public Experts Experts { get; set; }
         public Guid ExpertsId { get; set; }
         public string ImagePath { get; set; }
-        public string Tag { get; set; }
         public string ServiceType { get; set; }
         public string PlanType { get; set; }
         public int  DurationMonth { get; set; }
