@@ -12,5 +12,6 @@ namespace SubscriptionService.Logic
         Task<ResponseDto> Put(Guid id,SubscriptionCreateDto subscriptionCreateDto);
         Task<ResponseDto> Delete(Guid id);
         Task<ResponseDto> Patch(Guid Id, JsonPatchDocument<SubscriptionCreateDto> subscriptionCreateDto);
+        Task<ResponseDto> GetByExpertsId(Guid id);
     }
 }

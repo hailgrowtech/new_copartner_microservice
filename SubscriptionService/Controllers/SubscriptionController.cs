@@ -23,7 +23,7 @@ public class SubscriptionController : ControllerBase
         // this._topicProducer = topicProducer;
     }
     /// <summary>
-    /// Gets the list of all Experts.
+    /// Gets the list of all Subscription.
     /// </summary>
     /// <returns>The list of Experts.</returns>
     // GET: api/Experts
@@ -36,7 +36,7 @@ public class SubscriptionController : ControllerBase
     }
 
     /// <summary>
-    /// Get an Experts.
+    /// Get Subscription.
     /// </summary>
     /// <remarks>
     /// Sample request:
@@ -46,6 +46,23 @@ public class SubscriptionController : ControllerBase
     /// <param name="Id"></param>
     [HttpGet("{Id}", Name = "Get")]
     public async Task<ActionResult<SubscriptionReadDto>> Get(Guid Id)
+    {
+        _logger.LogInformation("Fetching Subscription details for Id : " + Id.ToString());
+        var subscriptionMsts = await _logic.Get(Id);
+        return subscriptionMsts != null ? (ActionResult<SubscriptionReadDto>)Ok(subscriptionMsts) : NotFound();
+    }
+
+    /// <summary>
+    /// Get Subscription By Experts Id Experts.
+    /// </summary>
+    /// <remarks>
+    /// Sample request:
+    /// 
+    ///     GET : api/Experts/1
+    /// </remarks>
+    /// <param name="Id"></param>
+    [HttpGet("{Id}", Name = "GetByExpertsId")]
+    public async Task<ActionResult<SubscriptionReadDto>> GetByExpertsId(Guid Id)
     {
         _logger.LogInformation("Fetching Subscription details for Id : " + Id.ToString());
         var subscriptionMsts = await _logic.Get(Id);

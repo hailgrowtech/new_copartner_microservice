@@ -54,6 +54,25 @@ namespace SubscriptionService.Logic
                 Data = subscribers,
             };
         }
+        public async Task<ResponseDto> GetByUserId(Guid id)
+        {
+            var subscribers = await _sender.Send(new GetSubscriberIdQuery(id));
+            if (subscribers == null)
+            {
+                return new ResponseDto()
+                {
+                    IsSuccess = false,
+                    Data = null,
+                    ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
+                };
+            }
+            var subscriptionMstsReadDto = _mapper.Map<SubscriberReadDto>(subscribers);
+            return new ResponseDto()
+            {
+                IsSuccess = true,
+                Data = subscribers,
+            };
+        }
 
         public async Task<ResponseDto> Patch(Guid Id, JsonPatchDocument<SubscriberCreateDto> request)
         {

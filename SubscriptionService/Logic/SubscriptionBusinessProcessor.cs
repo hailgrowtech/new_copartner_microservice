@@ -41,7 +41,7 @@ namespace SubscriptionService.Logic
                 {
                     IsSuccess = false,
                     Data = null,
-                    ErrorMessages = new List<string>() { AppConstants.Expert_ExpertNotFound }
+                    ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
                 };
             }
             var subscriptionMstsReadDto = _mapper.Map<SubscriptionReadDto>(subscriptionMsts);
@@ -49,6 +49,26 @@ namespace SubscriptionService.Logic
             {
                 IsSuccess = true,
                 Data = subscriptionMsts,
+            };
+        }
+
+        public async Task<ResponseDto> GetByExpertsId(Guid id)
+        {
+            var subscriptionExperts = await _sender.Send(new GetSubscriptionByExpertsIdQuery(id));
+            if (subscriptionExperts == null)
+            {
+                return new ResponseDto()
+                {
+                    IsSuccess = false,
+                    Data = null,
+                    ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
+                };
+            }
+            var subscriptionMstsReadDto = _mapper.Map<SubscriptionReadDto>(subscriptionExperts);
+            return new ResponseDto()
+            {
+                IsSuccess = true,
+                Data = subscriptionExperts,
             };
         }
 
