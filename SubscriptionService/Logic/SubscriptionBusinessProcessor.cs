@@ -64,7 +64,7 @@ namespace SubscriptionService.Logic
                     ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
                 };
             }
-            var subscriptionMstsReadDto = _mapper.Map<SubscriptionReadDto>(subscriptionExperts);
+           // var subscriptionMstsReadDto = _mapper.Map<SubscriptionReadDto>(subscriptionExperts);
             return new ResponseDto()
             {
                 IsSuccess = true,
