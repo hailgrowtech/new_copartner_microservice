@@ -52,6 +52,23 @@ public class SubscriberController : ControllerBase
         return subscribers != null ? (ActionResult<SubscriberReadDto>)Ok(subscribers) : NotFound();
     }
 
+    /// <summary>
+    /// Get an Experts.
+    /// </summary>
+    /// <remarks>
+    /// Sample request:
+    /// 
+    ///     GET : api/Experts/1
+    /// </remarks>
+    /// <param name="Id"></param>
+    [HttpGet("{Id}")]
+    public async Task<ActionResult<SubscriberReadDto>> GetByUserId(Guid Id)
+    {
+        _logger.LogInformation("Fetching subscribers details for Id : " + Id.ToString());
+        var subscribers = await _logic.Get(Id);
+        return subscribers != null ? (ActionResult<SubscriberReadDto>)Ok(subscribers) : NotFound();
+    }
+
     [HttpPost]
     public async Task<object> Post(SubscriberCreateDto subscriberCreateDto)
     {
