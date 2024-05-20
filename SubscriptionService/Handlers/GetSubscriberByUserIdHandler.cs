@@ -19,7 +19,7 @@ namespace SubscriptionService.Handlers
         public async Task<IEnumerable<Subscriber>> Handle(GetSubscriberByUserIdQuery request, CancellationToken cancellationToken)
         {
             var subscribersList = await _dbContext.Subscribers.Where(a => a.UserId == request.Id && a.IsDeleted!=true)
-                .Include(s => s.User).ToListAsync(cancellationToken: cancellationToken);
+                .Include(s => s.User).Include(s=>s.Subscription).Include(s=>s.Subscription.Experts). ToListAsync(cancellationToken: cancellationToken);
             return subscribersList;
         }
     }
