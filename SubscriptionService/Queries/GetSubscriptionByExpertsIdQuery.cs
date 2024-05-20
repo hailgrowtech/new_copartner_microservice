@@ -3,6 +3,6 @@ using MigrationDB.Model;
 
 namespace SubscriptionService.Queries
 {
-    public record GetSubscriptionByExpertsIdQuery(Guid Id) : IRequest<Subscription>;
+    public record GetSubscriptionByExpertsIdQuery(Guid Id) : IRequest<IEnumerable<Subscription>>;
 
 }

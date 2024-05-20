@@ -56,7 +56,7 @@ namespace SubscriptionService.Logic
         }
         public async Task<ResponseDto> GetByUserId(Guid id)
         {
-            var subscribers = await _sender.Send(new GetSubscriberIdQuery(id));
+            var subscribers = await _sender.Send(new GetSubscriberByUserIdQuery(id));
             if (subscribers == null)
             {
                 return new ResponseDto()
@@ -66,7 +66,7 @@ namespace SubscriptionService.Logic
                     ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
                 };
             }
-            var subscriptionMstsReadDto = _mapper.Map<SubscriberReadDto>(subscribers);
+           // var subscriptionMstsReadDto = _mapper.Map<SubscriberReadDto>(subscribers);
             return new ResponseDto()
             {
                 IsSuccess = true,
