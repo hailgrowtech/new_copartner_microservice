@@ -78,6 +78,16 @@ public class WithdrawalController : ControllerBase
         return blogs != null ? (ActionResult<WithdrawalModeReadDto>)Ok(blogs) : NotFound();
     }
 
+    [HttpGet("GetBankUPIByUserId/{Id}", Name = "GetBankUPIByUserId")]
+    public async Task<ActionResult<WithdrawalModeReadDto>> GetBankUPIByUserId(Guid Id, string userType)
+    {
+        _logger.LogInformation("Fetching bank upi details for user Id : " + Id.ToString());
+        var blogs = await _logic.GetWithdrawalModeByUserId(Id,userType);
+        return blogs != null ? (ActionResult<WithdrawalModeReadDto>)Ok(blogs) : NotFound();
+    }
+
+
+
     /// <summary>
     /// Create Withdrawal Request From AP/RA Screen Check Withdrawal Balance before making request using API api/Wallet/GetWalletWithdrawalBalance . 
     /// </summary>
