@@ -102,4 +102,13 @@ public class ExpertsController : ControllerBase
         return expert != null ? Ok(expert) : NotFound();
     }
 
+
+    [HttpGet("GenerateReferralLink/{Id}", Name = "GenerateReferralLink")]
+    public async Task<ActionResult<ExpertReadDto>> GenerateReferralLink(Guid Id)
+    {
+        _logger.LogInformation("Fetching expert Referral Link details for Id : " + Id.ToString());
+        var expert = await _logic.GenerateReferralLink(Id);
+        return expert != null ? (ActionResult<ExpertReadDto>)Ok(expert) : NotFound();
+    }
+
 }

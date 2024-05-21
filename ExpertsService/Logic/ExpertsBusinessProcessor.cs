@@ -8,6 +8,7 @@ using ExpertService.Dtos;
 using ExpertService.Queries;
 using MassTransit.Courier.Contracts;
 using MigrationDB.Models;
+using System.Web;
 
 namespace ExpertService.Logic;
 public class ExpertsBusinessProcessor : IExpertsBusinessProcessor
@@ -169,6 +170,32 @@ public class ExpertsBusinessProcessor : IExpertsBusinessProcessor
         var expertReadDto = _mapper.Map<ResponseDto>(expert);
         return expertReadDto;
     }
+
+
+    public async Task<ResponseDto> GenerateReferralLink(Guid id)
+    {
+
+        // Assuming _sender.Send is an asynchronous method that returns an AffiliatePartner object
+        var ra = await _sender.Send(new GetExpertsByIdQuery(id));
+
+        // It's a good practice to use UriBuilder for constructing URLs to handle edge cases
+        var uriBuilder = new UriBuilder("https://copartner.in/signup");
+        var query = HttpUtility.ParseQueryString(string.Empty);
+        query["raid"] = id.ToString(); // Ensure the ID is converted to a string
+        uriBuilder.Query = query.ToString();
+
+        var referralLink = uriBuilder.ToString();
+
+        return new ResponseDto()
+        {
+            IsSuccess = true,
+            Data = referralLink,
+        };
+
+
+    }
+
+
     public async Task<ResponseDto> GetListing()
     {
         var expertsList = await _sender.Send(new GetExpertsQuery());

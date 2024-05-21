@@ -15,4 +15,8 @@ public interface IExpertsBusinessProcessor
     Task<ResponseDto> GetListing();
     Task<ResponseDto> GetListingDetails();
     bool ResetPassword(ExpertsPasswordDTO expertsPasswordDTO);
+
+
+    Task<ResponseDto> GenerateReferralLink(Guid expertId);
+
 }
