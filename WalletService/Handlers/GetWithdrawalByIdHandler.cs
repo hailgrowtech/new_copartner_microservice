@@ -6,6 +6,9 @@ using MigrationDB.Data;
 using WalletService.Queries;
 using MigrationDB.Model;
 using WalletService.Dtos;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+using Newtonsoft.Json;
+using System.ComponentModel.DataAnnotations;
 
 namespace WalletService.Handlers;
 
@@ -117,19 +120,88 @@ public class GetWithdrawalModeByUserIdHandler : IRequestHandler<GetWithdrawalMod
 
     public async Task<IEnumerable<WithdrawalMode>> Handle(GetWithdrawalModeByUserIdQuery request, CancellationToken cancellationToken)
     {
+        IQueryable<WithdrawalReadDto> query = Enumerable.Empty<WithdrawalReadDto>().AsQueryable();
 
-        var withdrawalModeExpertList = await _dbContext.WithdrawalModes.Where(a => a.ExpertsId == request.Id && a.IsDeleted != true).ToListAsync(cancellationToken: cancellationToken);
-        var withdrawalModeAPList = await _dbContext.WithdrawalModes.Where(a => a.AffiliatePartnerId == request.Id && a.IsDeleted != true).ToListAsync(cancellationToken: cancellationToken);
-
-
-        if (withdrawalModeExpertList.Count !=0 && withdrawalModeAPList == null)
+        if (request.userType == "RA")
         {
-            return withdrawalModeExpertList;
-        }
-        else
+            query = _dbContext.Withdrawals
+                .Where(w => w.WithdrawalBy == "RA")
+                .Join(
+                    _dbContext.WithdrawalModes,
+                    withdrawal => withdrawal.WithdrawalModeId,
+                    withdrawalMode => withdrawalMode.Id,
+                    (withdrawal, withdrawalMode) => new { Withdrawal = withdrawal, WithdrawalMode = withdrawalMode })
+                .Join(
+                    _dbContext.Experts,
+                    combined => combined.WithdrawalMode.ExpertsId,
+                    expert => expert.Id,
+                    (combined, expert) => new WithdrawalModeReadDto
+                    {
+                        //Id = combined.Withdrawal.Id,
+                        //Amount = combined.Withdrawal.Amount,
+                        //WithdrawalModeId = combined.Withdrawal.WithdrawalModeId,
+                        //WithdrawalRequestDate = combined.Withdrawal.WithdrawalRequestDate,
+                        //RequestAction = combined.Withdrawal.RequestAction,
+                        //TransactionId = combined.Withdrawal.TransactionId,
+                        //TransactionDate = combined.Withdrawal.TransactionDate,
+                        //RejectReason = combined.Withdrawal.RejectReason,
+                        //Name = expert.Name,
+                        //SEBINo = expert.SEBIRegNo,
+
+                        PaymentMode = combined.WithdrawalMode.PaymentMode,  //Bank OR UPI
+                        AffiliatePartnerId = combined.Withdrawal,
+                        ExpertsId = combined.WithdrawalMode.ExpertsId,
+                        AccountHolderName = combined.WithdrawalMode.AccountHolderName,
+                        AccountNumber = combined.WithdrawalMode.AccountNumber,
+                        IFSCCode = combined.WithdrawalMode.IFSCCode,
+                        BankName = combined.WithdrawalMode.BankName,
+                        UPI_ID = combined.WithdrawalMode.UPI_ID,
+                    });
+
+
+        if (request.userType == "AP")
         {
-            return withdrawalModeAPList;
+            query = _dbContext.Withdrawals
+                .Where(w => w.WithdrawalBy == "AP")
+                .Join(
+                    _dbContext.WithdrawalModes,
+                    withdrawal => withdrawal.WithdrawalModeId,
+                    withdrawalMode => withdrawalMode.Id,
+                    (withdrawal, withdrawalMode) => new { Withdrawal = withdrawal, WithdrawalMode = withdrawalMode })
+                .Join(
+                    _dbContext.AffiliatePartners,
+                    combined => combined.WithdrawalMode.AffiliatePartnerId,
+                    affiliatePartner => affiliatePartner.Id,
+                    (combined, affiliatePartner) => new WithdrawalModeReadDto
+                    {
+                        //Id = combined.Withdrawal.Id,
+                        //Amount = combined.Withdrawal.Amount,
+                        //WithdrawalModeId = combined.Withdrawal.WithdrawalModeId,
+                        //WithdrawalRequestDate = combined.Withdrawal.WithdrawalRequestDate,
+                        //RequestAction = combined.Withdrawal.RequestAction,
+                        //TransactionId = combined.Withdrawal.TransactionId,
+                        //TransactionDate = combined.Withdrawal.TransactionDate,
+                        //RejectReason = combined.Withdrawal.RejectReason,
+                        //Name = expert.Name,
+                        //SEBINo = expert.SEBIRegNo,
+
+                        PaymentMode = combined.WithdrawalMode.PaymentMode,  //Bank OR UPI
+                        AffiliatePartnerId = combined.Withdrawal,
+                        ExpertsId = combined.WithdrawalMode.ExpertsId,
+                        AccountHolderName = combined.WithdrawalMode.AccountHolderName,
+                        AccountNumber = combined.WithdrawalMode.AccountNumber,
+                        IFSCCode = combined.WithdrawalMode.IFSCCode,
+                        BankName = combined.WithdrawalMode.BankName,
+                        UPI_ID = combined.WithdrawalMode.UPI_ID,
+                    });
         }
+
+        var results = await query
+            .Skip((request.Page - 1) * request.PageSize)
+            .Take(request.PageSize)
+            .ToListAsync();
+
+        return results;
 
     }
 }
