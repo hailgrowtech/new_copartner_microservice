@@ -122,11 +122,11 @@ public class GetWithdrawalModeByUserIdHandler : IRequestHandler<GetWithdrawalMod
     {
         IQueryable<WithdrawalMode> query = null;
 
-        if (request.userType == "RA")
+        if (request.userType == "AP")
         {
             query = _dbContext.WithdrawalModes.Where(a => a.AffiliatePartnerId == request.Id && a.IsDeleted != true);
         }
-        else if (request.userType == "AP")
+        else if (request.userType == "RA")
         {
             query = _dbContext.WithdrawalModes.Where(a => a.ExpertsId == request.Id && a.IsDeleted != true);
         }
@@ -134,8 +134,8 @@ public class GetWithdrawalModeByUserIdHandler : IRequestHandler<GetWithdrawalMod
         if (query != null)
         {
             var results = await query
-                .Skip((request.Page - 1) * request.PageSize)
-                .Take(request.PageSize)
+                .Skip((request.page - 1) * request.pageSize)
+                .Take(request.pageSize)
                 .ToListAsync(cancellationToken);
 
             return results;
