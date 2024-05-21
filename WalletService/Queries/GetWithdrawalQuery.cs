@@ -10,7 +10,7 @@ public record GetWithdrawalQuery : IRequest<IEnumerable<WithdrawalReadDto>>
     public int PageSize { get; init; }
     public string RequestBy { get; set; }
 
-    public GetWithdrawalQuery(int page, int pageSize, string requestBy)
+    public GetWithdrawalQuery(string requestBy, int page, int pageSize)
     {
         Page = page;
         PageSize = pageSize;

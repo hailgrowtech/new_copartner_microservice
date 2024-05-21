@@ -19,9 +19,9 @@ public class WithdrawalBusinessProcessor : IWithdrawalBusinessProcessor
         this._sender = sender;
         this._mapper = mapper;
     }
-    public async Task<ResponseDto> Get(int page, int pageSize,string RequestBy)
+    public async Task<ResponseDto> Get(string RequestBy, int page, int pageSize)
     {        
-            var withdrawalList = await _sender.Send(new GetWithdrawalQuery(page,pageSize,RequestBy));
+            var withdrawalList = await _sender.Send(new GetWithdrawalQuery(RequestBy, page,pageSize));
             var withdrawalReadDtoList = _mapper.Map<List<WithdrawalReadDto>>(withdrawalList);
             return new ResponseDto()
             {
@@ -79,9 +79,9 @@ public class WithdrawalBusinessProcessor : IWithdrawalBusinessProcessor
         };
     }
 
-    public async Task<ResponseDto> GetWithdrawalModeByUserId(Guid id)
+    public async Task<ResponseDto> GetWithdrawalModeByUserId(Guid id,string userType, int page, int pageSize)
     {
-        var withdrawalMode = await _sender.Send(new GetWithdrawalModeByUserIdQuery(id));
+        var withdrawalMode = await _sender.Send(new GetWithdrawalModeByUserIdQuery(id, userType, page, pageSize));
         if (withdrawalMode == null)
         {
             return new ResponseDto()
@@ -91,11 +91,11 @@ public class WithdrawalBusinessProcessor : IWithdrawalBusinessProcessor
                 ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
             };
         }
-        var withdrawalModeDto = _mapper.Map<WithdrawalModeReadDto>(withdrawalMode);
+       // var withdrawalModeDto = _mapper.Map<WithdrawalModeReadDto>(withdrawalMode);
         return new ResponseDto()
         {
             IsSuccess = true,
-            Data = withdrawalModeDto,
+            Data = withdrawalMode,
         };
     }
 
