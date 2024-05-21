@@ -31,17 +31,6 @@ namespace AffiliatePartnerService.Logic
 
         public async Task<ResponseDto> GenerateReferralLink(Guid id)
         {
-            //var ap = await _sender.Send(new GetAffiliatePartnerByIdQuery(id));
-
-            //var referralLink = $"https://copartner.in/signup?referralCode={ap.ReferralCode}&apid={id}";
-
-            //return new ResponseDto()
-            //{
-            //    IsSuccess = true,
-            //    Data = referralLink,
-            //};
-
-
 
             // Assuming _sender.Send is an asynchronous method that returns an AffiliatePartner object
             var ap = await _sender.Send(new GetAffiliatePartnerByIdQuery(id));
