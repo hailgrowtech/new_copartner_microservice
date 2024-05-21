@@ -104,3 +104,32 @@ public class GetWithdrawalModeByIdHandler : IRequestHandler<GetWithdrawalModeByI
         return withdrawalModeList;
     }
 }
+
+
+public class GetWithdrawalModeByUserIdHandler : IRequestHandler<GetWithdrawalModeByUserIdQuery, IEnumerable<WithdrawalMode>>
+{
+    private readonly CoPartnerDbContext _dbContext;
+
+    public GetWithdrawalModeByUserIdHandler(CoPartnerDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+
+    public async Task<IEnumerable<WithdrawalMode>> Handle(GetWithdrawalModeByUserIdQuery request, CancellationToken cancellationToken)
+    {
+
+        var withdrawalModeExpertList = await _dbContext.WithdrawalModes.Where(a => a.ExpertsId == request.Id && a.IsDeleted != true).ToListAsync(cancellationToken: cancellationToken);
+        var withdrawalModeAPList = await _dbContext.WithdrawalModes.Where(a => a.AffiliatePartnerId == request.Id && a.IsDeleted != true).ToListAsync(cancellationToken: cancellationToken);
+
+
+        if (withdrawalModeExpertList.Count !=0 && withdrawalModeAPList == null)
+        {
+            return withdrawalModeExpertList;
+        }
+        else
+        {
+            return withdrawalModeAPList;
+        }
+
+    }
+}

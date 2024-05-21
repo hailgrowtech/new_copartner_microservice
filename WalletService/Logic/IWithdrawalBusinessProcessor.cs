@@ -10,6 +10,7 @@ public interface IWithdrawalBusinessProcessor
     Task<ResponseDto> GetWithdrawalMode();
     Task<ResponseDto> Get(Guid id);
     Task<ResponseDto> GetWithdrawalMode(Guid id);
+    Task<ResponseDto> GetWithdrawalModeByUserId(Guid id);
     Task<ResponseDto> Post(WithdrawalCreateDto withdrawalMode);
     Task<ResponseDto> PostWithdrawalMode(WithdrawalModeCreateDto withdrawalMode);
     Task<ResponseDto> Put(Guid id, WithdrawalCreateDto withdrawalCreateDto);

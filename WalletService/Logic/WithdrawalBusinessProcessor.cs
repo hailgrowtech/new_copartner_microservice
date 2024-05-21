@@ -79,6 +79,26 @@ public class WithdrawalBusinessProcessor : IWithdrawalBusinessProcessor
         };
     }
 
+    public async Task<ResponseDto> GetWithdrawalModeByUserId(Guid id)
+    {
+        var withdrawalMode = await _sender.Send(new GetWithdrawalModeByUserIdQuery(id));
+        if (withdrawalMode == null)
+        {
+            return new ResponseDto()
+            {
+                IsSuccess = false,
+                Data = null,
+                ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
+            };
+        }
+        var withdrawalModeDto = _mapper.Map<WithdrawalModeReadDto>(withdrawalMode);
+        return new ResponseDto()
+        {
+            IsSuccess = true,
+            Data = withdrawalModeDto,
+        };
+    }
+
 
     public async Task<ResponseDto> Post(WithdrawalCreateDto request)
     {
