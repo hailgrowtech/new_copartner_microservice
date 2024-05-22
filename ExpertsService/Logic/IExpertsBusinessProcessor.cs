@@ -18,5 +18,6 @@ public interface IExpertsBusinessProcessor
 
 
     Task<ResponseDto> GenerateReferralLink(Guid expertId);
+    Task<ResponseDto> GenerateExpertPaymentLink(Guid expertId);
 
 }

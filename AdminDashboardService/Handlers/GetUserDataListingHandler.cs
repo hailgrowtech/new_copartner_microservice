@@ -22,9 +22,12 @@ namespace AdminDashboardService.Handlers
              where sub == null
              select new UserDataListingDto
              {
+                 UserId = u.Id,
                  Date = u.CreatedOn, // Assuming CreatedOn is the registration date
                  Name = u.Name,
                  Mobile = u.MobileNumber,
+                 APId = u.AffiliatePartnerId,
+                 ExpertId = u.ExpertsID
                  
              }).ToListAsync(cancellationToken);
 

@@ -111,4 +111,14 @@ public class ExpertsController : ControllerBase
         return expert != null ? (ActionResult<ExpertReadDto>)Ok(expert) : NotFound();
     }
 
+    [HttpGet("GenerateExpertPaymentLink/{Id}", Name = "GenerateExpertPaymentLink")]
+    public async Task<ActionResult<ExpertReadDto>> GenerateExpertPaymentLink(Guid Id)
+    {
+        _logger.LogInformation("Fetching expert Payment Link details for Id : " + Id.ToString());
+        var expert = await _logic.GenerateExpertPaymentLink(Id);
+        return expert != null ? (ActionResult<ExpertReadDto>)Ok(expert) : NotFound();
+    }
+
+
+
 }

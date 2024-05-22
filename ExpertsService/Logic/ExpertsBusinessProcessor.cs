@@ -192,6 +192,25 @@ public class ExpertsBusinessProcessor : IExpertsBusinessProcessor
             Data = referralLink,
         };
 
+    }
+
+    public async Task<ResponseDto> GenerateExpertPaymentLink(Guid id)
+    {
+
+        // Assuming _sender.Send is an asynchronous method that returns an Expert object
+        var ra = await _sender.Send(new GetExpertsByIdQuery(id));
+
+        // Use UriBuilder to construct the URL with the GUID as part of the path
+        var uriBuilder = new UriBuilder("https://copartner.in");
+        uriBuilder.Path = $"/ra-detail/{id}";
+
+        var referralLink = uriBuilder.ToString();
+
+        return new ResponseDto()
+        {
+            IsSuccess = true,
+            Data = referralLink,
+        };
 
     }
 
