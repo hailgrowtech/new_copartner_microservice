@@ -145,3 +145,75 @@ public class GetWithdrawalModeByUserIdHandler : IRequestHandler<GetWithdrawalMod
 
     }
 }
+
+
+public class GetWithdrawalByUserIdHandler : IRequestHandler<GetWithdrawalByUserIdQuery, IEnumerable<WithdrawalDetailsReadDto>>
+{
+    private readonly CoPartnerDbContext _dbContext;
+    public GetWithdrawalByUserIdHandler(CoPartnerDbContext dbContext) => _dbContext = dbContext;
+
+
+    public async Task<IEnumerable<WithdrawalDetailsReadDto>> Handle(GetWithdrawalByUserIdQuery request, CancellationToken cancellationToken)
+    {
+
+        IQueryable<WithdrawalDetailsReadDto> query = Enumerable.Empty<WithdrawalDetailsReadDto>().AsQueryable();
+
+        if (request.userType == "RA")
+        {
+            query = _dbContext.Withdrawals
+           .Where(w => w.WithdrawalBy == "RA" && w.Id == request.Id)
+           .Join(
+               _dbContext.WithdrawalModes,
+               withdrawal => withdrawal.WithdrawalModeId,
+               withdrawalMode => withdrawalMode.Id,
+               (withdrawal, withdrawalMode) => new { Withdrawal = withdrawal, WithdrawalMode = withdrawalMode })
+           .Join(
+               _dbContext.Experts,
+               combined => combined.WithdrawalMode.ExpertsId,
+               expert => expert.Id,
+               (combined, expert) => new WithdrawalDetailsReadDto
+               {
+                   Id = combined.Withdrawal.Id,
+                   Amount = combined.Withdrawal.Amount,
+                   Name = expert.Name,
+                   AccountHolderName = combined.WithdrawalMode.AccountHolderName,
+                   AccountNumber = combined.WithdrawalMode.AccountNumber,
+                   IFSCCode = combined.WithdrawalMode.IFSCCode,
+                   BankName = combined.WithdrawalMode.BankName,
+                   UPI_ID = combined.WithdrawalMode.UPI_ID,
+                   RequestAction = combined.Withdrawal.RequestAction
+               });
+        }
+
+        else if (request.userType == "AP")
+        {
+            query = _dbContext.Withdrawals
+                .Where(w => w.WithdrawalBy == "AP" && w.Id == request.Id)
+                .Join(
+                    _dbContext.WithdrawalModes,
+                    withdrawal => withdrawal.WithdrawalModeId,
+                    withdrawalMode => withdrawalMode.Id,
+                    (withdrawal, withdrawalMode) => new { Withdrawal = withdrawal, WithdrawalMode = withdrawalMode })
+                .Join(
+                    _dbContext.AffiliatePartners,
+                    combined => combined.WithdrawalMode.AffiliatePartnerId,
+                    affiliatePartner => affiliatePartner.Id,
+                    (combined, affiliatePartner) => new WithdrawalDetailsReadDto
+                    {
+                        Id = combined.Withdrawal.Id,
+                        Amount = combined.Withdrawal.Amount,
+                        Name = affiliatePartner.Name,
+                        AccountHolderName = combined.WithdrawalMode.AccountHolderName,
+                        AccountNumber = combined.WithdrawalMode.AccountNumber,
+                        IFSCCode = combined.WithdrawalMode.IFSCCode,
+                        BankName = combined.WithdrawalMode.BankName,
+                        UPI_ID = combined.WithdrawalMode.UPI_ID
+                    });
+        }
+
+        var result = await query.ToListAsync(cancellationToken: cancellationToken);
+
+        if (result == null) return null;
+        return result;
+    }
+   }

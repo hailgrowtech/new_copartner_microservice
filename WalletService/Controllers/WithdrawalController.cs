@@ -78,6 +78,8 @@ public class WithdrawalController : ControllerBase
         return blogs != null ? (ActionResult<WithdrawalModeReadDto>)Ok(blogs) : NotFound();
     }
 
+
+
     /// <summary>
     /// Get Bank/UPI Details by RA/AP Id
     /// </summary>
@@ -97,6 +99,14 @@ public class WithdrawalController : ControllerBase
         _logger.LogInformation("Fetching bank upi details for user Id : " + Id.ToString());
         var blogs = await _logic.GetWithdrawalModeByUserId(Id,userType,page,pageSize);
         return blogs != null ? (ActionResult<WithdrawalModeReadDto>)Ok(blogs) : NotFound();
+    }
+
+    [HttpGet("GetWithdrawalByUserId/{Id}", Name = "GetWithdrawalByUserId")]
+    public async Task<ActionResult<WithdrawalReadDto>> GetWithdrawalByUserId(Guid Id, string userType = "RA", int page = 1, int pageSize = 10)
+    {
+        _logger.LogInformation("Fetching bank upi details for Id : " + Id.ToString());
+        var blogs = await _logic.GetWithdrawalModeByUserId(Id, userType, page, pageSize);
+        return blogs != null ? (ActionResult<WithdrawalReadDto>)Ok(blogs) : NotFound();
     }
 
     /// <summary>

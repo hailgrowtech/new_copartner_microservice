@@ -92,4 +92,5 @@ public class GetWithdrawalModeHandler : IRequestHandler<GetWithdrawalModeQuery, 
         if (entities == null) return null; 
         return entities;      
     }
-}
+
+    }
