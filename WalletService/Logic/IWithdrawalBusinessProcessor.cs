@@ -15,4 +15,5 @@ public interface IWithdrawalBusinessProcessor
     Task<ResponseDto> PostWithdrawalMode(WithdrawalModeCreateDto withdrawalMode);
     Task<ResponseDto> Put(Guid id, WithdrawalCreateDto withdrawalCreateDto);
     Task<ResponseDto> PutBankUPIDetails(Guid id, WithdrawalModeCreateDto withdrawalModeCreateDto);
+    Task<ResponseDto> Delete(Guid id);
 }

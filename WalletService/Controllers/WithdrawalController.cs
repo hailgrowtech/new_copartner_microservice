@@ -87,19 +87,17 @@ public class WithdrawalController : ControllerBase
     ///     GET : api/GetBankUPIByUserId/1
     /// </remarks>
     /// <param name="Id"></param>
-    /// <param name="userType">RA or AP</param>
+    /// <param name="userType"></param>
     /// <param name="page"></param>
     /// <param name="pageSize"></param>
     /// <returns></returns>
-    [HttpGet("GetBankUPIByUserId/{Id}", Name = "GetBankUPIByUserId")]
+    [HttpGet("BankUPIByUserId/{Id}", Name = "GetBankUPIByUserId")]
     public async Task<ActionResult<WithdrawalModeReadDto>> GetBankUPIByUserId(Guid Id, string userType="RA", int page = 1, int pageSize = 10)
     {
         _logger.LogInformation("Fetching bank upi details for user Id : " + Id.ToString());
         var blogs = await _logic.GetWithdrawalModeByUserId(Id,userType,page,pageSize);
         return blogs != null ? (ActionResult<WithdrawalModeReadDto>)Ok(blogs) : NotFound();
     }
-
-
 
     /// <summary>
     /// Create Withdrawal Request From AP/RA Screen Check Withdrawal Balance before making request using API api/Wallet/GetWalletWithdrawalBalance . 
@@ -173,6 +171,12 @@ public class WithdrawalController : ControllerBase
         return NotFound(response);
     }
 
+    /// <summary>
+    /// Change UPI/ Bank Details if any
+    /// </summary>
+    /// <param name="Id"></param>
+    /// <param name="withdrawalModeCreateDto"></param>
+    /// <returns></returns>
     [HttpPut("PutBankUPIDetails/{Id}", Name = "PutBankUPIDetails")]
     public async Task<object> PutBankUPIDetails(Guid Id, WithdrawalModeCreateDto withdrawalModeCreateDto)
     {
@@ -185,6 +189,17 @@ public class WithdrawalController : ControllerBase
             return Ok(response);
         }
         return NotFound(response);
+    }
+    /// <summary>
+    /// Delete Bank UPI Detail By Withdrawal Mode ID
+    /// </summary>
+    /// <param name="Id">Bank UPI Mode Id </param>
+    /// <returns></returns>
+    [HttpDelete("{Id:guid}")]
+    public async Task<ActionResult> Delete(Guid Id)
+    {
+        var expert = await _logic.Delete(Id);
+        return expert != null ? Ok(expert) : NotFound();
     }
 }
  

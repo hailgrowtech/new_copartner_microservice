@@ -232,5 +232,16 @@ public class WithdrawalBusinessProcessor : IWithdrawalBusinessProcessor
             DisplayMessage = AppConstants.Common_RecordCreated
         };
     }
+
+    public async Task<ResponseDto> Delete(Guid id)
+    {
+        var paymentMode = await _sender.Send(new DeleteBankUPICommand(id));
+        var resultDto = _mapper.Map<ResponseDto>(paymentMode);
+        return new ResponseDto()
+        {
+            Data = resultDto,
+            DisplayMessage = AppConstants.Common_RecordDeleted
+        };
+    }
 }
 
