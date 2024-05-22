@@ -13,6 +13,9 @@ namespace AdminDashboardService.Handlers
 
         public async Task<IEnumerable<UserSecondTimePaymentListingDto>> Handle(GetUserSecondTimePaymentListingQuery request, CancellationToken cancellationToken)
         {
+            int skip = (request.Page - 1) * request.PageSize;
+
+
 
             var usersWithSecondPayment = await (from u in _dbContext.Users
                                                 join s in _dbContext.Subscribers on u.Id equals s.UserId
@@ -21,14 +24,18 @@ namespace AdminDashboardService.Handlers
                                                 where userGroup.Count() > 1
                                                 select new UserSecondTimePaymentListingDto
                                                 {
+                                                    UserId = userGroup.Key.Id,
                                                     Date = userGroup.FirstOrDefault().CreatedOn, // Assuming CreatedOn represents subscriber creation date
                                                     Mobile = userGroup.Key.MobileNumber,
                                                     Name = userGroup.Key.Name,
-                                                    Payment = userGroup.FirstOrDefault().TotalAmount // Assuming TotalAmount represents the payment amount
-                                                }).ToListAsync(cancellationToken);
+                                                    Payment = userGroup.FirstOrDefault().TotalAmount, // Assuming TotalAmount represents the payment amount
+                                                    
+                                                }).Skip(skip)
+                                                    .Take(request.PageSize)
+                                                    .ToListAsync(cancellationToken);
 
 
-            // (usersWithSecondPayment == null) return null;
+            if (usersWithSecondPayment == null) return null;
             return usersWithSecondPayment;
         }
     }

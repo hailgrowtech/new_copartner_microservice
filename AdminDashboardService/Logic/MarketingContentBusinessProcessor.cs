@@ -21,9 +21,9 @@ public class MarketingContentBusinessProcessor : IMarketingContentBusinessProces
         this._mapper = mapper;
     }
 
-    public async Task<ResponseDto> Get()
+    public async Task<ResponseDto> Get(int page, int pageSize)
     {        
-            var marketingContentList = await _sender.Send(new GetMarketingContentQuery());
+            var marketingContentList = await _sender.Send(new GetMarketingContentQuery(page, pageSize));
             var marketingContentReadDtoList = _mapper.Map<List<MarketingContentReadDto>>(marketingContentList);
             return new ResponseDto()
             {

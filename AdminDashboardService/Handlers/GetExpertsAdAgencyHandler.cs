@@ -13,8 +13,13 @@ public class GetExpertsAdAgencyHandler : IRequestHandler<GetExpertsAdAgencyQuery
 
     public async Task<IEnumerable<ExpertsAdvertisingAgency>> Handle(GetExpertsAdAgencyQuery request, CancellationToken cancellationToken)
     {
-        var entities =  await _dbContext.ExpertsAdvertisingAgencies.Where(x => x.IsDeleted != true).ToListAsync(cancellationToken: cancellationToken);
-        if (entities == null) return null; 
-        return entities;      
+        int skip = (request.Page - 1) * request.PageSize;
+
+        var entities =  await _dbContext.ExpertsAdvertisingAgencies.Where(x => x.IsDeleted != true)
+                            .Skip(skip)
+                            .Take(request.PageSize)
+                            .ToListAsync(cancellationToken); if (entities == null) return null; 
+        return entities;
+
     }
 }

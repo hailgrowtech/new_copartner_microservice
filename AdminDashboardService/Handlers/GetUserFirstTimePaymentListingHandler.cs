@@ -13,6 +13,8 @@ namespace AdminDashboardService.Handlers
 
         public async Task<IEnumerable<UserFirstTimePaymentListingDto>> Handle(GetUserFirstTimePaymentListingQuery request, CancellationToken cancellationToken)
         {
+            int skip = (request.Page - 1) * request.PageSize;
+
             var usersWithFirstPayment = await (from u in _dbContext.Users
                                                where !u.IsDeleted
                                                join s in _dbContext.Subscribers on u.Id equals s.UserId into gj
@@ -21,13 +23,21 @@ namespace AdminDashboardService.Handlers
                                                where userGroup.Count() == 1 && userGroup.All(sub => sub != null)
                                                select new UserFirstTimePaymentListingDto
                                                {
+                                                   UserId = userGroup.Key.Id,
                                                    Date = userGroup.FirstOrDefault().CreatedOn, // Assuming CreatedOn represents subscriber creation date
                                                    Mobile = userGroup.Key.MobileNumber,
                                                    Name = userGroup.Key.Name,
-                                                   Payment = userGroup.FirstOrDefault().TotalAmount // Assuming TotalAmount represents the payment amount
-                                               }).ToListAsync(cancellationToken);
+                                                   Payment = userGroup.FirstOrDefault().TotalAmount, // Assuming TotalAmount represents the payment amount
+                                                   APId = userGroup.Key.AffiliatePartnerId,
+                                                   RAId = userGroup.Key.ExpertsID
+                                                   //PaymentRAId = 
+                                                   //PaymentRAName = 
+                                               }).Skip(skip)
+                                                .Take(request.PageSize)
+                                                .ToListAsync(cancellationToken);
 
-            return  usersWithFirstPayment;
+            if (usersWithFirstPayment == null) return null;
+            return usersWithFirstPayment;
         }
     }
 }

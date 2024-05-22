@@ -14,6 +14,9 @@ namespace AdminDashboardService.Handlers
 
         public async Task<IEnumerable<UserDataListingDto>> Handle(GetUserDataListingQuery request, CancellationToken cancellationToken)
         {
+            int skip = (request.Page - 1) * request.PageSize;
+
+
 
             var result = await (from u in _dbContext.Users
              where !u.IsDeleted
@@ -22,14 +25,21 @@ namespace AdminDashboardService.Handlers
              where sub == null
              select new UserDataListingDto
              {
+                 UserId = u.Id,
                  Date = u.CreatedOn, // Assuming CreatedOn is the registration date
                  Name = u.Name,
                  Mobile = u.MobileNumber,
+                 APId = u.AffiliatePartnerId,
+                 ExpertId = u.ExpertsID
                  
-             }).ToListAsync(cancellationToken);
+             })
+                .Skip(skip)
+                .Take(request.PageSize)
+                .ToListAsync(cancellationToken);
 
-            //if (aplisting == null) return null;
+            if (result == null) return null;
             return result;
+
         }
     }
 }

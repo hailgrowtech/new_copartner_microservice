@@ -53,9 +53,9 @@ namespace AffiliatePartnerService.Logic
 
         }
 
-        public async Task<ResponseDto> Get()
+        public async Task<ResponseDto> Get(int page, int pageSize)
         {
-            var affiliatePartnersList = await _sender.Send(new GetAffiliatePartnerQuery());
+            var affiliatePartnersList = await _sender.Send(new GetAffiliatePartnerQuery(page, pageSize));
             var affiliatePartnersReadDtoList = _mapper.Map<List<AffiliatePartnerReadDTO>>(affiliatePartnersList);
             return new ResponseDto()
             {
