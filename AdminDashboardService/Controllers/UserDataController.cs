@@ -18,26 +18,26 @@ namespace AdminDashboardService.Controllers
         }
 
         [HttpGet("UserDataListing", Name = "GetUserDataListing")]
-        public async Task<object> GetUserDataListing()
+        public async Task<object> GetUserDataListing(int page = 1, int pageSize = 10)
         {
             _logger.LogInformation("Fetching Dashboard GetUserDataListing Details Data..");
-            var userListingData = await _logic.GetUserListing();
+            var userListingData = await _logic.GetUserListing(page, pageSize);
             return Ok(userListingData);
         }
 
         [HttpGet("UserFirstTimePaymentListing", Name = "GetUserFirstTimePaymentListing")]
-        public async Task<object> GetUserFirstTimePaymentListing()
+        public async Task<object> GetUserFirstTimePaymentListing(int page = 1, int pageSize = 10)
         {
             _logger.LogInformation("Fetching Dashboard GetUserFirstTimePaymentListing Details Data..");
-            var userListingData = await _logic.GetFirstTimePaymentListing();
+            var userListingData = await _logic.GetFirstTimePaymentListing(page, pageSize);
             return Ok(userListingData);
         }
 
         [HttpGet("UserSecondTimePaymentListing", Name = "GetUserSecondTimePaymentListing")]
-        public async Task<object> GetUserSecondTimePaymentListing()
+        public async Task<object> GetUserSecondTimePaymentListing(int page = 1, int pageSize = 10)
         {
             _logger.LogInformation("Fetching Dashboard GetUserSecondTimePaymentListing Details Data..");
-            var userListingData = await _logic.GetSecondTimePaymentListing();
+            var userListingData = await _logic.GetSecondTimePaymentListing(page, pageSize);
             return Ok(userListingData);
         }
 
