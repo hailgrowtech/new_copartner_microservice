@@ -13,6 +13,8 @@ namespace AdminDashboardService.Handlers
 
         public async Task<IEnumerable<UserFirstTimePaymentListingDto>> Handle(GetUserFirstTimePaymentListingQuery request, CancellationToken cancellationToken)
         {
+            int skip = (request.Page - 1) * request.PageSize;
+
             var usersWithFirstPayment = await (from u in _dbContext.Users
                                                where !u.IsDeleted
                                                join s in _dbContext.Subscribers on u.Id equals s.UserId into gj
@@ -30,9 +32,12 @@ namespace AdminDashboardService.Handlers
                                                    RAId = userGroup.Key.ExpertsID
                                                    //PaymentRAId = 
                                                    //PaymentRAName = 
-                                               }).ToListAsync(cancellationToken);
+                                               }).Skip(skip)
+                                                .Take(request.PageSize)
+                                                .ToListAsync(cancellationToken);
 
-            return  usersWithFirstPayment;
+            if (usersWithFirstPayment == null) return null;
+            return usersWithFirstPayment;
         }
     }
 }

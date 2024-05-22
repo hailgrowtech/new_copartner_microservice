@@ -22,10 +22,10 @@ namespace AffiliatePartnerService.Controllers
 
         // GET: api/Experts
         [HttpGet]
-        public async Task<object> Get()
+        public async Task<object> Get(int page = 1, int pageSize = 10)
         {
             _logger.LogInformation("Fetching Affiliate Partners Data..");
-            var affiliatePartners = await _logic.Get();
+            var affiliatePartners = await _logic.Get(page, pageSize);
             return Ok(affiliatePartners);
         }
 

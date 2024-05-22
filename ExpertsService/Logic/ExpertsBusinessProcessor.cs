@@ -9,6 +9,7 @@ using ExpertService.Queries;
 using MassTransit.Courier.Contracts;
 using MigrationDB.Models;
 using System.Web;
+using System.Drawing.Printing;
 
 namespace ExpertService.Logic;
 public class ExpertsBusinessProcessor : IExpertsBusinessProcessor
@@ -22,9 +23,9 @@ public class ExpertsBusinessProcessor : IExpertsBusinessProcessor
         this._mapper = mapper;
     }
 
-    public async Task<ResponseDto> Get()
+    public async Task<ResponseDto> Get(int page = 1, int pageSize = 10)
     {        
-            var expertsList = await _sender.Send(new GetExpertsQuery());
+            var expertsList = await _sender.Send(new GetExpertsQuery(page, pageSize));
             var expertsReadDtoList = _mapper.Map<List<ExpertReadDto>>(expertsList);
             return new ResponseDto()
             {
@@ -215,9 +216,9 @@ public class ExpertsBusinessProcessor : IExpertsBusinessProcessor
     }
 
 
-    public async Task<ResponseDto> GetListing()
+    public async Task<ResponseDto> GetListing(int page, int pageSize)
     {
-        var expertsList = await _sender.Send(new GetExpertsQuery());
+        var expertsList = await _sender.Send(new GetExpertsQuery(page, pageSize));
         var expertsReadDtoList = _mapper.Map<List<ExpertReadDto>>(expertsList);
         return new ResponseDto()
         {
@@ -225,9 +226,9 @@ public class ExpertsBusinessProcessor : IExpertsBusinessProcessor
             Data = expertsReadDtoList,
         };
     }
-    public async Task<ResponseDto> GetListingDetails()
+    public async Task<ResponseDto> GetListingDetails(int page, int pageSize)
     {
-        var expertsList = await _sender.Send(new GetExpertsQuery());
+        var expertsList = await _sender.Send(new GetExpertsQuery(page, pageSize));
         var expertsReadDtoList = _mapper.Map<List<ExpertReadDto>>(expertsList);
         return new ResponseDto()
         {

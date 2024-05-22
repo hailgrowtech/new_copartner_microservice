@@ -13,8 +13,16 @@ public class GetBlogHandler : IRequestHandler<GetBlogQuery, IEnumerable<Blog>>
 
     public async Task<IEnumerable<Blog>> Handle(GetBlogQuery request, CancellationToken cancellationToken)
     {
-        var entities =  await _dbContext.Blogs.Where(x => x.IsDeleted != true).ToListAsync(cancellationToken: cancellationToken);
-        if (entities == null) return null; 
-        return entities;      
+        // Calculate the number of records to skip
+        int skip = (request.Page - 1) * request.PageSize;
+
+        // Retrieve the page of wallets
+        var entities = await _dbContext.Blogs
+            .Where(x => x.IsDeleted != true)
+            .Skip(skip)
+            .Take(request.PageSize)
+            .ToListAsync(cancellationToken);
+        if (entities == null) return null;
+        return entities;
     }
 }

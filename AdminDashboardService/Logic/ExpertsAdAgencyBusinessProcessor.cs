@@ -21,9 +21,9 @@ public class ExpertsAdAgencyBusinessProcessor : IExpertsAdAgencyBusinessProcesso
         this._mapper = mapper;
     }
 
-    public async Task<ResponseDto> Get()
+    public async Task<ResponseDto> Get(int page, int pageSize)
     {        
-            var expertsAdAgencyList = await _sender.Send(new GetExpertsAdAgencyQuery());
+            var expertsAdAgencyList = await _sender.Send(new GetExpertsAdAgencyQuery(page, pageSize));
             var expertsAdAgencyReadDtoList = _mapper.Map<List<ExpertsAdAgencyReadDto>>(expertsAdAgencyList);
             return new ResponseDto()
             {

@@ -29,12 +29,13 @@ public class ExpertsController : ControllerBase
     /// <returns>The list of Experts.</returns>
     // GET: api/Experts
     [HttpGet]
-    public async Task<object> Get()
+    public async Task<object> Get(int page = 1, int pageSize = 10)
     {
             _logger.LogInformation("Fetching Experts Data..");
-            var experts = await _logic.Get();
+            var experts = await _logic.Get(page, pageSize);
             return Ok(experts);        
     }
+
 
     /// <summary>
     /// Get an Experts.

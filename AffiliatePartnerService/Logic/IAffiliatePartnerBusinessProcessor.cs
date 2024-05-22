@@ -6,7 +6,7 @@ namespace AffiliatePartnerService.Logic
 {
     public interface IAffiliatePartnerBusinessProcessor
     {
-        Task<ResponseDto> Get();
+        Task<ResponseDto> Get(int page = 1, int pageSize = 10);
         Task<ResponseDto> Get(Guid id);
         Task<ResponseDto> Post(AffiliatePartnerCreateDTO affiliatePartner);
         Task<ResponseDto> Put(Guid id, AffiliatePartnerCreateDTO affiliatePartnerCreateDTO);

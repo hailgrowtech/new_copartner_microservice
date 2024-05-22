@@ -14,7 +14,10 @@ public class GetAdAgencyDetailsHandler : IRequestHandler<GetAdAgencyDetailsQuery
 
    public async Task<IEnumerable<AdAgencyDetailsDto>> Handle(GetAdAgencyDetailsQuery request, CancellationToken cancellationToken)
     {
-        var query = _dbContext.AdvertisingAgencies
+        // Calculate the number of records to skip
+        int skip = (request.Page - 1) * request.PageSize;
+
+        var entities = await _dbContext.AdvertisingAgencies
             .Where(agency => agency.IsDeleted !=true)
             .GroupJoin(_dbContext.Users,
                 agency => agency.Id,
@@ -41,11 +44,13 @@ public class GetAdAgencyDetailsHandler : IRequestHandler<GetAdAgencyDetailsQuery
                 UsersCount = group.Select(g => g.subscriber.Id).Distinct().Count(),
                 isActive = !group.Key.IsDeleted
 
-            });
+            })
+            .Skip(skip)
+            .Take(request.PageSize)
+            .ToListAsync(cancellationToken);
 
-        var result = await query.ToListAsync(); // Execute the query and materialize the results
-
-        return result;
+            if (entities == null) return null;
+            return entities;
     }
 
 }
