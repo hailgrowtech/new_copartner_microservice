@@ -39,4 +39,20 @@ public class AWSStorageController : ControllerBase
         }
         return NotFound(response);
     }
+    /// <summary>
+    /// Delete File from AWS S3 Storage
+    /// </summary>
+    /// <param name="FilePath">Images/abc.jpg</param>
+    /// <returns></returns>
+    [HttpDelete]
+    public async Task<IActionResult> Delete(string filePath)
+    {
+        string bucketName = _configuration["AWSCredentials:BucketName"];
+        var response = await _logic.Delete(filePath, bucketName);
+        if (response.IsSuccess)
+        {
+            return Ok(response);
+        }
+        return NotFound(response);
+    }
 }

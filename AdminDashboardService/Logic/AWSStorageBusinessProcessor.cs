@@ -10,6 +10,8 @@ using AdminDashboardService.Commands;
 using Amazon.S3;
 using Amazon.S3.Model;
 using static MassTransit.ValidationResultExtensions;
+using MassTransit.Caching.Internals;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace AdminDashboardService.Logic;
 public class AWSStorageBusinessProcessor : IAWSStorageBusinessProcessor
@@ -25,42 +27,37 @@ public class AWSStorageBusinessProcessor : IAWSStorageBusinessProcessor
         this._s3Client = s3Client;
     }
 
-    public async Task<ResponseDto> Get(int page = 1, int pageSize = 10)
-    {        
-            var expertsList = await _sender.Send(new GetBlogQuery(page , pageSize));
-            var expertsReadDtoList = _mapper.Map<List<BlogReadDto>>(expertsList);
-            return new ResponseDto()
-            {
-                IsSuccess = true,
-                Data = expertsReadDtoList,
-            };           
-    }
-    public async Task<ResponseDto> Get(Guid id)
+   
+
+    public async Task<ResponseDto> Delete(string? fileName, string bucketName)
     {
-        var experts = await _sender.Send(new GetBlogByIdQuery(id));
-        if (experts == null)
+        var bucketExists = await _s3Client.DoesS3BucketExistAsync(bucketName);
+        if (!bucketExists)
         {
             return new ResponseDto()
             {
                 IsSuccess = false,
-                Data = null,
-                ErrorMessages = new List<string>() { AppConstants.Expert_ExpertNotFound }
+                ErrorMessages = new List<string>() { $"Bucket {bucketName} does not exist." }
             };
         }
-        var expertsReadDto = _mapper.Map<BlogReadDto>(experts);
-        return new ResponseDto()
+
+        if (string.IsNullOrEmpty(fileName))
         {
-            IsSuccess = true,
-            Data = expertsReadDto,
+            return new ResponseDto()
+            {
+                IsSuccess = false,
+                ErrorMessages = new List<string>() { "File name is required for deletion." }
+            };
+        }
+
+        await _s3Client.DeleteObjectAsync(bucketName, fileName);
+        var responseDto = new ResponseDto()
+        {
+            DisplayMessage = $"File {fileName} deleted from S3 successfully!"
         };
+        return responseDto;
     }
 
-    public async Task<ResponseDto> Delete(Guid id)
-    {
-        var expert = await _sender.Send(new DeleteBlogCommand(id));
-        var expertReadDto = _mapper.Map<ResponseDto>(expert);
-        return expertReadDto;
-    }
 
     public async Task<ResponseDto> Post(IFormFile file, string? prefix, string bucketName)
     {
@@ -110,72 +107,5 @@ public class AWSStorageBusinessProcessor : IAWSStorageBusinessProcessor
     }
 
 
-
-    public async Task<ResponseDto> Put(Guid id, BLogCreateDto request)
-    {
-        var blogs = _mapper.Map<Blog>(request);
-
-        var existingblogs = await _sender.Send(new GetBlogByIdQuery(id));
-        if (existingblogs == null)
-        {
-            return new ResponseDto()
-            {
-                IsSuccess = false,
-                Data = _mapper.Map<BlogReadDto>(existingblogs),
-                ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
-            };
-        }
-        blogs.Id = id; // Assigning the provided Id to the experts
-        var result = await _sender.Send(new PutBlogCommand(blogs));
-        if (result == null)
-        {
-            return new ResponseDto()
-            {
-                IsSuccess = false,
-                Data = _mapper.Map<BlogReadDto>(existingblogs),
-                ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_FailedToCreateAffiliatePartner }
-            };
-        }
-
-        var resultDto = _mapper.Map<BlogReadDto>(result);
-        return new ResponseDto()
-        {
-            Data = resultDto,
-            DisplayMessage = AppConstants.Expert_ExpertCreated
-        };
-    }
-
-    public async Task<ResponseDto> Patch(Guid Id, JsonPatchDocument<BLogCreateDto> request)
-    {
-        var blogs = _mapper.Map<Blog>(request);
-
-        var existingBlogs = await _sender.Send(new GetBlogByIdQuery(Id));
-        if (existingBlogs == null)
-        {
-            return new ResponseDto()
-            {
-                IsSuccess = false,
-                //   Data = _mapper.Map<ExpertsReadDto>(existingExperts),
-                ErrorMessages = new List<string>() { AppConstants.Expert_ExpertNotFound }
-            };
-        }
-
-        var result = await _sender.Send(new PatchBlogCommand(Id, request, existingBlogs));
-        if (result == null)
-        {
-            return new ResponseDto()
-            {
-                IsSuccess = false,
-                Data = _mapper.Map<BlogReadDto>(existingBlogs),
-                ErrorMessages = new List<string>() { AppConstants.Expert_FailedToUpdateExpert }
-            };
-        }
-
-        return new ResponseDto()
-        {
-            Data = _mapper.Map<BlogReadDto>(result),
-            DisplayMessage = AppConstants.Expert_ExpertUpdated
-        };
-    }
 }
 

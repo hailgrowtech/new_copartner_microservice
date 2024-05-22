@@ -7,6 +7,9 @@ using Serilog;
 using System.Reflection;
 using AdminDashboardService.Profiles;
 using AdminDashboardService.Configuration;
+using Amazon.Extensions.NETCore.Setup;
+using Amazon.Runtime;
+using Amazon.S3;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -83,6 +86,24 @@ builder.Services.AddSwaggerGen(c =>
     c.IncludeXmlComments(xmlPath);
 });
 
+// Load configuration from appsettings.json
+var configuration = new ConfigurationBuilder()
+    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .Build();
+// Retrieve AWS credentials from configuration
+string accessKey = configuration["AWSCredentials:AccessKey"];
+string secretKey = configuration["AWSCredentials:SecretKey"];
+string region = configuration["AWSCredentials:Region"];
+
+
+// Create AWS options
+AWSOptions awsOptions = new AWSOptions
+{
+    Credentials = new BasicAWSCredentials(accessKey, secretKey),
+    Region = Amazon.RegionEndpoint.GetBySystemName(region)
+};
+builder.Services.AddDefaultAWSOptions(awsOptions);
+builder.Services.AddAWSService<IAmazonS3>();
 
 //Resolve Dependencies Start
 
@@ -94,6 +115,7 @@ builder.Services.AddScoped<IExpertsAdAgencyBusinessProcessor, ExpertsAdAgencyBus
 builder.Services.AddScoped<IRelationshipManagerBusinessProcessor, RelationshipManagerBusinessProcessor>();
 builder.Services.AddScoped<IUserDataListingBusinessProcessor, UserDataListingBusinessProcessor>();
 builder.Services.AddScoped<IJoinBusinessProcessor, JoinBusinessProcessor>();
+builder.Services.AddScoped<IAWSStorageBusinessProcessor, AWSStorageBusinessProcessor>();
 builder.Services.AddScoped<IJsonMapper, JsonMapper>();
 //AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
