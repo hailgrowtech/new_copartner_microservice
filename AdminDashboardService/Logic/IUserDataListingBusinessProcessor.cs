@@ -4,8 +4,8 @@ namespace AdminDashboardService.Logic
 {
     public interface IUserDataListingBusinessProcessor
     {
-        Task<ResponseDto> GetUserListing();
-        Task<ResponseDto> GetFirstTimePaymentListing();
-        Task<ResponseDto> GetSecondTimePaymentListing();
+        Task<ResponseDto> GetUserListing(int page, int pageSize);
+        Task<ResponseDto> GetFirstTimePaymentListing(int page, int pageSize);
+        Task<ResponseDto> GetSecondTimePaymentListing(int page, int pageSize);
     }
 }
