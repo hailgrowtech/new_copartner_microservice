@@ -243,5 +243,25 @@ public class WithdrawalBusinessProcessor : IWithdrawalBusinessProcessor
             DisplayMessage = AppConstants.Common_RecordDeleted
         };
     }
+
+    public async Task<ResponseDto> GetWithdrawalByUserId(Guid id, string userType, int page, int pageSize)
+    {
+        var withdrawal = await _sender.Send(new GetWithdrawalByIdQuery(id));
+        if (withdrawal == null)
+        {
+            return new ResponseDto()
+            {
+                IsSuccess = false,
+                Data = null,
+                ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
+            };
+        }
+        var withdrawalReadDto = _mapper.Map<WithdrawalDetailsReadDto>(withdrawal);
+        return new ResponseDto()
+        {
+            IsSuccess = true,
+            Data = withdrawalReadDto,
+        };
+    }
 }
 
