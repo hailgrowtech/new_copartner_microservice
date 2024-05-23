@@ -22,9 +22,9 @@ public class UserBusinessProcessor : IUserBusinessProcessor
         this._mapper = mapper;
     }
 
-    public async Task<ResponseDto> Get()
+    public async Task<ResponseDto> Get(int page = 1, int pageSize = 10)
     {
-        var userList = await _sender.Send(new GetUsersQuery());
+        var userList = await _sender.Send(new GetUsersQuery(page, pageSize));
         var userReadDtoList = _mapper.Map<List<UserReadDto>>(userList);
         return new ResponseDto()
         {

@@ -13,8 +13,13 @@ public class GetUsersHandler : IRequestHandler<GetUsersQuery, IEnumerable<User>>
 
     public async Task<IEnumerable<User>> Handle(GetUsersQuery request, CancellationToken cancellationToken)
     {
-        var entities =  await _dbContext.Users.Where(x => x.IsDeleted != true).ToListAsync(cancellationToken: cancellationToken);
+        int skip = (request.Page - 1) * request.PageSize;
+
+        var entities =  await _dbContext.Users.Where(x => x.IsDeleted != true)
+            .Skip(skip)
+            .Take(request.PageSize)
+            .ToListAsync(cancellationToken);
         if (entities == null) return null; 
-        return entities;      
+        return entities;
     }
 }
