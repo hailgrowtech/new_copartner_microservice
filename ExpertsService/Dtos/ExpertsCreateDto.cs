@@ -19,11 +19,11 @@ namespace ExpertService.Dtos
         public string? MobileNumber { get; set; }
         public string? ChannelName { get; set; }
         public string ChatId { get; set; }
-        public string PAN { get; set; }
-        public string Address { get; set; }
-        public string State { get; set; }
-        public string SignatureImage { get; set; }
-        public string GST { get; set; }
+        public string? PAN { get; set; }
+        public string? Address { get; set; }
+        public string? State { get; set; }
+        public string? SignatureImage { get; set; }
+        public string? GST { get; set; }
         public string? TelegramChannel { get; set; }
         public string? PremiumTelegramChannel { get; set; }
         public int? TelegramFollower { get; set; }
