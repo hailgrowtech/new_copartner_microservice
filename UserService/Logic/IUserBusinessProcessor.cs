@@ -6,7 +6,7 @@ namespace UserService.Logic;
 
 public interface IUserBusinessProcessor
 {
-    Task<ResponseDto> Get();
+    Task<ResponseDto> Get(int page, int pageSize);
     Task<ResponseDto> Get(Guid? id);
     Task<ResponseDto> Post(UserCreateDto user);
     Task<ResponseDto> Put(Guid? id,string?MobileNo, UserCreateDto subscriberCreateDto);
