@@ -39,7 +39,8 @@ public class GetWithdrawalHandler : IRequestHandler<GetWithdrawalQuery, IEnumera
                         TransactionDate = combined.Withdrawal.TransactionDate,
                         RejectReason = combined.Withdrawal.RejectReason,
                         Name = expert.Name,
-                        SEBINo = expert.SEBIRegNo
+                        SEBINo = expert.SEBIRegNo,
+                        MobileNo = expert.MobileNumber
                     });
         }
 

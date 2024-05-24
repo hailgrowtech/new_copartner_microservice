@@ -148,46 +148,48 @@ public class GetWithdrawalModeByUserIdHandler : IRequestHandler<GetWithdrawalMod
 }
 
 
-public class GetWithdrawalByUserIdHandler : IRequestHandler<GetWithdrawalByUserIdQuery, IEnumerable<WithdrawalDetailsReadDto>>
+public class GetWithdrawalByUserIdHandler : IRequestHandler<GetWithdrawalByUserIdQuery, IEnumerable<WithdrawalReadDto>>
 {
     private readonly CoPartnerDbContext _dbContext;
     public GetWithdrawalByUserIdHandler(CoPartnerDbContext dbContext) => _dbContext = dbContext;
 
 
-    public async Task<IEnumerable<WithdrawalDetailsReadDto>> Handle(GetWithdrawalByUserIdQuery request, CancellationToken cancellationToken)
+    public async Task<IEnumerable<WithdrawalReadDto>> Handle(GetWithdrawalByUserIdQuery request, CancellationToken cancellationToken)
     {
 
-        IQueryable<WithdrawalDetailsReadDto> query = Enumerable.Empty<WithdrawalDetailsReadDto>().AsQueryable();
+        IQueryable<WithdrawalReadDto> query = Enumerable.Empty<WithdrawalReadDto>().AsQueryable();
 
         if (request.userType == "RA")
         {
             query = _dbContext.Withdrawals
-           .Where(w => w.WithdrawalBy == "RA")
-           .Join(
-               _dbContext.WithdrawalModes,
-               withdrawal => withdrawal.WithdrawalModeId,
-               withdrawalMode => withdrawalMode.Id,
-               (withdrawal, withdrawalMode) => new { Withdrawal = withdrawal, WithdrawalMode = withdrawalMode })
-           .Where(w => w.WithdrawalMode.ExpertsId == request.Id)
-           .Join(
-               _dbContext.Experts,
-               combined => combined.WithdrawalMode.ExpertsId,
-               expert => expert.Id,
-               (combined, expert) => new WithdrawalDetailsReadDto
-               {
-                   Id = combined.Withdrawal.Id,
-                   Amount = combined.Withdrawal.Amount,
-                   Name = expert.Name,
-                   AccountHolderName = combined.WithdrawalMode.AccountHolderName,
-                   AccountNumber = combined.WithdrawalMode.AccountNumber,
-                   IFSCCode = combined.WithdrawalMode.IFSCCode,
-                   BankName = combined.WithdrawalMode.BankName,
-                   UPI_ID = combined.WithdrawalMode.UPI_ID,
-                   RequestAction = combined.Withdrawal.RequestAction
-               });
+                .Where(w => w.WithdrawalBy == "RA")
+                .Join(
+                    _dbContext.WithdrawalModes,
+                    withdrawal => withdrawal.WithdrawalModeId,
+                    withdrawalMode => withdrawalMode.Id,
+                    (withdrawal, withdrawalMode) => new { Withdrawal = withdrawal, WithdrawalMode = withdrawalMode })
+                .Where(w => w.WithdrawalMode.ExpertsId == request.Id)
+                .Join(
+                    _dbContext.Experts,
+                    combined => combined.WithdrawalMode.ExpertsId,
+                    expert => expert.Id,
+                    (combined, expert) => new WithdrawalReadDto
+                    {
+                        Id = combined.Withdrawal.Id,
+                        Amount = combined.Withdrawal.Amount,
+                        WithdrawalModeId = combined.Withdrawal.WithdrawalModeId,
+                        WithdrawalRequestDate = combined.Withdrawal.WithdrawalRequestDate,
+                        RequestAction = combined.Withdrawal.RequestAction,
+                        TransactionId = combined.Withdrawal.TransactionId,
+                        TransactionDate = combined.Withdrawal.TransactionDate,
+                        RejectReason = combined.Withdrawal.RejectReason,
+                        Name = expert.Name,
+                        SEBINo = expert.SEBIRegNo,
+                        MobileNo = expert.MobileNumber
+                    });
         }
 
-        else if (request.userType == "AP")
+        if (request.userType == "AP")
         {
             query = _dbContext.Withdrawals
                 .Where(w => w.WithdrawalBy == "AP")
@@ -196,21 +198,23 @@ public class GetWithdrawalByUserIdHandler : IRequestHandler<GetWithdrawalByUserI
                     withdrawal => withdrawal.WithdrawalModeId,
                     withdrawalMode => withdrawalMode.Id,
                     (withdrawal, withdrawalMode) => new { Withdrawal = withdrawal, WithdrawalMode = withdrawalMode })
-                .Where(w => w.WithdrawalMode.AffiliatePartnerId == request.Id)
+                .Where(w => w.WithdrawalMode.AffiliatePartnerId  == request.Id)
                 .Join(
                     _dbContext.AffiliatePartners,
                     combined => combined.WithdrawalMode.AffiliatePartnerId,
                     affiliatePartner => affiliatePartner.Id,
-                    (combined, affiliatePartner) => new WithdrawalDetailsReadDto
+                    (combined, affiliatePartner) => new WithdrawalReadDto
                     {
                         Id = combined.Withdrawal.Id,
                         Amount = combined.Withdrawal.Amount,
+                        WithdrawalModeId = combined.Withdrawal.WithdrawalModeId,
+                        WithdrawalRequestDate = combined.Withdrawal.WithdrawalRequestDate,
+                        RequestAction = combined.Withdrawal.RequestAction,
+                        TransactionId = combined.Withdrawal.TransactionId,
+                        TransactionDate = combined.Withdrawal.TransactionDate,
+                        RejectReason = combined.Withdrawal.RejectReason,
                         Name = affiliatePartner.Name,
-                        AccountHolderName = combined.WithdrawalMode.AccountHolderName,
-                        AccountNumber = combined.WithdrawalMode.AccountNumber,
-                        IFSCCode = combined.WithdrawalMode.IFSCCode,
-                        BankName = combined.WithdrawalMode.BankName,
-                        UPI_ID = combined.WithdrawalMode.UPI_ID
+                        MobileNo = affiliatePartner.MobileNumber
                     });
         }
 
