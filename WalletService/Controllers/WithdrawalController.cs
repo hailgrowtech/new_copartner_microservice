@@ -100,12 +100,19 @@ public class WithdrawalController : ControllerBase
         var blogs = await _logic.GetWithdrawalModeByUserId(Id,userType,page,pageSize);
         return blogs != null ? (ActionResult<WithdrawalModeReadDto>)Ok(blogs) : NotFound();
     }
-
+    /// <summary>
+    /// Get Withdrawal Detils By RA /AP
+    /// </summary>
+    /// <param name="Id">RA AP Id</param>
+    /// <param name="userType"></param>
+    /// <param name="page"></param>
+    /// <param name="pageSize"></param>
+    /// <returns></returns>
     [HttpGet("GetWithdrawalByUserId/{Id}", Name = "GetWithdrawalByUserId")]
     public async Task<ActionResult<WithdrawalReadDto>> GetWithdrawalByUserId(Guid Id, string userType = "RA", int page = 1, int pageSize = 10)
     {
         _logger.LogInformation("Fetching bank upi details for Id : " + Id.ToString());
-        var blogs = await _logic.GetWithdrawalModeByUserId(Id, userType, page, pageSize);
+        var blogs = await _logic.GetWithdrawalByUserId(Id, userType, page, pageSize);
         return blogs != null ? (ActionResult<WithdrawalReadDto>)Ok(blogs) : NotFound();
     }
 

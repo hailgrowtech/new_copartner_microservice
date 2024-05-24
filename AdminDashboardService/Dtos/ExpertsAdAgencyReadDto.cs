@@ -7,8 +7,8 @@ namespace AdminDashboardService.Dtos
         public Guid Id { get; set; }
         [Required]
         public Guid AdvertisingAgencyId { get; set; }
-        [Required]
-        public Guid ExpertsAdAgencyId { get; set; }
+      //  [Required]
+      //  public Guid ExpertsAdAgencyId { get; set; }
         [Required]
         public Guid ExpertsId { get; set; }
 
