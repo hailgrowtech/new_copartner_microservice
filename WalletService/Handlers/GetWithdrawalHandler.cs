@@ -31,6 +31,7 @@ public class GetWithdrawalHandler : IRequestHandler<GetWithdrawalQuery, IEnumera
                     (combined, expert) => new WithdrawalReadDto
                     {
                         Id = combined.Withdrawal.Id,
+                        WithdrawalBy = combined.Withdrawal.WithdrawalBy,
                         Amount = combined.Withdrawal.Amount,
                         WithdrawalModeId = combined.Withdrawal.WithdrawalModeId,
                         WithdrawalRequestDate = combined.Withdrawal.WithdrawalRequestDate,
@@ -60,6 +61,7 @@ public class GetWithdrawalHandler : IRequestHandler<GetWithdrawalQuery, IEnumera
                     (combined, affiliatePartner) => new WithdrawalReadDto
                     {
                         Id = combined.Withdrawal.Id,
+                        WithdrawalBy = combined.Withdrawal.WithdrawalBy,
                         Amount = combined.Withdrawal.Amount,
                         WithdrawalModeId = combined.Withdrawal.WithdrawalModeId,
                         WithdrawalRequestDate = combined.Withdrawal.WithdrawalRequestDate,

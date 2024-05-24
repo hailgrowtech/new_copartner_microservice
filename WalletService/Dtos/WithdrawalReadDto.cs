@@ -9,7 +9,7 @@ public class WithdrawalReadDto
 {
     public Guid Id { get; set; }
     [Required]
-    public string WithdrawalBy { get; set; } = "RA"; //RA, AP     
+    public string WithdrawalBy { get; set; }  //RA, AP     
     public string? SEBINo { get; set; }
     public string? MobileNo { get; set; }
     public string? Name { get; set; }
