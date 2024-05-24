@@ -9,6 +9,7 @@ using WalletService.Dtos;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 using Newtonsoft.Json;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 
 namespace WalletService.Handlers;
 
@@ -161,12 +162,13 @@ public class GetWithdrawalByUserIdHandler : IRequestHandler<GetWithdrawalByUserI
         if (request.userType == "RA")
         {
             query = _dbContext.Withdrawals
-           .Where(w => w.WithdrawalBy == "RA" && w.Id == request.Id)
+           .Where(w => w.WithdrawalBy == "RA")
            .Join(
                _dbContext.WithdrawalModes,
                withdrawal => withdrawal.WithdrawalModeId,
                withdrawalMode => withdrawalMode.Id,
                (withdrawal, withdrawalMode) => new { Withdrawal = withdrawal, WithdrawalMode = withdrawalMode })
+           .Where(w => w.WithdrawalMode.ExpertsId == request.Id)
            .Join(
                _dbContext.Experts,
                combined => combined.WithdrawalMode.ExpertsId,
@@ -188,12 +190,13 @@ public class GetWithdrawalByUserIdHandler : IRequestHandler<GetWithdrawalByUserI
         else if (request.userType == "AP")
         {
             query = _dbContext.Withdrawals
-                .Where(w => w.WithdrawalBy == "AP" && w.Id == request.Id)
+                .Where(w => w.WithdrawalBy == "AP")
                 .Join(
                     _dbContext.WithdrawalModes,
                     withdrawal => withdrawal.WithdrawalModeId,
                     withdrawalMode => withdrawalMode.Id,
                     (withdrawal, withdrawalMode) => new { Withdrawal = withdrawal, WithdrawalMode = withdrawalMode })
+                .Where(w => w.WithdrawalMode.AffiliatePartnerId == request.Id)
                 .Join(
                     _dbContext.AffiliatePartners,
                     combined => combined.WithdrawalMode.AffiliatePartnerId,

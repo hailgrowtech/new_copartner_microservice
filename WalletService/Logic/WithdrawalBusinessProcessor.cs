@@ -246,7 +246,7 @@ public class WithdrawalBusinessProcessor : IWithdrawalBusinessProcessor
 
     public async Task<ResponseDto> GetWithdrawalByUserId(Guid id, string userType, int page, int pageSize)
     {
-        var withdrawal = await _sender.Send(new GetWithdrawalByIdQuery(id));
+        var withdrawal = await _sender.Send(new GetWithdrawalByUserIdQuery(id, userType,page,pageSize));
         if (withdrawal == null)
         {
             return new ResponseDto()
@@ -256,11 +256,11 @@ public class WithdrawalBusinessProcessor : IWithdrawalBusinessProcessor
                 ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
             };
         }
-        var withdrawalReadDto = _mapper.Map<WithdrawalDetailsReadDto>(withdrawal);
+        //var withdrawalReadDto = _mapper.Map<WithdrawalDetailsReadDto>(withdrawal);
         return new ResponseDto()
         {
             IsSuccess = true,
-            Data = withdrawalReadDto,
+            Data = withdrawal,
         };
     }
 }
