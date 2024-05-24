@@ -55,7 +55,7 @@ namespace AdminDashboardService.Logic
                 Data = relationshipManagerReadDto,
             };
         }
-        public async Task<ResponseDto> GetByUserId(Guid id, string userType)
+        public async Task<ResponseDto> GetByUserId(Guid? id, string userType)
         {
             var relationshipManager = await _sender.Send(new GetRelationshipManagerByUserIdQuery(id, userType));
             if (relationshipManager == null)

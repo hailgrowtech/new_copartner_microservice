@@ -6,7 +6,7 @@ using MigrationDB.Model;
 
 namespace AdminDashboardService.Handlers
 {
-    public class GetRelationshipManagerByUserIdHandler : IRequestHandler<GetRelationshipManagerByUserIdQuery, RelationshipManager>
+    public class GetRelationshipManagerByUserIdHandler : IRequestHandler<GetRelationshipManagerByUserIdQuery, IEnumerable<RelationshipManager>>
     {
         private readonly CoPartnerDbContext _dbContext;
 
@@ -15,19 +15,37 @@ namespace AdminDashboardService.Handlers
             _dbContext = dbContext;
         }
 
-        public async Task<RelationshipManager> Handle(GetRelationshipManagerByUserIdQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<RelationshipManager>> Handle(GetRelationshipManagerByUserIdQuery request, CancellationToken cancellationToken)
         {
             if (request.UserType == "RA")
             {
-                var RelationshipManagersList = await _dbContext.RelationshipManagers.Where(a => a.Experts.Id == request.Id && a.IsDeleted != true)
-                    .Include(s => s.Experts).SingleOrDefaultAsync(cancellationToken: cancellationToken);
-                return RelationshipManagersList;
+                if (request.Id.ToString().Length > 10)
+                {
+                    var RelationshipManagersList = await _dbContext.RelationshipManagers.Where(a => a.Experts.Id == request.Id && a.IsDeleted != true)
+                        .Include(s => s.Experts).ToListAsync(cancellationToken: cancellationToken);
+                    return RelationshipManagersList;
+                }
+                else
+                {
+                    var RelationshipManagersList = await _dbContext.RelationshipManagers
+                        .Include(s => s.Experts).ToListAsync(cancellationToken: cancellationToken);
+                    return RelationshipManagersList;
+                }
             }
             else
             {
-                var RelationshipManagersList = await _dbContext.RelationshipManagers.Where(a => a.AffiliatePartners.Id == request.Id && a.IsDeleted != true)
-                    .Include(s => s.AffiliatePartners).SingleOrDefaultAsync(cancellationToken: cancellationToken);
-                return RelationshipManagersList;
+                if (request.Id.ToString().Length > 10)
+                {
+                    var RelationshipManagersList = await _dbContext.RelationshipManagers.Where(a => a.AffiliatePartners.Id == request.Id && a.IsDeleted != true)
+                    .Include(s => s.AffiliatePartners).ToListAsync(cancellationToken: cancellationToken);
+                    return RelationshipManagersList;
+                }
+                else
+                {
+                    var RelationshipManagersList = await _dbContext.RelationshipManagers
+                    .Include(s => s.AffiliatePartners).ToListAsync(cancellationToken: cancellationToken);
+                    return RelationshipManagersList;
+                }
             }
         }
     }

@@ -60,7 +60,7 @@ public class RelationshipManagerController : ControllerBase
     /// <param name="UserType">RA or AP</param>
     /// <returns></returns>
     [HttpGet("GetByUserId", Name = "GetByUserId")]
-    public async Task<ActionResult<RelationshipManagerDto>> GetByUserId(Guid Id, string UserType)
+    public async Task<ActionResult<RelationshipManagerDto>> GetByUserId(Guid? Id, string UserType)
     {
         _logger.LogInformation("Fetching Relationship Manager for Id : " + Id.ToString());
         var relationshipManager = await _logic.GetByUserId(Id, UserType);
