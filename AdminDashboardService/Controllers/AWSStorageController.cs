@@ -31,7 +31,7 @@ public class AWSStorageController : ControllerBase
     public async Task<IActionResult> Post(IFormFile file, string? prefix)
     {
         _logger.LogInformation("Uploading Data in AWS S3 Bucket..");
-        string bucketName = _configuration["AWSCredentials:BucketName"];
+        string bucketName = _configuration["AWSS3Credentials:BucketName"];
         var response = await _logic.Post(file, prefix, bucketName);
         if (response.IsSuccess)
         {

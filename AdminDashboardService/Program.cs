@@ -89,7 +89,8 @@ builder.Services.AddSwaggerGen(c =>
 
 // Load configuration from appsettings.json
 var configuration = new ConfigurationBuilder()
-    .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+    .AddJsonFile("appsettings.json")
+    //.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
     .Build();
 // Retrieve AWS credentials from configuration
 string encryptAccessKey = configuration["AWSS3Credentials:EncryptedAccessKey"];

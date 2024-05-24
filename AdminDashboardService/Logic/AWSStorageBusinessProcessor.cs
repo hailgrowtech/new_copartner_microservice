@@ -78,22 +78,26 @@ public class AWSStorageBusinessProcessor : IAWSStorageBusinessProcessor
             Key = string.IsNullOrEmpty(prefix) ? file.FileName : $"{prefix?.TrimEnd('/')}/{file.FileName}",
             InputStream = file.OpenReadStream()
         };
+
         request.Metadata.Add("Content-Type", file.ContentType);
         await _s3Client.PutObjectAsync(request);
 
-        // Generate a presigned URL for the uploaded file
-        var presignedUrlRequest = new GetPreSignedUrlRequest()
-        {
-            BucketName = bucketName,
-            Key = request.Key,
-            Expires = DateTime.UtcNow.AddMinutes(1) // Set the expiration time for the presigned URL
-        };
-        string presignedUrl = _s3Client.GetPreSignedURL(presignedUrlRequest);
+        // Construct the URL for the uploaded object
+        var objectUrl = $"https://s3.{_s3Client.Config.RegionEndpoint.SystemName}.amazonaws.com/{bucketName}/{request.Key}";
+
+        //// Generate a presigned URL for the uploaded file
+        //var presignedUrlRequest = new GetPreSignedUrlRequest()
+        //{
+        //    BucketName = bucketName,
+        //    Key = request.Key,
+        //    Expires = DateTime.UtcNow.AddMinutes(1) // Set the expiration time for the presigned URL
+        //};
+        //string presignedUrl = _s3Client.GetPreSignedURL(presignedUrlRequest);
 
         // Create an instance of AWSStorageReadDto and assign the presigned URL to it
         var resultDto = new AWSStorageReadDto
         {
-            PresignedUrl = presignedUrl
+            PresignedUrl = objectUrl
         };
 
         // Prepare the response DTO
