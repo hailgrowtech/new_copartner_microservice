@@ -42,12 +42,12 @@ public class AWSStorageController : ControllerBase
     /// <summary>
     /// Delete File from AWS S3 Storage
     /// </summary>
-    /// <param name="FilePath">Images/abc.jpg</param>
+    /// <param name="filePath">Images/abc.jpg</param>
     /// <returns></returns>
     [HttpDelete]
     public async Task<IActionResult> Delete(string filePath)
     {
-        string bucketName = _configuration["AWSCredentials:BucketName"];
+        string bucketName = _configuration["AWSS3Credentials:BucketName"];
         var response = await _logic.Delete(filePath, bucketName);
         if (response.IsSuccess)
         {

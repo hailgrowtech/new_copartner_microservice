@@ -10,6 +10,7 @@ using AdminDashboardService.Configuration;
 using Amazon.Extensions.NETCore.Setup;
 using Amazon.Runtime;
 using Amazon.S3;
+using CommonLibrary;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -91,10 +92,12 @@ var configuration = new ConfigurationBuilder()
     .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
     .Build();
 // Retrieve AWS credentials from configuration
-string accessKey = configuration["AWSCredentials:AccessKey"];
-string secretKey = configuration["AWSCredentials:SecretKey"];
-string region = configuration["AWSCredentials:Region"];
+string encryptAccessKey = configuration["AWSS3Credentials:EncryptedAccessKey"];
+string encryptSecretKey = configuration["AWSS3Credentials:EncryptedSecretKey"];
+string region = configuration["AWSS3Credentials:Region"];
 
+string accessKey = EncryptionHelper.DecryptString(encryptAccessKey);
+string secretKey = EncryptionHelper.DecryptString(encryptSecretKey);
 
 // Create AWS options
 AWSOptions awsOptions = new AWSOptions
