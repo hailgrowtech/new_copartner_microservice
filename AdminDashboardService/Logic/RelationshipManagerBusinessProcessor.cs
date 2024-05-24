@@ -36,7 +36,6 @@ namespace AdminDashboardService.Logic
                 Data = relationshipManagerReadDtoList,
             };
         }
-
         public async Task<ResponseDto> Get(Guid id)
         {
             var relationshipManager = await _sender.Send(new GetRelationshipManagerByIdQuery(id));
@@ -56,7 +55,25 @@ namespace AdminDashboardService.Logic
                 Data = relationshipManagerReadDto,
             };
         }
-
+        public async Task<ResponseDto> GetByUserId(Guid id, string userType)
+        {
+            var relationshipManager = await _sender.Send(new GetRelationshipManagerByUserIdQuery(id, userType));
+            if (relationshipManager == null)
+            {
+                return new ResponseDto()
+                {
+                    IsSuccess = false,
+                    Data = null,
+                    ErrorMessages = new List<string>() { AppConstants.Expert_ExpertNotFound }
+                };
+            }
+           // var relationshipManagerReadDto = _mapper.Map<RelationshipManagerDto>(relationshipManager);
+            return new ResponseDto()
+            {
+                IsSuccess = true,
+                Data = relationshipManager,
+            };
+        }
         public async Task<ResponseDto> Patch(Guid Id, JsonPatchDocument<RelationshipManagerCreateDto> request)
         {
             var relationshipManager = _mapper.Map<RelationshipManager>(request);

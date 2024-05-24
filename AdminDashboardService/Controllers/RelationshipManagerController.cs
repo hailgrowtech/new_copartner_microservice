@@ -24,7 +24,7 @@ public class RelationshipManagerController : ControllerBase
 
 
     /// <summary>
-    /// Gets the list of all Experts.
+    /// Gets the list of all Relationship Manager.
     /// </summary>
     /// <returns>The list of Experts.</returns>
     // GET: api/Experts
@@ -37,7 +37,7 @@ public class RelationshipManagerController : ControllerBase
     }
 
     /// <summary>
-    /// Get an Experts.
+    /// Get Relationship Manager.
     /// </summary>
     /// <remarks>
     /// Sample request:
@@ -51,6 +51,20 @@ public class RelationshipManagerController : ControllerBase
         _logger.LogInformation("Fetching Relationship Manager for Id : " + Id.ToString());
         var relationshipManager = await _logic.Get(Id);
         return relationshipManager != null ? (ActionResult<RelationshipManagerReadDto>)Ok(relationshipManager) : NotFound();
+    }
+
+    /// <summary>
+    /// Get Relationship Manager By RA AP ID
+    /// </summary>
+    /// <param name="Id">RA AP ID </param>
+    /// <param name="UserType">RA or AP</param>
+    /// <returns></returns>
+    [HttpGet("GetByUserId", Name = "GetByUserId")]
+    public async Task<ActionResult<RelationshipManagerDto>> GetByUserId(Guid Id, string UserType)
+    {
+        _logger.LogInformation("Fetching Relationship Manager for Id : " + Id.ToString());
+        var relationshipManager = await _logic.GetByUserId(Id, UserType);
+        return relationshipManager != null ? (ActionResult<RelationshipManagerDto>)Ok(relationshipManager) : NotFound();
     }
 
     [HttpPost]

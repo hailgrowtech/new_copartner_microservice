@@ -1,4 +1,7 @@
-﻿namespace AdminDashboardService.Dtos
+﻿using MigrationDB.Model;
+using MigrationDB.Models;
+
+namespace AdminDashboardService.Dtos
 {
     public class RelationshipManagerDto
     {
@@ -8,5 +11,8 @@
         public string? Email { get; set; }
         public string? ImagePath { get; set; }
         public string? DocumentPath { get; set; }
+        public Experts Experts { get; set; }
+        public AffiliatePartner AffiliatePartners { get; set; }
+        public bool isActive { get; set; }
     }
 }
