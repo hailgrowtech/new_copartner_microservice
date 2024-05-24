@@ -5,6 +5,7 @@ namespace AffiliatePartnerService.Dtos
 {
     public class APDetailDto
     {
+        public Guid Id { get; set; }
         public DateTime JoinDate { get; set; }
         public string APName { get; set; }
         public string? MobileNumber { get; set; }

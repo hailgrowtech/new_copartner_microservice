@@ -22,4 +22,5 @@ public class RAListingDataDto
     [Precision(18, 2)]
     public decimal? Amount { get; set; }
     public string Subscription { get; set; }
+    public string TransactionId { get; set; }
 }

@@ -26,6 +26,7 @@ namespace AffiliatePartnerService.Handlers
                         from wallet in wallets.DefaultIfEmpty()
                         group new { ap, wallet } by new
                         {
+                            ap.Id,
                             ap.CreatedOn,
                             ap.Name,
                             ap.MobileNumber,
@@ -34,6 +35,7 @@ namespace AffiliatePartnerService.Handlers
                         } into g
                         select new APDetailDto
                         {
+                            Id = g.Key.Id,
                             JoinDate = g.Key.CreatedOn,
                             APName = g.Key.Name,
                             MobileNumber = g.Key.MobileNumber,
