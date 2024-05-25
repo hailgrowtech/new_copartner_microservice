@@ -10,6 +10,9 @@ using AuthenticationService.Dtos;
 
 using AuthenticationService.Queries;
 using AuthenticationService.Profiles;
+using MassTransit.Mediator;
+using System.Text.RegularExpressions;
+using System.ComponentModel.DataAnnotations;
 
 namespace AuthenticationService.Logic;
 public class UserBusinessProcessor : IUserBusinessProcessor
@@ -156,12 +159,7 @@ public class UserBusinessProcessor : IUserBusinessProcessor
         return userReadDto;
     }
 
-    public bool ResetPassword(UserPasswordDTO userPasswordDTO)
-    {
-        //TODO : Encrypt Password. Make sure old and new password are not same. Make sure password is a combination of Alpha Numeric Char with Special Char and minmum 8 chars.
-        // Write these validations in a seperate method
-        return true;
-    }
+   
 
     public async Task<ResponseDto> Put(Guid id, UserCreateDto request)
     {
@@ -196,5 +194,82 @@ public class UserBusinessProcessor : IUserBusinessProcessor
             DisplayMessage = AppConstants.Expert_ExpertCreated
         };
     }
+    public async Task<ResponseDto> ResetPassword(UserPasswordDTO request)
+    {
+        //TODO : Encrypt Password. Make sure old and new password are not same. Make sure password is a combination of Alpha Numeric Char with Special Char and minmum 8 chars.
+        // Write these validations in a seperate method
+        // Map request to command
+        // Validate password
+        var validationResult = ValidatePassword(request);
+        if (!validationResult.IsValid)
+        {
+            return new ResponseDto()
+            {
+                IsSuccess = false,
+                ErrorMessages = validationResult.ErrorMessages
+            };
+        }
+
+        // Send the command
+        var result = await _sender.Send(new ResetUserAuthCommand(request));
+        if (!result)
+        {
+            return new ResponseDto()
+            {
+                IsSuccess = false,
+                ErrorMessages = new List<string>() { "Failed to reset password." }
+            };
+        }
+
+        return new ResponseDto()
+        {
+            IsSuccess = true,
+            DisplayMessage = "Password reset successfully."
+        };
+    }
+    private ValidationResult ValidatePassword(UserPasswordDTO request)
+    {
+        var validationErrors = new List<string>();
+
+        // Check if old and new passwords are the same
+        if (request.OldPassword == request.NewPassword)
+        {
+            validationErrors.Add("Old and new passwords cannot be the same.");
+        }
+
+        // Implement password strength validation
+        if (!IsStrongPassword(request.NewPassword))
+        {
+            validationErrors.Add("Password must be at least 8 characters long and contain a combination of alphanumeric characters and special characters.");
+        }
+
+        // Return ValidationResult object with error messages
+        return new ValidationResult
+        {
+            IsValid = validationErrors.Count == 0,
+            ErrorMessages = validationErrors
+        };
+    }
+
+
+
+    private bool IsStrongPassword(string password)
+    {
+        // Implement password strength validation logic here
+        // For example, using regular expressions
+        string pattern = @"^(?=.*[a-zA-Z0-9])(?=.*[^a-zA-Z0-9\s]).{8,}$";
+        return Regex.IsMatch(password, pattern);
+    }
 }
 
+public class ValidationResult
+{
+    public bool IsValid { get; set; }
+    public List<string> ErrorMessages { get; set; }
+
+    public ValidationResult()
+    {
+        IsValid = true;
+        ErrorMessages = new List<string>();
+    }
+}

@@ -13,6 +13,7 @@ public class AuthMapperProfile :Profile
         // Source -> Target
         CreateMap<AuthenticationDetail, UserReadDto>().ReverseMap();
         CreateMap<AuthenticationDetail, UserCreateDto>().ReverseMap();
+        CreateMap<AuthenticationDetail, UserPasswordDTO>().ReverseMap();
         CreateMap<AuthenticationDetail, JsonPatchDocument<UserCreateDto>>().ReverseMap();
     }
     //ToDo Implement Automapper TechDebt

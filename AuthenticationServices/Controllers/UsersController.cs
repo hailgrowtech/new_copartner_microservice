@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using AuthenticationService.Dtos;
 using AuthenticationService.Logic;
+using MassTransit.Mediator;
 
 namespace AuthenticationService.Controllers;
 //[Authorize]
@@ -16,7 +17,7 @@ public class UsersController : ControllerBase
     private readonly ILogger<UsersController> _logger;
     //private readonly ITopicProducer<UserCreatedEventDTO> _topicProducer;
 
-    public UsersController(IUserBusinessProcessor logic, ILogger<UsersController> logger,IMediator mediator)//, ITopicProducer<UserCreatedEventDTO> topicProducer)
+    public UsersController(IUserBusinessProcessor logic, ILogger<UsersController> logger)//, ITopicProducer<UserCreatedEventDTO> topicProducer)
     {
         this._logic = logic;
         this._logger = logger;
@@ -111,5 +112,19 @@ public class UsersController : ControllerBase
     {
         var user = await _logic.Delete(Id);
         return user != null ? Ok(user) : NotFound();
+    }
+
+    [HttpPost("ResetPassword")]
+    public async Task<IActionResult> ResetPassword(UserPasswordDTO userPasswordDTO)
+    {
+        var response = await _logic.ResetPassword(userPasswordDTO);
+        // Handle the result
+        if (response.IsSuccess)
+        {
+           // Guid guid = (Guid)response.Data.GetType().GetProperty("Id").GetValue(response.Data);
+
+            return Ok(response);
+        }
+        return NotFound(response);        
     }
 }
