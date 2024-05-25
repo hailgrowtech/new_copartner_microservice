@@ -1,4 +1,6 @@
 ﻿using CommonLibrary.Authorization;
+using Copartner;
+using MassTransit;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -14,12 +16,14 @@ public class SubscriberController : ControllerBase
 {
     private readonly ISubscriberBusinessProcessor _logic;
     private readonly ILogger<SubscriberController> _logger;
+    private readonly IPublishEndpoint _publish;
     //private readonly ITopicProducer<UserCreatedEventDTO> _topicProducer;
 
-    public SubscriberController(ISubscriberBusinessProcessor logic, ILogger<SubscriberController> logger)//, ITopicProducer<UserCreatedEventDTO> topicProducer)
+    public SubscriberController(ISubscriberBusinessProcessor logic, ILogger<SubscriberController> logger, IPublishEndpoint publish)//, ITopicProducer<UserCreatedEventDTO> topicProducer)
     {
         this._logic = logic;
         this._logger = logger;
+        this._publish = publish;
         // this._topicProducer = topicProducer;
     }
     /// <summary>
@@ -77,7 +81,17 @@ public class SubscriberController : ControllerBase
         if (response.IsSuccess)
         {
             Guid guid = (Guid)response.Data.GetType().GetProperty("Id").GetValue(response.Data);
-
+           var result = await _logic.ProcessSubscriberWallet(guid);
+            _publish.Publish<WalletEvent>(new
+            {
+                SubscriberId = result.SubscriberId,
+                AffiliatePartnerId = result.AffiliatePartnerId,
+                ExpertsId = result.ExpertsId,
+                RAAmount = result.RAAmount,
+                APAmount = result.APAmount,
+                CPAmount = result.CPAmount,
+                TransactionDate = DateTime.Now
+            });
             return Ok(response);
         }
         return NotFound(response);

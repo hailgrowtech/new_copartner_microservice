@@ -48,33 +48,33 @@ public class WalletBusinessProcessor : IWalletBusinessProcessor
             Data = walletWithdrawalReadDto,
         };
     }
-    public async Task<ResponseDto> Post(WithdrawalCreateDto request)
+    public async Task<ResponseDto> Post(WalletCreateDto request)
     {
-        var withdrawal = _mapper.Map<Withdrawal>(request);
+        var wallet = _mapper.Map<Wallet>(request);
 
-        var response = await _sender.Send(new GetWithdrawalByIdQuery(withdrawal.Id));
-        if (response != null)
-        {
-            return new ResponseDto()
-            {
-                IsSuccess = false,
-                Data = _mapper.Map<WithdrawalReadDto>(response),
-                ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
-            };
-        }
+        //var response = await _sender.Send(new GetWithdrawalByIdQuery(withdrawal.Id));
+        //if (response != null)
+        //{
+        //    return new ResponseDto()
+        //    {
+        //        IsSuccess = false,
+        //        Data = _mapper.Map<WithdrawalReadDto>(response),
+        //        ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
+        //    };
+        //}
 
-        var result = await _sender.Send(new CreateWithdrawalCommand(withdrawal));
+        var result = await _sender.Send(new CreateWalletCommand(wallet));
         if (result == null)
         {
             return new ResponseDto()
             {
                 IsSuccess = false,
-                Data = _mapper.Map<WithdrawalReadDto>(response),
+                Data = _mapper.Map<WalletReadDto>(result),
                 ErrorMessages = new List<string>() { AppConstants.Common_FailedToCreateNewRecord }
             };
         }
 
-        var resultDto = _mapper.Map<WithdrawalReadDto>(result);
+        var resultDto = _mapper.Map<WalletReadDto>(result);
         return new ResponseDto()
         {
             Data = resultDto,

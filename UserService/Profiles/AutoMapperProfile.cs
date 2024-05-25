@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using CommonLibrary.CommonDTOs;
+using Copartner;
 using Microsoft.AspNetCore.JsonPatch;
 using MigrationDB.Models;
 using UserService.Dtos;
@@ -7,6 +8,15 @@ using UserService.Dtos;
 namespace UserService.Profiles;
 public class AutoMapperProfile : Profile
 {
+    public UserCreateDto ToUserCreateEntity(UserCreatedEvent user)
+    {
+        var result = new UserCreateDto
+        {
+            MobileNumber = user.MobileNumber
+        };
+
+        return result;
+    }
     public AutoMapperProfile()
     {
         // Source -> Target

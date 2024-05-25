@@ -49,10 +49,18 @@ public class WalletController : ControllerBase
         return wallet != null ? (ActionResult<WalletWithdrawalReadDto>)Ok(wallet) : NotFound();
     }
 
-    // POST api/<WalletController>
     [HttpPost]
-    public void Post([FromBody] string value)
+    public async Task<object> Post(WalletCreateDto walletCreateDto)
     {
+        var response = await _logic.Post(walletCreateDto);
+
+        if (response.IsSuccess)
+        {
+            Guid guid = (Guid)response.Data.GetType().GetProperty("Id").GetValue(response.Data);
+
+            return Ok(response);
+        }
+        return NotFound(response);
     }
 
     // PUT api/<WalletController>/5

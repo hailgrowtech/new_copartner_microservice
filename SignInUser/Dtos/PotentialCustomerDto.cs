@@ -2,7 +2,7 @@
 public class PotentialCustomerDto
 {
     public Guid Id { get; set; }
-    public string Mobile { get; set; }
+    public string MobileNumber { get; set; }
     public string CountryCode { get; set; }
     public string OTP { get; set; }
     public bool IsOTPValidated { get; set; }

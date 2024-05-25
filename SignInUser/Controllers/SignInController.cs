@@ -1,10 +1,13 @@
 ﻿using CommonLibrary.CommonDTOs;
+using Copartner;
+using MassTransit;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
+using Razorpay.Api;
 using SignInService.Dtos;
 using SignInService.Logic;
 
-namespace SignInService;
+namespace SignInUserService;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -12,11 +15,12 @@ public class SignInController : ControllerBase
 {
     private readonly ISignInBusinessProcessor _signUpBusinessProcessor;
     private readonly ILogger<SignInController> _logger;
-
-    public SignInController(ISignInBusinessProcessor signUpBusinessProcessor, ILogger<SignInController> logger)
+    private readonly IPublishEndpoint _publish;
+    public SignInController(ISignInBusinessProcessor signUpBusinessProcessor, ILogger<SignInController> logger, IPublishEndpoint publish)
     {
         this._signUpBusinessProcessor = signUpBusinessProcessor;
         this._logger = logger;
+        this._publish = publish;
     }
 
     /// <summary>
@@ -64,7 +68,16 @@ public class SignInController : ControllerBase
     public async Task<object> ValidateOTP(MobileValidationDto request)
     {
         _logger.LogInformation("SignInController : Validate OTP ..");
-        var result = await _signUpBusinessProcessor.ValidateOTP(request);
-        return Ok(result);
+        var response = await _signUpBusinessProcessor.ValidateOTP(request);
+        if (response.IsSuccess)
+        {
+            _publish.Publish<UserCreatedEvent>(new
+            {
+                MobileNumber = request.MobileNumber
+            });
+
+            return Ok(response);
+        }
+        return NotFound(response);
     }
 }

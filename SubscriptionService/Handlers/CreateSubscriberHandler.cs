@@ -22,7 +22,7 @@ public class CreateSubscriberHandler : IRequestHandler<CreateSubscriberCommand, 
         await _dbContext.Subscribers.AddAsync(entity);
         await _dbContext.SaveChangesAsync(cancellationToken);
         // Process subscriber in Wallet and save transaction
-        _subscriberBusineessProcessor.ProcessSubscriberWallet(entity.Id); // Later  need to do via RabbitMQ
+       // _subscriberBusineessProcessor.ProcessSubscriberWallet(entity.Id); // Later  need to do via RabbitMQ
         request.Subscriber.Id = entity.Id;
         return request.Subscriber;
     }

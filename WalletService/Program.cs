@@ -7,6 +7,7 @@ using System.Reflection;
 using WalletService.Profiles;
 using WalletService.Configuration;
 using WalletService.Logic;
+using WalletService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,6 +30,7 @@ foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
 {
     builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assembly));
 }
+builder.Services.AddServices();
 builder.Services.AddControllers();
 builder.Services.AddApplicationInsightsTelemetry();
 

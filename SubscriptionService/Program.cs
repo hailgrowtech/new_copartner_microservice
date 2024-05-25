@@ -8,6 +8,7 @@ using SubscriptionService.Configuration;
 using CommonLibrary.Authorization;
 using Publication.Factory;
 using System.Configuration;
+using SubscriptionService;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,6 +31,8 @@ foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
 {
     builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assembly));
 }
+
+builder.Services.AddServices();
 builder.Services.AddControllers();
 builder.Services.AddApplicationInsightsTelemetry();
 

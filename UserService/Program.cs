@@ -4,6 +4,7 @@ using Microsoft.OpenApi.Models;
 using MigrationDB.Data;
 using Serilog;
 using System.Reflection;
+using UserService;
 using UserService.Configuration;
 using UserService.Data;
 using UserService.Logic;
@@ -28,7 +29,8 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Progr
 //{
 //    builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assembly));
 //}
-
+// Add services to the container.
+builder.Services.AddServices();
 builder.Services.AddControllers();
 builder.Services.AddApplicationInsightsTelemetry();
 

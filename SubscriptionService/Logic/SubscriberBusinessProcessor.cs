@@ -1,9 +1,10 @@
 ﻿using AutoMapper;
 using CommonLibrary;
 using CommonLibrary.CommonDTOs;
+using Copartner;
 using MediatR;
 using Microsoft.AspNetCore.JsonPatch;
-using MigrationDB.Data;
+using Microsoft.EntityFrameworkCore;
 using MigrationDB.Model;
 using SubscriptionService.Commands;
 using SubscriptionService.Dtos;
@@ -15,13 +16,11 @@ namespace SubscriptionService.Logic
     {
         private readonly ISender _sender;
         private readonly IMapper _mapper;
-        private readonly CoPartnerDbContext _dbContext;
 
-        public SubscriberBusinessProcessor(ISender sender, IMapper mapper, CoPartnerDbContext dbContext)
+        public SubscriberBusinessProcessor(ISender sender, IMapper mapper)
         {
             _sender = sender;
             _mapper = mapper;
-            _dbContext = dbContext;
         }
 
         public async Task<ResponseDto> Get()
@@ -118,7 +117,7 @@ namespace SubscriptionService.Logic
                 {
                     IsSuccess = false,
                     Data = _mapper.Map<SubscriberReadDto>(existingsubscribers),
-                    ErrorMessages = new List<string>() { AppConstants.Expert_ExpertExistsWithMobileOrEmail }
+                    ErrorMessages = new List<string>() { AppConstants.Subscriber_SubscriberNotFound }
                 };
             }
 
@@ -129,7 +128,7 @@ namespace SubscriptionService.Logic
                 {
                     IsSuccess = false,
                     Data = _mapper.Map<SubscriberReadDto>(existingsubscribers),
-                    ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_FailedToCreateAffiliatePartner }
+                    ErrorMessages = new List<string>() { AppConstants.Subscriber_FailedToCreateNewSubscriber }
                 };
             }
 
@@ -137,7 +136,7 @@ namespace SubscriptionService.Logic
             return new ResponseDto()
             {
                 Data = resultDto,
-                DisplayMessage = AppConstants.Expert_ExpertCreated
+                DisplayMessage = AppConstants.Subscriber_SubscriberCreated
             };
         }
         public async Task<ResponseDto> Delete(Guid Id)
@@ -181,103 +180,17 @@ namespace SubscriptionService.Logic
             };
         }
 
-        public void ProcessSubscriberWallet(Guid subscriberId)
+        public async Task<WalletEvent> ProcessSubscriberWallet(Guid subscriberId)
         {
-            var subscriber = _dbContext.Subscribers.Find(subscriberId);
-
-            if (subscriber == null)
+           // var wallet = _mapper.Map<WalletEvent>(request);
+            var result = await _sender.Send(new GetSubscriberWalletQuery(subscriberId));
+            if (result == null)
             {
-                throw new ArgumentException("Subscriber not found.");
+                return null;
             }
 
-            var user = _dbContext.Users.Find(subscriber.UserId);
-
-            if (user == null)
-            {
-                throw new ArgumentException("User not found.");
-            }
-
-            var subscription = _dbContext.Subscriptions.Find(subscriber.SubscriptionId);
-
-            if (subscription == null)
-            {
-                throw new ArgumentException("subscription not found.");
-            }
-
-            var referralMode = user.ReferralMode;
-            Guid? expertsId = subscription.ExpertsId;
-            Guid? affiliatePartnerId = user.AffiliatePartnerId;
-            decimal amount = subscriber.TotalAmount;
-            decimal raAmount = 0, apAmount = 0, cpAmount = 0;
-
-            if (referralMode == "RA")
-            {
-
-                if (expertsId != null)
-                {
-                    raAmount = amount;
-                }
-                else
-                {
-                    var expert = _dbContext.Experts.Find(expertsId);
-                    raAmount = amount * ((decimal)(expert.FixCommission) / 100);
-                }
-
-                 cpAmount = amount - raAmount;
-
-                InsertTransaction(subscriber.Id, affiliatePartnerId, expertsId, raAmount, 0, cpAmount);
-            }
-            else if (referralMode == "AP")
-            {
-
-                if (_dbContext.Subscribers.Count(s => s.UserId == user.Id) < 2)
-                {
-                    var affiliatePartner = _dbContext.AffiliatePartners.Find(affiliatePartnerId);
-                    apAmount = amount * ((decimal)(affiliatePartner.FixCommission1) / 100);
-
-                    var expert = _dbContext.Experts.Find(expertsId);
-                    raAmount = amount * ((decimal)(expert.FixCommission) / 100);
-                }
-                else
-                {
-                    var affiliatePartner = _dbContext.AffiliatePartners.Find(affiliatePartnerId);
-                    apAmount = amount * ((decimal)(affiliatePartner.FixCommission2) / 100);
-
-                    var expert = _dbContext.Experts.Find(expertsId);
-                    raAmount = amount * ((decimal)(expert.FixCommission) / 100);
-                }
-
-                 cpAmount = amount - (apAmount + raAmount);
-
-                InsertTransaction(subscriber.Id, affiliatePartnerId, expertsId, raAmount, apAmount, cpAmount);
-            }
-            else
-            {
-                var expert = _dbContext.Experts.FirstOrDefault(e => e.Id == expertsId);
-                if (expert != null)
-                {
-                    raAmount = amount * ((decimal)(expert.FixCommission) / 100);
-                    cpAmount = amount - raAmount;
-                    InsertTransaction(subscriber.Id, affiliatePartnerId, expertsId, raAmount, apAmount, cpAmount);
-                }
-            }
+            return result;
         }
 
-        private void InsertTransaction(Guid subscriberId,Guid? affiliatePartnerId,Guid? expertsId, decimal raAmount, decimal apAmount, decimal cpAmount)
-        {
-            var transaction = new Wallet
-            {
-                SubscriberId = subscriberId,
-                AffiliatePartnerId = affiliatePartnerId,
-                ExpertsId = expertsId,
-                RAAmount = raAmount,
-                APAmount = apAmount,
-                CPAmount = cpAmount,
-                TransactionDate = DateTime.Now
-            };
-
-            _dbContext.Wallets.Add(transaction);
-            _dbContext.SaveChanges();
-        }
     }
 }
