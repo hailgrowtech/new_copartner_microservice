@@ -21,9 +21,11 @@ namespace AdminDashboardService.Logic
             _mapper = mapper;
         }
 
-        public Task<ResponseDto> Delete(Guid id)
+        public async Task<ResponseDto> Delete(Guid id)
         {
-            throw new NotImplementedException();
+            var relationshipManager = await _sender.Send(new DeleteRelationshipManagerCommand(id));
+            var expertReadDto = _mapper.Map<ResponseDto>(expert);
+            return expertReadDto;
         }
 
         public async Task<ResponseDto> Get(int page = 1, int pageSize = 10)
