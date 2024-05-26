@@ -32,7 +32,7 @@ foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
     builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assembly));
 }
 
-builder.Services.AddServices();
+builder.Services.AddServices(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddApplicationInsightsTelemetry();
 

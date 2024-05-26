@@ -1,26 +1,38 @@
 namespace SignInUserService;
+using CommonLibrary.CommonDTOs;
+
+using CommonLibrary;
 using MassTransit;
 using System.Reflection;
 public static class ConfigurationService
 {
-    public static IServiceCollection AddServices(this IServiceCollection services)
+    public static IServiceCollection AddServices(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddMassTransit(x => {
+        var rabbitMqConfig = configuration.GetSection("RabbitMqConfig").Get<RabbitMqConfig>();
+        string Hostname = EncryptionHelper.DecryptString(rabbitMqConfig.Hostname);
+        string Port = EncryptionHelper.DecryptString(rabbitMqConfig.Port);
+        string Username = EncryptionHelper.DecryptString(rabbitMqConfig.Username);
+        string Password = EncryptionHelper.DecryptString(rabbitMqConfig.Password);
+        {
+            services.AddMassTransit(x =>
+            {
 
-            x.UsingRabbitMq((ctx, cfg) => {
-
-                cfg.Host("b-e6da7d3b-c83d-4436-af6f-09e83fe7e80d.mq.eu-north-1.amazonaws.com", 5671, "/", c =>
+                x.UsingRabbitMq((ctx, cfg) =>
                 {
-                    c.Username("copartner");
-                    c.Password("Cop@rtn$r%123");
+
+                    cfg.Host(Hostname, Port, "/", c =>
+                    {
+                        c.Username(Username);
+                        c.Password(Password);
+                    });
+
+                    cfg.ConfigureEndpoints(ctx);
                 });
 
-                cfg.ConfigureEndpoints(ctx);
+
             });
 
-
-        });
-
-        return services;
+            return services;
+        }
     }
 }

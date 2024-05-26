@@ -2,6 +2,8 @@
 using Amazon.S3;
 using Amazon.S3.Model;
 using Microsoft.AspNetCore.Mvc;
+using CommonLibrary.CommonDTOs;
+using CommonLibrary;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -31,7 +33,8 @@ public class AWSStorageController : ControllerBase
     public async Task<IActionResult> Post(IFormFile file, string? prefix)
     {
         _logger.LogInformation("Uploading Data in AWS S3 Bucket..");
-        string bucketName = _configuration["AWSS3Credentials:BucketName"];
+        var AwsS3Config = _configuration.GetSection("AwsS3Config").Get<AwsS3Config>(); //_configuration["AWSS3Credentials:BucketName"];
+        string bucketName = EncryptionHelper.DecryptString(AwsS3Config.BucketName);
         var response = await _logic.Post(file, prefix, bucketName);
         if (response.IsSuccess)
         {
@@ -47,7 +50,8 @@ public class AWSStorageController : ControllerBase
     [HttpDelete]
     public async Task<IActionResult> Delete(string filePath)
     {
-        string bucketName = _configuration["AWSS3Credentials:BucketName"];
+        var AwsS3Config = _configuration.GetSection("AwsS3Config").Get<AwsS3Config>();
+        string bucketName = EncryptionHelper.DecryptString(AwsS3Config.BucketName);
         var response = await _logic.Delete(filePath, bucketName);
         if (response.IsSuccess)
         {

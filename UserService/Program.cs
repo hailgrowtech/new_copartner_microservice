@@ -30,7 +30,7 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Progr
 //    builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assembly));
 //}
 // Add services to the container.
-builder.Services.AddServices();
+builder.Services.AddServices(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddApplicationInsightsTelemetry();
 

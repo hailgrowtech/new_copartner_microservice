@@ -11,6 +11,7 @@ using Amazon.Extensions.NETCore.Setup;
 using Amazon.Runtime;
 using Amazon.S3;
 using CommonLibrary;
+using CommonLibrary.CommonDTOs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -33,6 +34,7 @@ foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
 {
     builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assembly));
 }
+var configuration = builder.Configuration;
 builder.Services.AddControllers();
 builder.Services.AddApplicationInsightsTelemetry();
 
@@ -87,18 +89,13 @@ builder.Services.AddSwaggerGen(c =>
     c.IncludeXmlComments(xmlPath);
 });
 
-// Load configuration from appsettings.json
-var configuration = new ConfigurationBuilder()
-    .AddJsonFile("appsettings.json")
-    //.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-    .Build();
-// Retrieve AWS credentials from configuration
-string encryptAccessKey = configuration["AWSS3Credentials:EncryptedAccessKey"];
-string encryptSecretKey = configuration["AWSS3Credentials:EncryptedSecretKey"];
-string region = configuration["AWSS3Credentials:Region"];
 
-string accessKey = EncryptionHelper.DecryptString(encryptAccessKey);
-string secretKey = EncryptionHelper.DecryptString(encryptSecretKey);
+
+var AwsS3Config = configuration.GetSection("AwsS3Config").Get<AwsS3Config>();
+
+string accessKey = EncryptionHelper.DecryptString(AwsS3Config.EncryptedAccessKey);
+string secretKey = EncryptionHelper.DecryptString(AwsS3Config.EncryptedSecretKey);
+string region = EncryptionHelper.DecryptString(AwsS3Config.Region);
 
 // Create AWS options
 AWSOptions awsOptions = new AWSOptions
