@@ -9,6 +9,8 @@
         public int? FixCommission { get; set; }
         public long RAEarning { get; set; }
         public bool isActive { get; set; }
+        public string? ChannelName { get; set; }
+        public string? GST { get; set; }
 
     }
 }

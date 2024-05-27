@@ -31,7 +31,8 @@ namespace AffiliatePartnerService.Handlers
                             ap.Name,
                             ap.MobileNumber,
                             ap.FixCommission1,
-                            ap.FixCommission2
+                            ap.FixCommission2,
+                            ap.GST
                         } into g
                         select new APDetailDto
                         {
@@ -41,7 +42,8 @@ namespace AffiliatePartnerService.Handlers
                             MobileNumber = g.Key.MobileNumber,
                             FixCommission1 = g.Key.FixCommission1,
                             FixCommission2 = g.Key.FixCommission2,
-                            APEarning = g.Sum(w => w.wallet.APAmount ?? 0) // Handle null values
+                            APEarning = g.Sum(w => w.wallet.APAmount ?? 0), // Handle null values
+                            GST = g.Key.GST
                         };
 
             var result = await query.ToListAsync(cancellationToken);

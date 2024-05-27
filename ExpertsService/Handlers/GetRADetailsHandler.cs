@@ -32,7 +32,9 @@ namespace ExpertsService.Handlers
                             expert.Name,
                             expert.MobileNumber,
                             expert.FixCommission,
-                            expert.IsDeleted
+                            expert.IsDeleted,
+                            expert.ChannelName,
+                            expert.GST
                         } into g
                         where !g.Key.IsDeleted && g.Key.isCoPartner == request.IsCoPartner
                         select new RADetailsDto
@@ -43,7 +45,9 @@ namespace ExpertsService.Handlers
                             SEBINo = g.Select(x => x.expert.SEBIRegNo).SingleOrDefault(),
                             FixCommission = g.Key.FixCommission,
                             RAEarning = g.Sum(x => x.subscriberWallet.RAAmount),
-                            isCoPartner = g.Key.isCoPartner
+                            isCoPartner = g.Key.isCoPartner,
+                            ChannelName = g.Key.ChannelName,
+                            GST = g.Key.GST
                         };
 
             var result = await query.Skip(skip).Take(request.PageSize).ToListAsync();
