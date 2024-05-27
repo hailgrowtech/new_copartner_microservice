@@ -10,7 +10,7 @@ public static class ConfigurationService
     {
         var rabbitMqConfig = configuration.GetSection("RabbitMqConfig").Get<RabbitMqConfig>();
         string Hostname = EncryptionHelper.DecryptString(rabbitMqConfig.Hostname);
-        string Port = EncryptionHelper.DecryptString(rabbitMqConfig.Port);
+        ushort Port = Convert.ToUInt16(EncryptionHelper.DecryptString(rabbitMqConfig.Port));
         string Username = EncryptionHelper.DecryptString(rabbitMqConfig.Username);
         string Password = EncryptionHelper.DecryptString(rabbitMqConfig.Password);
         {
