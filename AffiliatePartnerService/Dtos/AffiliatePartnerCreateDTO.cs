@@ -5,6 +5,7 @@ namespace AffiliatePartnerService.Dtos
     public class AffiliatePartnerCreateDTO
     {
         public string Name { get; set; }
+        public string? LegalName { get; set; }
         public string? AffiliatePartnerImagePath { get; set; }
         public string? Email { get; set; }
         public string? MobileNumber { get; set; }
