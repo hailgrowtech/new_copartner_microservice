@@ -24,6 +24,8 @@ public class WithdrawalReadDto
     public DateTime? TransactionDate { get; set; }
     [Column(TypeName = "text")]
     public string? RejectReason { get; set; }
+    public string? LegalName {  get; set; }
+    public string? GST {  get; set; }
 }
 
 public class WithdrawalModeReadDto

@@ -24,4 +24,5 @@ public class RAListingDataDto
     public string Subscription { get; set; }
     public string PlanType { get; set; }
     public string TransactionId { get; set; }
+    public decimal? SubscriptionAmount { get; set; }
 }

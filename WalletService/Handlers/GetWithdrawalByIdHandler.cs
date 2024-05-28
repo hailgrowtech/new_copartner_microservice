@@ -186,7 +186,10 @@ public class GetWithdrawalByUserIdHandler : IRequestHandler<GetWithdrawalByUserI
                         RejectReason = combined.Withdrawal.RejectReason,
                         Name = expert.Name,
                         SEBINo = expert.SEBIRegNo,
-                        MobileNo = expert.MobileNumber
+                        MobileNo = expert.MobileNumber,
+                        LegalName = expert.LegalName,
+                        GST = expert.GST
+                        
                     });
         }
 
@@ -216,7 +219,10 @@ public class GetWithdrawalByUserIdHandler : IRequestHandler<GetWithdrawalByUserI
                         TransactionDate = combined.Withdrawal.TransactionDate,
                         RejectReason = combined.Withdrawal.RejectReason,
                         Name = affiliatePartner.Name,
-                        MobileNo = affiliatePartner.MobileNumber
+                        MobileNo = affiliatePartner.MobileNumber,
+                        LegalName = affiliatePartner.LegalName,
+                        GST = affiliatePartner.GST
+
                     });
         }
 

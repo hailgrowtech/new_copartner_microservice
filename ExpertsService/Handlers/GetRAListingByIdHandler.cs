@@ -35,7 +35,9 @@ public class GetRAListingByIdHandler : IRequestHandler<GetRAListingByIdQuery, IE
                         Amount = wallet.RAAmount,
                         Subscription = subscr.ServiceType ?? "No Subscrption",
                         PlanType = subscr.PlanType ?? "No Plan",
-                        TransactionId = sub.TransactionId
+                        TransactionId = sub.TransactionId,
+                        SubscriptionAmount = subscr.Amount
+
                     };
 
         var result = await query.Skip(skip).Take(request.pageSize).ToListAsync(cancellationToken);

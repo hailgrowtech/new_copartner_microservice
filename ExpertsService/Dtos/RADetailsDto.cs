@@ -13,6 +13,8 @@ namespace ExpertsService.Dtos
         public decimal? RAEarning {  get; set; }
         public bool isActive { get; set; }
         public bool isCoPartner { get; set; }
+        public string? ChannelName { get; set; }
+        public string? GST {  get; set; }
     }
 
 }

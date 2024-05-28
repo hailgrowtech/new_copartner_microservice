@@ -12,5 +12,7 @@ namespace AffiliatePartnerService.Dtos
         public int? FixCommission2 { get; set; }
         [Precision(18, 2)]
         public decimal? APEarning { get; set; }
+        public string? GST { get; set; }
+
     }
 }
