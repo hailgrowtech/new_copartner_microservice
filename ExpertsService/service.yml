@@ -1,0 +1,22 @@
+﻿apiVersion: v1
+kind: Service
+metadata:
+  name: experts-api
+spec:
+  selector:
+    app: experts-api
+  ports:
+  - name: http
+    protocol: TCP
+    port: 80
+    targetPort: 80
+  - name: https
+    protocol: TCP
+    port: 443
+    targetPort: 5132
+  - name: custom
+    protocol: TCP
+    port: 5132
+    targetPort: 5132
+  type: LoadBalancer
+

@@ -15,12 +15,12 @@ public class SignInController : ControllerBase
 {
     private readonly ISignInBusinessProcessor _signUpBusinessProcessor;
     private readonly ILogger<SignInController> _logger;
-    private readonly IPublishEndpoint _publish;
+   // private readonly IPublishEndpoint _publish;
     public SignInController(ISignInBusinessProcessor signUpBusinessProcessor, ILogger<SignInController> logger, IPublishEndpoint publish)
     {
         this._signUpBusinessProcessor = signUpBusinessProcessor;
         this._logger = logger;
-        this._publish = publish;
+      //  this._publish = publish;
     }
 
     /// <summary>
@@ -71,10 +71,10 @@ public class SignInController : ControllerBase
         var response = await _signUpBusinessProcessor.ValidateOTP(request);
         if (response.IsSuccess)
         {
-            _publish.Publish<UserCreatedEvent>(new
-            {
-                MobileNumber = request.MobileNumber
-            });
+            //_publish.Publish<UserCreatedEvent>(new
+            //{
+            //    MobileNumber = request.MobileNumber
+            //});
 
             return Ok(response);
         }

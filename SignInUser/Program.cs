@@ -27,7 +27,7 @@ builder.Logging.AddSerilog(logger);
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 builder.Services.AddCors();
 // Add services to the container.
-builder.Services.AddServices(builder.Configuration);
+//builder.Services.AddServices(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddApplicationInsightsTelemetry();
 
