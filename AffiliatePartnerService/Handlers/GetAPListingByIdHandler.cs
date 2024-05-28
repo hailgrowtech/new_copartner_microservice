@@ -32,7 +32,8 @@ public class GetAPListingByIdHandler : IRequestHandler<GetAPListingByIdQuery, IE
                     {
                         APName = aff.Name,
                         ReferralLink = aff.ReferralLink,
-                        Date = usr.CreatedOn,
+                        UserJoiningDate = usr.CreatedOn,
+                        SubscribeDate = sub.CreatedOn,
                         UserMobileNo = usr.MobileNumber,
                         RAName = exp.Name,
                         Amount = wallet.RAAmount,
