@@ -12,5 +12,7 @@ namespace AffiliatePartnerService.Dtos
         [Precision(18, 2)]
         public decimal? Amount { get; set; }
         public string? Subscription { get; set; }
+        public string? GST { get; set; }
+        public string? LegalName { get; set; }
     }
 }

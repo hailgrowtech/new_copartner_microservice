@@ -36,7 +36,9 @@ public class GetAPListingByIdHandler : IRequestHandler<GetAPListingByIdQuery, IE
                         UserMobileNo = usr.MobileNumber,
                         RAName = exp.Name,
                         Amount = wallet.RAAmount,
-                        Subscription = subscr.ServiceType ?? "0" // Handle potential NULL value
+                        Subscription = subscr.ServiceType ?? "0", // Handle potential NULL value
+                        LegalName = aff.LegalName,
+                        GST = aff.GST
                     };
 
         var result = await query.Skip(skip).Take(request.pageSize).ToListAsync(cancellationToken);
