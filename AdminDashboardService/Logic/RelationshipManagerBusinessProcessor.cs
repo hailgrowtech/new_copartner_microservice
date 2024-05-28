@@ -1,6 +1,7 @@
 ﻿using AdminDashboardService.Commands;
 using AdminDashboardService.Dtos;
 using AdminDashboardService.Queries;
+using Amazon.S3.Model.Internal.MarshallTransformations;
 using AutoMapper;
 using CommonLibrary;
 using CommonLibrary.CommonDTOs;
@@ -25,7 +26,24 @@ namespace AdminDashboardService.Logic
         {
             var relationshipManager = await _sender.Send(new DeleteRelationshipManagerCommand(id));
             var relationshipManagerDto = _mapper.Map<ResponseDto>(relationshipManager);
-            return relationshipManagerDto;
+            if (relationshipManagerDto == null)
+            {
+                return new ResponseDto()
+                {
+                    IsSuccess = false,
+                    DisplayMessage = AppConstants.Common_NoRecordFound,
+                    Data = relationshipManagerDto,
+                };
+            }
+            else
+            {
+                return new ResponseDto()
+                {
+                    IsSuccess = true,
+                    DisplayMessage = AppConstants.Common_RecordDeleted,
+                    Data = relationshipManagerDto,
+                };
+            }
         }
 
         public async Task<ResponseDto> Get(int page = 1, int pageSize = 10)
