@@ -6,7 +6,8 @@ namespace AffiliatePartnerService.Dtos
     {
         public string APName { get; set; }
         public string ReferralLink { get; set; }
-        public DateTime? Date { get; set; }
+        public DateTime? UserJoiningDate { get; set; }
+        public DateTime? SubscribeDate { get; set; }
         public string? UserMobileNo { get; set; }
         public string? RAName { get; set; }
         [Precision(18, 2)]

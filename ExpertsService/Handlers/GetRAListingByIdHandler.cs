@@ -29,7 +29,8 @@ public class GetRAListingByIdHandler : IRequestHandler<GetRAListingByIdQuery, IE
                     select new RAListingDataDto
                     {
                         RAName = exp.Name,
-                        Date = sub.CreatedOn,
+                        UserJoiningDate = usr.CreatedOn,
+                        SubscribeDate = sub.CreatedOn,
                         UserMobileNo = usr.Id != null ? usr.MobileNumber : null,
                         APName = (aff.Id != null && aff.Id.ToString().Length > 10) ? aff.Name : ((usr.Id != null && usr.ExpertsID != null && usr.ExpertsID.ToString().Length > 5) ? "SELF" : "ORGANIC"),
                         Amount = wallet.RAAmount,

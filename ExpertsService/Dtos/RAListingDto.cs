@@ -16,7 +16,8 @@ public class RAListingDto
 public class RAListingDataDto
 {
     public string RAName { get; set; }
-    public DateTime? Date { get; set; }
+    public DateTime? UserJoiningDate { get; set; }
+    public DateTime? SubscribeDate { get; set; }
     public string? UserMobileNo { get; set; }
     public string? APName { get; set; }
     [Precision(18, 2)]
