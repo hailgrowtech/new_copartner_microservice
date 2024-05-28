@@ -34,7 +34,8 @@ namespace ExpertsService.Handlers
                             expert.FixCommission,
                             expert.IsDeleted,
                             expert.ChannelName,
-                            expert.GST
+                            expert.GST,
+                            expert.LegalName
                         } into g
                         where !g.Key.IsDeleted && g.Key.isCoPartner == request.IsCoPartner
                         select new RADetailsDto
@@ -47,7 +48,8 @@ namespace ExpertsService.Handlers
                             RAEarning = g.Sum(x => x.subscriberWallet.RAAmount),
                             isCoPartner = g.Key.isCoPartner,
                             ChannelName = g.Key.ChannelName,
-                            GST = g.Key.GST
+                            GST = g.Key.GST,
+                            LegalName =g.Key.LegalName
                         };
 
             var result = await query.Skip(skip).Take(request.PageSize).ToListAsync();

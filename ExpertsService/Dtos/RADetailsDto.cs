@@ -15,6 +15,7 @@ namespace ExpertsService.Dtos
         public bool isCoPartner { get; set; }
         public string? ChannelName { get; set; }
         public string? GST {  get; set; }
+        public string? LegalName { get; set; }
     }
 
 }

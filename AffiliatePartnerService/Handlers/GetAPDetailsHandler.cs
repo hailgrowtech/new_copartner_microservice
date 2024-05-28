@@ -32,7 +32,8 @@ namespace AffiliatePartnerService.Handlers
                             ap.MobileNumber,
                             ap.FixCommission1,
                             ap.FixCommission2,
-                            ap.GST
+                            ap.GST,
+                            ap.LegalName
                         } into g
                         select new APDetailDto
                         {

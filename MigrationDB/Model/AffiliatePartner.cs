@@ -23,6 +23,8 @@ namespace MigrationDB.Model
         public int? FixCommission2 { get; set; }
         public Guid RelationshipManagerId { get; set; }
         public bool isActive { get; set; }
+        public bool? isKYC { get; set; }
+        public string? KYCVideoPath { get; set; }
 
 
     }

@@ -25,4 +25,6 @@ public class RAListingDataDto
     public string PlanType { get; set; }
     public string TransactionId { get; set; }
     public decimal? SubscriptionAmount { get; set; }
+    public string? LegalName { get; set; }
+    public string? GST {  get; set; }
 }
