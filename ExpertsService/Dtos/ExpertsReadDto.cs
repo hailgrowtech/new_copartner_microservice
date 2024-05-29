@@ -31,7 +31,7 @@ public class ExpertReadDto
     public int? TelegramFollower { get; set; }
     public bool isCoPartner { get; set; }
     public int? FixCommission { get; set; }
-    public string? SEBIRegCertificatePath { get; }
+    public string? SEBIRegCertificatePath { get; set; }
     public Guid? RelationshipManagerId { get; set; }
     public bool isActive { get; set; }
 

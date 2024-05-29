@@ -28,12 +28,10 @@ namespace ExpertService.Dtos
         public string? TelegramChannel { get; set; }
         public string? PremiumTelegramChannel { get; set; }
         public int? TelegramFollower { get; set; }
+        public string? SEBIRegCertificatePath { get; set; }
         public bool isCoPartner { get; set; }
-        public int? FixCommission { get; set; }
-        public string? SEBIRegCertificatePath { get; }
+        public int? FixCommission { get; set; }      
         public Guid? RelationshipManagerId { get; set; }
         public bool isActive { get; set; }
-
-
     }
 }
