@@ -16,7 +16,7 @@ public class SignInController : ControllerBase
     private readonly ISignInBusinessProcessor _signUpBusinessProcessor;
     private readonly ILogger<SignInController> _logger;
    // private readonly IPublishEndpoint _publish;
-    public SignInController(ISignInBusinessProcessor signUpBusinessProcessor, ILogger<SignInController> logger, IPublishEndpoint publish)
+    public SignInController(ISignInBusinessProcessor signUpBusinessProcessor, ILogger<SignInController> logger)//, IPublishEndpoint publish)
     {
         this._signUpBusinessProcessor = signUpBusinessProcessor;
         this._logger = logger;
