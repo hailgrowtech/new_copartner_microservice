@@ -205,6 +205,9 @@ public class ExpertsBusinessProcessor : IExpertsBusinessProcessor
         var uriBuilder = new UriBuilder("https://copartner.in");
         uriBuilder.Path = $"/ra-detail/{id}";
 
+        // Add the raid query parameter
+        uriBuilder.Query = $"raid={id}";
+
         var referralLink = uriBuilder.ToString();
 
         return new ResponseDto()
