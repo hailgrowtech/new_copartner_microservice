@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using AuthenticationService.Commands;
 using AuthenticationService.Data;
+using EmailService.Logic;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 
@@ -11,9 +12,9 @@ namespace AuthenticationService.Handlers
     public class ForgotUserAuthDetailsHandler : IRequestHandler<ForgotPasswordCommand, bool>
     {
         private readonly AuthenticationDbContext _dbContext;
-        private readonly IEmailService _emailService;
+        private readonly IEmailBusinessProcessor _emailService;
 
-        public ForgotUserAuthDetailsHandler(AuthenticationDbContext dbContext, IEmailService emailService)
+        public ForgotUserAuthDetailsHandler(AuthenticationDbContext dbContext, IEmailBusinessProcessor emailService)
         {
             _dbContext = dbContext;
             _emailService = emailService;

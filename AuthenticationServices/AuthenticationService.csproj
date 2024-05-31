@@ -32,6 +32,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\CommonLibrary\CommonLibrary.csproj" />
+    <ProjectReference Include="..\Publication\Publication.csproj" />
   </ItemGroup>
 
   <ItemGroup>
