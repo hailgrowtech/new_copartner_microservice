@@ -19,7 +19,7 @@ namespace SubscriptionService.Dtos
         public DateTime? TransactionDate { get; set; }
 
         public bool isActive { get; set; }
-        public string PremiumTelegramChannel { get; set; }
+        public string? PremiumTelegramChannel { get; set; }
 
     }
 }
