@@ -29,8 +29,17 @@ public class GetWalletByIdHandler : IRequestHandler<GetWalletByIdQuery, WalletWi
         .Sum(w => request.userType == "RA" ? w.RAAmount : w.APAmount);
 
         var withdrawalBalance = _dbContext.Withdrawals
-            .Where(w => !w.IsDeleted && w.WithdrawalBy == request.userType)
-            .Sum(w => w.Amount);
+       .Join(_dbContext.WithdrawalModes,
+           w => w.WithdrawalModeId,
+           wm => wm.Id,
+           (w, wm) => new { Withdrawal = w, WithdrawalMode = wm })
+       .Where(wm => !wm.Withdrawal.IsDeleted && wm.Withdrawal.WithdrawalBy == request.userType &&
+           (request.userType == "RA" ? wm.WithdrawalMode.ExpertsId == request.Id : wm.WithdrawalMode.AffiliatePartnerId == request.Id))
+       .Select(wm => wm.Withdrawal.Amount)
+       .Sum();
+
+
+
 
         var dto = new WalletWithdrawalReadDto
         {

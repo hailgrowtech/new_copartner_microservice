@@ -36,7 +36,8 @@ public class GetAPListingByIdHandler : IRequestHandler<GetAPListingByIdQuery, IE
                         SubscribeDate = sub.CreatedOn,
                         UserMobileNo = usr.MobileNumber,
                         RAName = exp.Name,
-                        Amount = wallet.RAAmount,
+                        Amount = wallet.APAmount,
+                        PlanType=subscr.PlanType,
                         Subscription = subscr.ServiceType ?? "0", // Handle potential NULL value
                         LegalName = aff.LegalName,
                         GST = aff.GST
