@@ -44,7 +44,9 @@ namespace AffiliatePartnerService.Handlers
                             FixCommission1 = g.Key.FixCommission1,
                             FixCommission2 = g.Key.FixCommission2,
                             APEarning = g.Sum(w => w.wallet.APAmount ?? 0), // Handle null values
-                            GST = g.Key.GST
+                            GST = g.Key.GST,
+                            LegalName = g.Key.LegalName
+
                         };
 
             var result = await query.ToListAsync(cancellationToken);
