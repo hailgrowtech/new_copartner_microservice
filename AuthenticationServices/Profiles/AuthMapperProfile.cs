@@ -15,6 +15,8 @@ public class AuthMapperProfile :Profile
         CreateMap<AuthenticationDetail, UserCreateDto>().ReverseMap();
         CreateMap<AuthenticationDetail, UserPasswordDTO>().ReverseMap();
         CreateMap<AuthenticationDetail, JsonPatchDocument<UserCreateDto>>().ReverseMap();
+
+        CreateMap<ForgotPassword, ForgotPasswordDTO>().ReverseMap();
     }
     //ToDo Implement Automapper TechDebt
     public AuthenticationDetail ToCreateAuthDetailEntity(UserCreateDto user)

@@ -13,5 +13,6 @@ public interface IUserBusinessProcessor
 
     Task<ResponseDto> Patch(Guid Id, JsonPatchDocument<UserCreateDto> stackholderDto);
     Task<ResponseDto> Delete(Guid id);
-    Task<ResponseDto> ResetPassword(UserPasswordDTO userrPasswordDTO);
+    Task<ResponseDto> ResetPassword(UserPasswordDTO userPasswordDTO);
+    Task<ResponseDto> ForgotPassword(ForgotPasswordDTO forgotPasswordDTO);
 }

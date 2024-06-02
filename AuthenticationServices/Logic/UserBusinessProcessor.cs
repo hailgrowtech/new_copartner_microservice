@@ -13,6 +13,7 @@ using AuthenticationService.Profiles;
 using MassTransit.Mediator;
 using System.Text.RegularExpressions;
 using System.ComponentModel.DataAnnotations;
+using System.Security.Cryptography;
 
 namespace AuthenticationService.Logic;
 public class UserBusinessProcessor : IUserBusinessProcessor
@@ -227,6 +228,58 @@ public class UserBusinessProcessor : IUserBusinessProcessor
             DisplayMessage = "Password reset successfully."
         };
     }
+    public async Task<ResponseDto> ForgotPassword(ForgotPasswordDTO request)
+    {
+        var forgotPassword = _mapper.Map<ForgotPassword>(request);
+        //TODO : Encrypt Password. Make sure old and new password are not same. Make sure password is a combination of Alpha Numeric Char with Special Char and minmum 8 chars.
+        // Write these validations in a seperate method
+        // Map request to command
+        // check email
+        var user = new AuthenticationDetail
+        {
+            Id = new Guid(),
+            UserType = string.Empty,
+            StackholderId = new Guid(),
+            UserId = new Guid(),
+            Name = string.Empty,
+            Email = request.Email,
+            MobileNumber = string.Empty,
+            PasswordHash = string.Empty,
+            IsActive = true,
+        };
+  
+        var existingUser = await _sender.Send(new GetUserByEmailQuery(user));
+        if (existingUser == null)
+        {
+            return new ResponseDto()
+            {
+                IsSuccess = false,
+                Data = _mapper.Map<UserReadDto>(existingUser),
+                ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
+            };
+        }
+        forgotPassword.UserId = existingUser.UserId;
+        forgotPassword.Token= TokenGenerator.GenerateToken();
+        forgotPassword.Expires = DateTime.UtcNow.AddHours(1);
+        forgotPassword.IsValidated = false;
+
+        // Send the command
+        var result = await _sender.Send(new ForgotPasswordCommand(forgotPassword));
+        if (!result)
+        {
+            return new ResponseDto()
+            {
+                IsSuccess = false,
+                ErrorMessages = new List<string>() { "Failed to reset password." }
+            };
+        }
+
+        return new ResponseDto()
+        {
+            IsSuccess = true,
+            DisplayMessage = "Password reset successfully."
+        };
+    }
     private ValidationResult ValidatePassword(UserPasswordDTO request)
     {
         var validationErrors = new List<string>();
@@ -271,5 +324,18 @@ public class ValidationResult
     {
         IsValid = true;
         ErrorMessages = new List<string>();
+    }
+}
+
+public static class TokenGenerator
+{
+    public static string GenerateToken(int length = 32)
+    {
+        byte[] tokenData = new byte[length];
+        using (var rng = RandomNumberGenerator.Create())
+        {
+            rng.GetBytes(tokenData);
+        }
+        return Convert.ToBase64String(tokenData);
     }
 }

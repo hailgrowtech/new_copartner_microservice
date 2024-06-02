@@ -16,6 +16,13 @@
   "Razorpay": {
     "KeyId": "YOUR_KEY_ID",
     "KeySecret": "YOUR_KEY_SECRET"
+  },
+  "EmailConfiguration": {
+    "From": "deepaknegi@aim.com",
+    "SmtpServer": "smtp.aol.com",
+    "Port": 465,
+    "Username": "deepaknegi@aim.com",
+    "Password": "katrina"
   }
 
 }

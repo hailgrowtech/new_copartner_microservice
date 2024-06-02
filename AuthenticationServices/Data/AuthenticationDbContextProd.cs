@@ -16,5 +16,6 @@ public class AuthenticationDbContextProd : DbContext
 
     public DbSet<Authentication> Authentications { get; set; }
     public DbSet<AuthenticationDetail> AuthenticationDetails { get; set; }
+    public DbSet<ForgotPassword> ForgotPasswords { get; set; }
 
 }

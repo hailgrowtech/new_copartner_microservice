@@ -8,19 +8,51 @@ namespace Publication;
     {
     public static AppSettings GetAppSettings()
     {
-        var _sections = GetConfigurationSections();
+        var _sections = GetConfigurationSection("AppSettings");
         var _appSettings = _sections.Get<AppSettings>();
         return _appSettings;
     }
 
-    public static IConfigurationSection GetConfigurationSections()
+    public static EmailConfiguration GetEmailSettings()
     {
-        var _config = new ConfigurationBuilder()
-           .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
-           .AddJsonFile("publicationAppsettings.json").Build();
+        var section = GetConfigurationSection("EmailConfiguration");
+        var emailSettings = section.Get<EmailConfiguration>();
+        return emailSettings;
+    }
 
-        var _sections = _config.GetSection(nameof(AppSettings));
-        return _sections;
+    //public static IConfigurationSection GetConfigurationSections()
+    //{
+    //    var _config = new ConfigurationBuilder()
+    //       .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+    //       .AddJsonFile("publicationAppsettings.json").Build();
+
+    //    var _sections = _config.GetSection(nameof(AppSettings));
+    //    return _sections;
+    //}
+
+    private static IConfigurationSection GetConfigurationSection(string sectionName)
+    {
+        var config = new ConfigurationBuilder()
+           .SetBasePath(AppDomain.CurrentDomain.BaseDirectory)
+           .AddJsonFile("publicationAppsettings.json")
+           .Build();
+
+        var section = config.GetSection(sectionName);
+        if (section == null)
+        {
+            throw new ArgumentException($"Section '{sectionName}' not found in configuration.");
+        }
+
+        return section;
+    }
+
+    public class EmailConfiguration
+    {
+        public string From { get; set; }
+        public string SmtpServer { get; set; }
+        public int Port { get; set; }
+        public string Username { get; set; }
+        public string Password { get; set; }
     }
 
 }

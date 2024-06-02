@@ -127,4 +127,17 @@ public class UsersController : ControllerBase
         }
         return NotFound(response);        
     }
+    [HttpPost("ForgotPassword")]
+    public async Task<IActionResult> ForgotPassword(ForgotPasswordDTO forgotPasswordDTO)
+    {
+        var response = await _logic.ForgotPassword(forgotPasswordDTO);
+        // Handle the result
+        if (response.IsSuccess)
+        {
+            // Guid guid = (Guid)response.Data.GetType().GetProperty("Id").GetValue(response.Data);
+
+            return Ok(response);
+        }
+        return NotFound(response);
+    }
 }

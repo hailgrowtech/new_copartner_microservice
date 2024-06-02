@@ -11,6 +11,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Ocelot.Values;
+using Publication.Factory;
 using Serilog;
 using System.Reflection;
 using System.Text.Json.Serialization;
@@ -30,6 +31,7 @@ builder.Logging.AddSerilog(logger);
 
 
 // Add services to the container.
+
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly())); 
 builder.Services.AddControllers();
 builder.Services.AddApplicationInsightsTelemetry();
@@ -89,6 +91,8 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddScoped<IJwtUtils, JwtUtils>();
 builder.Services.AddScoped<IAuthenticationBusinessProcessor, AuthenticationBusinessProcessor>();
 builder.Services.AddScoped<IUserBusinessProcessor, UserBusinessProcessor>();
+// Register eMailFactory
+builder.Services.AddTransient<eMailFactory>();
 //Resolve Dependencies Ends
 
 //if (builder.Environment.IsProduction())
