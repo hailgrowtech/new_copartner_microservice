@@ -15,4 +15,5 @@ public interface IUserBusinessProcessor
     Task<ResponseDto> Delete(Guid id);
     Task<ResponseDto> ResetPassword(UserPasswordDTO userPasswordDTO);
     Task<ResponseDto> ForgotPassword(ForgotPasswordDTO forgotPasswordDTO);
+    Task<ResponseDto> ResetForgotPassword(ResetPasswordDTO userPasswordDTO);
 }

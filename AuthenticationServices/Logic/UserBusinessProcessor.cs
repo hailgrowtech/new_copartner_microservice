@@ -218,14 +218,14 @@ public class UserBusinessProcessor : IUserBusinessProcessor
             return new ResponseDto()
             {
                 IsSuccess = false,
-                ErrorMessages = new List<string>() { "Failed to reset password." }
+                ErrorMessages = new List<string>() { "Failed to change password." }
             };
         }
 
         return new ResponseDto()
         {
             IsSuccess = true,
-            DisplayMessage = "Password reset successfully."
+            DisplayMessage = "Password changed successfully."
         };
     }
     public async Task<ResponseDto> ForgotPassword(ForgotPasswordDTO request)
@@ -280,6 +280,40 @@ public class UserBusinessProcessor : IUserBusinessProcessor
             DisplayMessage = "Password reset successfully."
         };
     }
+    public async Task<ResponseDto> ResetForgotPassword(ResetPasswordDTO request)
+    {
+        //TODO : Encrypt Password. Make sure old and new password are not same. Make sure password is a combination of Alpha Numeric Char with Special Char and minmum 8 chars.
+        // Write these validations in a seperate method
+        // Map request to command
+        // Validate password
+        // Implement password strength validation
+        var validationResult = ValidateResetPassword(request);
+        if (!validationResult.IsValid)
+        {
+            return new ResponseDto()
+            {
+                IsSuccess = false,
+                ErrorMessages = validationResult.ErrorMessages
+            };
+        }
+
+        // Send the command
+        var result = await _sender.Send(new ResetForgotPasswordCommand(request));
+        if (!result)
+        {
+            return new ResponseDto()
+            {
+                IsSuccess = false,
+                ErrorMessages = new List<string>() { "Failed to reset password." }
+            };
+        }
+
+        return new ResponseDto()
+        {
+            IsSuccess = true,
+            DisplayMessage = "Password reset successfully."
+        };
+    }
     private ValidationResult ValidatePassword(UserPasswordDTO request)
     {
         var validationErrors = new List<string>();
@@ -304,7 +338,23 @@ public class UserBusinessProcessor : IUserBusinessProcessor
         };
     }
 
+    private ValidationResult ValidateResetPassword(ResetPasswordDTO request)
+    {
+        var validationErrors = new List<string>();
 
+        // Implement password strength validation
+        if (!IsStrongPassword(request.Password))
+        {
+            validationErrors.Add("Password must be at least 8 characters long and contain a combination of alphanumeric characters and special characters.");
+        }
+
+        // Return ValidationResult object with error messages
+        return new ValidationResult
+        {
+            IsValid = validationErrors.Count == 0,
+            ErrorMessages = validationErrors
+        };
+    }
 
     private bool IsStrongPassword(string password)
     {
@@ -329,7 +379,7 @@ public class ValidationResult
 
 public static class TokenGenerator
 {
-    public static string GenerateToken(int length = 32)
+    public static string GenerateToken(int length = 128)
     {
         byte[] tokenData = new byte[length];
         using (var rng = RandomNumberGenerator.Create())

@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Json.Serialization;
 
 namespace AuthenticationService.Models;
+[Table("ForgotPassword")]
 public class ForgotPassword : BaseModel
 {
     public Guid? UserId { get; set; }
