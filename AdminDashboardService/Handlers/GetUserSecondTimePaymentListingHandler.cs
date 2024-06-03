@@ -17,22 +17,26 @@ namespace AdminDashboardService.Handlers
 
 
 
-            var usersWithSecondPayment = await (from u in _dbContext.Users
-                                                join s in _dbContext.Subscribers on u.Id equals s.UserId
-                                                where !u.IsDeleted
-                                                group s by new { u.Id, u.Name, u.MobileNumber } into userGroup
-                                                where userGroup.Count() > 1
-                                                select new UserSecondTimePaymentListingDto
-                                                {
-                                                    UserId = userGroup.Key.Id,
-                                                    Date = userGroup.FirstOrDefault().CreatedOn, // Assuming CreatedOn represents subscriber creation date
-                                                    Mobile = userGroup.Key.MobileNumber,
-                                                    Name = userGroup.Key.Name,
-                                                    Payment = userGroup.FirstOrDefault().TotalAmount, // Assuming TotalAmount represents the payment amount
-                                                    
-                                                }).Skip(skip)
-                                                    .Take(request.PageSize)
-                                                    .ToListAsync(cancellationToken);
+            var userData = await (from u in _dbContext.Users
+                                  join s in _dbContext.Subscribers on u.Id equals s.UserId
+                                  where !u.IsDeleted
+                                  select new { u, s })
+                     .ToListAsync(cancellationToken);
+
+            var usersWithSecondPayment = userData.GroupBy(x => x.u.Id)
+                                                 .Where(g => g.Count() > 1)
+                                                 .SelectMany(g => g.Select(sub => new UserSecondTimePaymentListingDto
+                                                 {
+                                                     UserId = sub.u.Id,
+                                                     Date = sub.s.CreatedOn,
+                                                     Mobile = sub.u.MobileNumber,
+                                                     Name = sub.u.Name,
+                                                     Payment = sub.s.TotalAmount
+                                                 }))
+                                                 .Skip(skip)
+                                                 .Take(request.PageSize);
+
+
 
 
             if (usersWithSecondPayment == null) return null;
