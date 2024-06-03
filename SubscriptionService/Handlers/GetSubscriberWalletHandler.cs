@@ -28,10 +28,15 @@ public class GetSubscriberWalletHandler : IRequestHandler<GetSubscriberWalletQue
         var expertsId = subscriber.Subscription?.ExpertsId;
         var affiliatePartnerId = subscriber.User.AffiliatePartnerId;
         var amount = subscriber.TotalAmount;
+        var isCoPartner = subscriber.Subscription.Experts.isCoPartner;
 
         decimal raAmount = 0, apAmount = 0, cpAmount = 0;
+        if(isCoPartner)
+        {
+            raAmount = amount;
+        }
 
-        if (referralMode == "RA")
+        else if (referralMode == "RA")
         {
             raAmount = expertsId != null ? amount : amount * ((decimal)_dbContext.Experts.Find(expertsId).FixCommission) / 100;
         }
