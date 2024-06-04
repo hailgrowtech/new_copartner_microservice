@@ -33,13 +33,11 @@ public class GetWalletByIdHandler : IRequestHandler<GetWalletByIdQuery, WalletWi
            w => w.WithdrawalModeId,
            wm => wm.Id,
            (w, wm) => new { Withdrawal = w, WithdrawalMode = wm })
-       .Where(wm => !wm.Withdrawal.IsDeleted && wm.Withdrawal.WithdrawalBy == request.userType &&
+       .Where(wm => !wm.Withdrawal.IsDeleted && wm.Withdrawal.WithdrawalBy == request.userType 
+       && wm.Withdrawal.RequestAction != "R" &&
            (request.userType == "RA" ? wm.WithdrawalMode.ExpertsId == request.Id : wm.WithdrawalMode.AffiliatePartnerId == request.Id))
        .Select(wm => wm.Withdrawal.Amount)
        .Sum();
-
-
-
 
         var dto = new WalletWithdrawalReadDto
         {

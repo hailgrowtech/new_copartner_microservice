@@ -17,6 +17,7 @@ public class GetSubscriberWalletHandler : IRequestHandler<GetSubscriberWalletQue
         var subscriber = await _dbContext.Subscribers
                 .Include(s => s.User)
                 .Include(s => s.Subscription)
+                .Include(s=> s.Subscription.Experts)
                 .FirstOrDefaultAsync(s => s.Id == request.Id);
 
         if (subscriber == null)
@@ -31,7 +32,7 @@ public class GetSubscriberWalletHandler : IRequestHandler<GetSubscriberWalletQue
         var isCoPartner = subscriber.Subscription.Experts.isCoPartner;
 
         decimal raAmount = 0, apAmount = 0, cpAmount = 0;
-        if(isCoPartner)
+        if(!isCoPartner)
         {
             raAmount = amount;
         }

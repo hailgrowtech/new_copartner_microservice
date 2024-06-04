@@ -14,6 +14,7 @@ using MassTransit.Mediator;
 using System.Text.RegularExpressions;
 using System.ComponentModel.DataAnnotations;
 using System.Security.Cryptography;
+using System.Net;
 
 namespace AuthenticationService.Logic;
 public class UserBusinessProcessor : IUserBusinessProcessor
@@ -265,19 +266,19 @@ public class UserBusinessProcessor : IUserBusinessProcessor
 
         // Send the command
         var result = await _sender.Send(new ForgotPasswordCommand(forgotPassword));
-        if (!result)
+        if (result != HttpStatusCode.OK)
         {
             return new ResponseDto()
             {
                 IsSuccess = false,
-                ErrorMessages = new List<string>() { "Failed to reset password." }
+                ErrorMessages = new List<string>() { "Failed to send forgot password link." }
             };
         }
 
         return new ResponseDto()
         {
             IsSuccess = true,
-            DisplayMessage = "Password reset successfully."
+            DisplayMessage = "Forgot password link sent successfully."
         };
     }
     public async Task<ResponseDto> ResetForgotPassword(ResetPasswordDTO request)
