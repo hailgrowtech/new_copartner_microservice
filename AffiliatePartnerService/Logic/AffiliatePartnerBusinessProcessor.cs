@@ -28,7 +28,7 @@ namespace AffiliatePartnerService.Logic
             var ap = await _sender.Send(new GetAffiliatePartnerByIdQuery(id));
 
             // It's a good practice to use UriBuilder for constructing URLs to handle edge cases
-            var uriBuilder = new UriBuilder("https://copartner.in/ad1");
+            var uriBuilder = new UriBuilder("https://ad1.copartner.in/");
             var query = HttpUtility.ParseQueryString(string.Empty);
             query["referralCode"] = ap.ReferralCode;
             query["apid"] = id.ToString(); // Ensure the ID is converted to a string
