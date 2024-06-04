@@ -190,7 +190,8 @@ public class GetWithdrawalByUserIdHandler : IRequestHandler<GetWithdrawalByUserI
                         MobileNo = expert.MobileNumber,
                         LegalName = expert.LegalName,
                         GST = expert.GST                        
-                    });
+                    })
+            .OrderByDescending(w => w.WithdrawalRequestDate);
         }
 
         if (request.userType == "AP")
@@ -222,7 +223,8 @@ public class GetWithdrawalByUserIdHandler : IRequestHandler<GetWithdrawalByUserI
                         MobileNo = affiliatePartner.MobileNumber,
                         LegalName = affiliatePartner.LegalName,
                         GST = affiliatePartner.GST
-                    });
+                    })
+                .OrderByDescending(w => w.WithdrawalRequestDate);
         }
 
         var result = await query
