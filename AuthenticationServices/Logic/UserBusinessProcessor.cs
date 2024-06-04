@@ -260,6 +260,7 @@ public class UserBusinessProcessor : IUserBusinessProcessor
             };
         }
         forgotPassword.UserId = existingUser.UserId;
+        forgotPassword.UserType = existingUser.UserType;
         forgotPassword.Token= TokenGenerator.GenerateToken();
         forgotPassword.Expires = DateTime.UtcNow.AddHours(1);
         forgotPassword.IsValidated = false;
