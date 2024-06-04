@@ -104,5 +104,13 @@ namespace AffiliatePartnerService.Controllers
             return affiliatePartners != null ? (ActionResult<AffiliatePartnerReadDTO>)Ok(affiliatePartners) : NotFound();
         }
 
+        [HttpGet("Ad1LandingPage/{Id}", Name = "Ad1LandingPageReferralLink")]
+        public async Task<ActionResult<AffiliatePartnerReadDTO>> Ad1LandingPageReferralLink(Guid Id)
+        {
+            _logger.LogInformation("Fetching Affiliate Partners Ad1LandingPageReferralLink details for Id : " + Id.ToString());
+            var affiliatePartners = await _logic.Ad1LandingPageReferralLink(Id);
+            return affiliatePartners != null ? (ActionResult<AffiliatePartnerReadDTO>)Ok(affiliatePartners) : NotFound();
+        }
+
     }
 }

@@ -18,7 +18,7 @@ public class GetWithdrawalHandler : IRequestHandler<GetWithdrawalQuery, IEnumera
         if (request.RequestBy == "RA")
         {
             query = _dbContext.Withdrawals
-                .Where(w => w.WithdrawalBy == "RA")
+                .Where(w => w.WithdrawalBy == "RA" && w.IsDeleted!=true)
                 .Join(
                     _dbContext.WithdrawalModes,
                     withdrawal => withdrawal.WithdrawalModeId,
@@ -48,7 +48,7 @@ public class GetWithdrawalHandler : IRequestHandler<GetWithdrawalQuery, IEnumera
         if (request.RequestBy == "AP")
         {
             query = _dbContext.Withdrawals
-                .Where(w => w.WithdrawalBy == "AP")
+                .Where(w => w.WithdrawalBy == "AP" && w.IsDeleted != true)
                 .Join(
                     _dbContext.WithdrawalModes,
                     withdrawal => withdrawal.WithdrawalModeId,

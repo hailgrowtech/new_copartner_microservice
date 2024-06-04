@@ -35,7 +35,7 @@ public class GetWithdrawalByIdHandler : IRequestHandler<GetWithdrawalByIdQuery, 
         if (requestBy == "RA")
         {
              query = _dbContext.Withdrawals
-            .Where(w => w.WithdrawalBy == "RA" && w.Id== request.Id)
+            .Where(w => w.WithdrawalBy == "RA" && w.Id== request.Id && w.IsDeleted != true)
             .Join(
                 _dbContext.WithdrawalModes,
                 withdrawal => withdrawal.WithdrawalModeId,
@@ -62,7 +62,7 @@ public class GetWithdrawalByIdHandler : IRequestHandler<GetWithdrawalByIdQuery, 
        else if (requestBy == "AP")
         {
             query = _dbContext.Withdrawals
-                .Where(w => w.WithdrawalBy == "AP" && w.Id == request.Id)
+                .Where(w => w.WithdrawalBy == "AP" && w.Id == request.Id && w.IsDeleted != true)
                 .Join(
                     _dbContext.WithdrawalModes,
                     withdrawal => withdrawal.WithdrawalModeId,
@@ -162,7 +162,7 @@ public class GetWithdrawalByUserIdHandler : IRequestHandler<GetWithdrawalByUserI
         if (request.userType == "RA")
         {
             query = _dbContext.Withdrawals
-                .Where(w => w.WithdrawalBy == "RA")
+                .Where(w => w.WithdrawalBy == "RA" && w.IsDeleted != true)
                 .Join(
                     _dbContext.WithdrawalModes,
                     withdrawal => withdrawal.WithdrawalModeId,
@@ -196,7 +196,7 @@ public class GetWithdrawalByUserIdHandler : IRequestHandler<GetWithdrawalByUserI
         if (request.userType == "AP")
         {
             query = _dbContext.Withdrawals
-                .Where(w => w.WithdrawalBy == "AP")
+                .Where(w => w.WithdrawalBy == "AP" && w.IsDeleted != true)
                 .Join(
                     _dbContext.WithdrawalModes,
                     withdrawal => withdrawal.WithdrawalModeId,
