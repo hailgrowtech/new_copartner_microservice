@@ -81,7 +81,8 @@ public class GetWithdrawalByIdHandler : IRequestHandler<GetWithdrawalByIdQuery, 
                         AccountNumber = combined.WithdrawalMode.AccountNumber,
                         IFSCCode = combined.WithdrawalMode.IFSCCode,
                         BankName = combined.WithdrawalMode.BankName,
-                        UPI_ID = combined.WithdrawalMode.UPI_ID
+                        UPI_ID = combined.WithdrawalMode.UPI_ID,
+                        RequestAction = combined.Withdrawal.RequestAction
                     });
         }
 
@@ -188,8 +189,7 @@ public class GetWithdrawalByUserIdHandler : IRequestHandler<GetWithdrawalByUserI
                         SEBINo = expert.SEBIRegNo,
                         MobileNo = expert.MobileNumber,
                         LegalName = expert.LegalName,
-                        GST = expert.GST
-                        
+                        GST = expert.GST                        
                     });
         }
 
@@ -222,11 +222,13 @@ public class GetWithdrawalByUserIdHandler : IRequestHandler<GetWithdrawalByUserI
                         MobileNo = affiliatePartner.MobileNumber,
                         LegalName = affiliatePartner.LegalName,
                         GST = affiliatePartner.GST
-
                     });
         }
 
-        var result = await query.ToListAsync(cancellationToken: cancellationToken);
+        var result = await query
+            .Skip((request.page - 1) * request.pageSize)
+            .Take(request.pageSize)
+            .ToListAsync(cancellationToken: cancellationToken);
 
         if (result == null) return null;
         return result;

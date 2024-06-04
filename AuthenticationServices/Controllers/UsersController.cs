@@ -127,6 +127,12 @@ public class UsersController : ControllerBase
         }
         return NotFound(response);        
     }
+
+    /// <summary>
+    /// Forgot Password Send Link
+    /// </summary>
+    /// <param name="forgotPasswordDTO"></param>
+    /// <returns></returns>
     [HttpPost("ForgotPassword")]
     public async Task<IActionResult> ForgotPassword(ForgotPasswordDTO forgotPasswordDTO)
     {
@@ -140,6 +146,12 @@ public class UsersController : ControllerBase
         }
         return NotFound(response);
     }
+
+    /// <summary>
+    /// Reset Forgot Password
+    /// </summary>
+    /// <param name="resetPasswordDTO"></param>
+    /// <returns></returns>
 
     [HttpPost("ResetForgotPassword")]
     public async Task<IActionResult> ResetForgotPassword(ResetPasswordDTO resetPasswordDTO)
