@@ -17,12 +17,31 @@
     "KeyId": "YOUR_KEY_ID",
     "KeySecret": "YOUR_KEY_SECRET"
   },
-  "EmailConfiguration": {
-    "From": "deepaknegi@aim.com",
-    "SmtpServer": "smtp.aol.com",
-    "Port": 465,
-    "Username": "deepaknegi@aim.com",
-    "Password": "test123"
+  
+    "EmailConfigurations": {
+      "Support": {
+        "SmtpServer": "smtp.gmail.com",
+        "Port": 465,
+        "Username": "support@copartner.in",
+        "Password": "1yYtdCIY/CJSLmmbmHWWj0InYfkL7UKgDiaZYOKdpcM=",
+        "From": "support@copartner.in",
+        "FromDisplayName": "Support CoPartner"
+      },
+      "Withdrawal": {
+        "SmtpServer": "smtp.gmail.com",
+        "Port": 465,
+        "Username": "withdrawal@copartner.in",
+        "Password": "RbylxGYiU/dl/UU80hFwvad4PPg38/Opkkp3gg+FfXk=",
+        "From": "withdrawal@copartner.in",
+        "FromDisplayName": "Withdrawal CoPartner"
+      },
+      "Onboarding": {
+        "SmtpServer": "smtp.gmail.com",
+        "Port": 465,
+        "Username": "onboarding@copartner.in",
+        "Password": "WP5xxMSsQNPsFv4fzhEITcr6pL7jXSpvKlQlGN+TEPE=",
+        "From": "onboarding@copartner.in",
+        "FromDisplayName": "Onboarding CoPartner"
+      }
+    }
   }
-
-}

@@ -165,7 +165,7 @@ public class WithdrawalController : ControllerBase
     }
 
     /// <summary>
-    /// Action / Reason & TransactionID for Withdrawal Request In Dashboard
+    /// Action / Reason and TransactionID for Withdrawal Request In Dashboard
     /// </summary>
     /// /// <remarks>
     /// Sample request:

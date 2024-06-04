@@ -13,9 +13,9 @@ namespace Publication;
         return _appSettings;
     }
 
-    public static EmailConfiguration GetEmailSettings()
+    public static EmailConfiguration GetEmailSettings(string emailType)
     {
-        var section = GetConfigurationSection("EmailConfiguration");
+        var section = GetConfigurationSection($"EmailConfigurations:{emailType}");
         var emailSettings = section.Get<EmailConfiguration>();
         return emailSettings;
     }
@@ -54,6 +54,5 @@ namespace Publication;
         public string Username { get; set; }
         public string Password { get; set; }
     }
-
 }
 
