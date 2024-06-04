@@ -22,6 +22,27 @@ namespace AffiliatePartnerService.Logic
             _mapper = mapper;
         }
 
+        public async Task<ResponseDto> Ad1LandingPageReferralLink(Guid id)
+        {
+            // Assuming _sender.Send is an asynchronous method that returns an AffiliatePartner object
+            var ap = await _sender.Send(new GetAffiliatePartnerByIdQuery(id));
+
+            // It's a good practice to use UriBuilder for constructing URLs to handle edge cases
+            var uriBuilder = new UriBuilder("https://copartner.in/ad1");
+            var query = HttpUtility.ParseQueryString(string.Empty);
+            query["referralCode"] = ap.ReferralCode;
+            query["apid"] = id.ToString(); // Ensure the ID is converted to a string
+            uriBuilder.Query = query.ToString();
+
+            var referralLink = uriBuilder.ToString();
+
+            return new ResponseDto()
+            {
+                IsSuccess = true,
+                Data = referralLink,
+            };
+        }
+
         public async Task<ResponseDto> Delete(Guid id)
         {
             var affiliatePartner = await _sender.Send(new DeleteAffiliatePartnerCommand(id));
