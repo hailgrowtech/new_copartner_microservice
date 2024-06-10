@@ -19,6 +19,7 @@ namespace AdminDashboardService.Handlers
                                                where !u.IsDeleted
                                                join s in _dbContext.Subscribers on u.Id equals s.UserId into gj
                                                from sub in gj.DefaultIfEmpty()
+                                               where sub == null || !sub.IsDeleted
                                                group sub by u into userGroup
                                                where userGroup.Count() == 1 && userGroup.All(sub => sub != null)
                                                select new UserFirstTimePaymentListingDto
@@ -35,6 +36,7 @@ namespace AdminDashboardService.Handlers
                                                }).Skip(skip)
                                                 .Take(request.PageSize)
                                                 .ToListAsync(cancellationToken);
+
 
             if (usersWithFirstPayment == null) return null;
             return usersWithFirstPayment;

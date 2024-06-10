@@ -16,12 +16,11 @@ namespace AdminDashboardService.Handlers
             int skip = (request.Page - 1) * request.PageSize;
 
 
-
             var userData = await (from u in _dbContext.Users
                                   join s in _dbContext.Subscribers on u.Id equals s.UserId
-                                  where !u.IsDeleted
+                                  where !u.IsDeleted && !s.IsDeleted
                                   select new { u, s })
-                     .ToListAsync(cancellationToken);
+                             .ToListAsync(cancellationToken);
 
             var usersWithSecondPayment = userData.GroupBy(x => x.u.Id)
                                                  .Where(g => g.Count() > 1)
@@ -34,7 +33,9 @@ namespace AdminDashboardService.Handlers
                                                      Payment = sub.s.TotalAmount
                                                  }))
                                                  .Skip(skip)
-                                                 .Take(request.PageSize);
+                                                 .Take(request.PageSize)
+                                                 .ToList();
+
 
 
 
