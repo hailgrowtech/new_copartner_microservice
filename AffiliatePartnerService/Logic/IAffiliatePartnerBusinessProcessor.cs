@@ -16,5 +16,9 @@ namespace AffiliatePartnerService.Logic
 
         Task<ResponseDto> GenerateReferralLink(Guid affiliatePartnerId);
         Task<ResponseDto> Ad1LandingPageReferralLink(Guid affiliatePartnerId);
+        Task<ResponseDto> Ad2LandingPageReferralLink(Guid affiliatePartnerId);
+        Task<ResponseDto> Ad3LandingPageReferralLink(Guid affiliatePartnerId);
+        Task<ResponseDto> Ad4LandingPageReferralLink(Guid affiliatePartnerId);
+        Task<ResponseDto> Ad5LandingPageReferralLink(Guid affiliatePartnerId);
     }
 }

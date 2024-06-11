@@ -43,6 +43,90 @@ namespace AffiliatePartnerService.Logic
             };
         }
 
+        public async Task<ResponseDto> Ad2LandingPageReferralLink(Guid id)
+        {
+            // Assuming _sender.Send is an asynchronous method that returns an AffiliatePartner object
+            var ap = await _sender.Send(new GetAffiliatePartnerByIdQuery(id));
+
+            // It's a good practice to use UriBuilder for constructing URLs to handle edge cases
+            var uriBuilder = new UriBuilder("https://ad2.copartner.in/");
+            var query = HttpUtility.ParseQueryString(string.Empty);
+            query["referralCode"] = ap.ReferralCode;
+            query["apid"] = id.ToString(); // Ensure the ID is converted to a string
+            uriBuilder.Query = query.ToString();
+
+            var referralLink = uriBuilder.ToString();
+
+            return new ResponseDto()
+            {
+                IsSuccess = true,
+                Data = referralLink,
+            };
+        }
+
+        public async Task<ResponseDto> Ad3LandingPageReferralLink(Guid id)
+        {
+            // Assuming _sender.Send is an asynchronous method that returns an AffiliatePartner object
+            var ap = await _sender.Send(new GetAffiliatePartnerByIdQuery(id));
+
+            // It's a good practice to use UriBuilder for constructing URLs to handle edge cases
+            var uriBuilder = new UriBuilder("https://ad3.copartner.in/");
+            var query = HttpUtility.ParseQueryString(string.Empty);
+            query["referralCode"] = ap.ReferralCode;
+            query["apid"] = id.ToString(); // Ensure the ID is converted to a string
+            uriBuilder.Query = query.ToString();
+
+            var referralLink = uriBuilder.ToString();
+
+            return new ResponseDto()
+            {
+                IsSuccess = true,
+                Data = referralLink,
+            };
+        }
+
+        public async Task<ResponseDto> Ad4LandingPageReferralLink(Guid id)
+        {
+            // Assuming _sender.Send is an asynchronous method that returns an AffiliatePartner object
+            var ap = await _sender.Send(new GetAffiliatePartnerByIdQuery(id));
+
+            // It's a good practice to use UriBuilder for constructing URLs to handle edge cases
+            var uriBuilder = new UriBuilder("https://ad4.copartner.in/");
+            var query = HttpUtility.ParseQueryString(string.Empty);
+            query["referralCode"] = ap.ReferralCode;
+            query["apid"] = id.ToString(); // Ensure the ID is converted to a string
+            uriBuilder.Query = query.ToString();
+
+            var referralLink = uriBuilder.ToString();
+
+            return new ResponseDto()
+            {
+                IsSuccess = true,
+                Data = referralLink,
+            };
+        }
+
+        public async Task<ResponseDto> Ad5LandingPageReferralLink(Guid id)
+        {
+            // Assuming _sender.Send is an asynchronous method that returns an AffiliatePartner object
+            var ap = await _sender.Send(new GetAffiliatePartnerByIdQuery(id));
+
+            // It's a good practice to use UriBuilder for constructing URLs to handle edge cases
+            var uriBuilder = new UriBuilder("https://ad5.copartner.in/");
+            var query = HttpUtility.ParseQueryString(string.Empty);
+            query["referralCode"] = ap.ReferralCode;
+            query["apid"] = id.ToString(); // Ensure the ID is converted to a string
+            uriBuilder.Query = query.ToString();
+
+            var referralLink = uriBuilder.ToString();
+
+            return new ResponseDto()
+            {
+                IsSuccess = true,
+                Data = referralLink,
+            };
+        }
+
         public async Task<ResponseDto> Delete(Guid id)
         {
             var affiliatePartner = await _sender.Send(new DeleteAffiliatePartnerCommand(id));

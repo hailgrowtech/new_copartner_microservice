@@ -112,5 +112,37 @@ namespace AffiliatePartnerService.Controllers
             return affiliatePartners != null ? (ActionResult<AffiliatePartnerReadDTO>)Ok(affiliatePartners) : NotFound();
         }
 
+        [HttpGet("Ad2LandingPage/{Id}", Name = "Ad2LandingPageReferralLink")]
+        public async Task<ActionResult<AffiliatePartnerReadDTO>> Ad2LandingPageReferralLink(Guid Id)
+        {
+            _logger.LogInformation("Fetching Affiliate Partners Ad2LandingPageReferralLink details for Id : " + Id.ToString());
+            var affiliatePartners = await _logic.Ad2LandingPageReferralLink(Id);
+            return affiliatePartners != null ? (ActionResult<AffiliatePartnerReadDTO>)Ok(affiliatePartners) : NotFound();
+        }
+
+        [HttpGet("Ad3LandingPage/{Id}", Name = "Ad3LandingPageReferralLink")]
+        public async Task<ActionResult<AffiliatePartnerReadDTO>> Ad3LandingPageReferralLink(Guid Id)
+        {
+            _logger.LogInformation("Fetching Affiliate Partners Ad3LandingPageReferralLink details for Id : " + Id.ToString());
+            var affiliatePartners = await _logic.Ad3LandingPageReferralLink(Id);
+            return affiliatePartners != null ? (ActionResult<AffiliatePartnerReadDTO>)Ok(affiliatePartners) : NotFound();
+        }
+
+        [HttpGet("Ad4LandingPage/{Id}", Name = "Ad4LandingPageReferralLink")]
+        public async Task<ActionResult<AffiliatePartnerReadDTO>> Ad4LandingPageReferralLink(Guid Id)
+        {
+            _logger.LogInformation("Fetching Affiliate Partners Ad4LandingPageReferralLink details for Id : " + Id.ToString());
+            var affiliatePartners = await _logic.Ad4LandingPageReferralLink(Id);
+            return affiliatePartners != null ? (ActionResult<AffiliatePartnerReadDTO>)Ok(affiliatePartners) : NotFound();
+        }
+
+        [HttpGet("Ad5LandingPage/{Id}", Name = "Ad5LandingPageReferralLink")]
+        public async Task<ActionResult<AffiliatePartnerReadDTO>> Ad5LandingPageReferralLink(Guid Id)
+        {
+            _logger.LogInformation("Fetching Affiliate Partners Ad5LandingPageReferralLink details for Id : " + Id.ToString());
+            var affiliatePartners = await _logic.Ad5LandingPageReferralLink(Id);
+            return affiliatePartners != null ? (ActionResult<AffiliatePartnerReadDTO>)Ok(affiliatePartners) : NotFound();
+        }
+
     }
 }

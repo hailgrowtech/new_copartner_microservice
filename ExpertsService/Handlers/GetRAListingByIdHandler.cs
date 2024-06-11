@@ -33,6 +33,7 @@ public class GetRAListingByIdHandler : IRequestHandler<GetRAListingByIdQuery, IE
                         UserJoiningDate = usr.CreatedOn,
                         SubscribeDate = sub.CreatedOn,
                         UserMobileNo = usr.Id != null ? usr.MobileNumber : null,
+                        User = usr,
                         APName = (aff.Id != null && aff.Id.ToString().Length > 10) ? aff.Name : ((usr.Id != null && usr.ExpertsID != null && usr.ExpertsID.ToString().Length > 5) ? "SELF" : "ORGANIC"),
                         Amount = wallet.RAAmount,
                         Subscription = subscr.ServiceType ?? "No Subscrption",
@@ -40,7 +41,10 @@ public class GetRAListingByIdHandler : IRequestHandler<GetRAListingByIdQuery, IE
                         TransactionId = sub.TransactionId,
                         SubscriptionAmount = subscr.Amount,
                         LegalName = exp.LegalName,
-                        GST = exp.GST
+                        GST = exp.GST,
+                        InvoiceId = sub.InvoiceId,
+                        PremiumTelegramChannel = sub.PremiumTelegramChannel
+                        
                     };
 
         var result = await query.Skip(skip).Take(request.pageSize).ToListAsync(cancellationToken);

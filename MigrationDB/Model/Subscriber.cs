@@ -25,6 +25,7 @@ namespace MigrationDB.Model
         public bool isActive { get; set; }
 
         public string? PremiumTelegramChannel {  get; set; }
-
+        public string? InvoiceId { get; set; }
+        public decimal? DiscountedAmount { get; set; }
     }
 }
