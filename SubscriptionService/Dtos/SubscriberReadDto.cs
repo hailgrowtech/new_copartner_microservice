@@ -9,7 +9,6 @@ namespace SubscriptionService.Dtos
         
         public Guid SubscriptionId { get; set; }
 
-
         public Guid UserId { get; set; }
 
         public decimal GSTAmount { get; set; }

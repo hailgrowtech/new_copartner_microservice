@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using MigrationDB.Models;
 
 namespace ExpertsService.Dtos;
 
@@ -16,9 +17,12 @@ public class RAListingDto
 public class RAListingDataDto
 {
     public string RAName { get; set; }
+    
     public DateTime? UserJoiningDate { get; set; }
     public DateTime? SubscribeDate { get; set; }
     public string? UserMobileNo { get; set; }
+    public User User { get; set; }
+
     public string? APName { get; set; }
     [Precision(18, 2)]
     public decimal? Amount { get; set; }
@@ -29,4 +33,5 @@ public class RAListingDataDto
     public string? LegalName { get; set; }
     public string? GST {  get; set; }
     public string? InvoiceId { get; set; }
+    public string? PremiumTelegramChannel { get; set; }
 }
