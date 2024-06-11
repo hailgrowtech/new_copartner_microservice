@@ -33,9 +33,14 @@
       "launchBrowser": true,
       "launchUrl": "{Scheme}://{ServiceHost}:{ServicePort}/swagger",
       "environmentVariables": {
+<<<<<<< Updated upstream
         "ASPNETCORE_ENVIRONMENT": "Production",
         "ASPNETCORE_HTTPS_PORTS": "5133",
         "ASPNETCORE_HTTP_PORTS": "5197"
+=======
+        "ASPNETCORE_HTTPS_PORTS": "8081",
+        "ASPNETCORE_HTTP_PORTS": "8080"
+>>>>>>> Stashed changes
       },
       "publishAllPorts": true,
       "useSSL": true
