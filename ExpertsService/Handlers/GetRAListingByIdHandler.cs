@@ -40,7 +40,9 @@ public class GetRAListingByIdHandler : IRequestHandler<GetRAListingByIdQuery, IE
                         TransactionId = sub.TransactionId,
                         SubscriptionAmount = subscr.Amount,
                         LegalName = exp.LegalName,
-                        GST = exp.GST
+                        GST = exp.GST,
+                        InvoiceId = sub.InvoiceId
+                        
                     };
 
         var result = await query.Skip(skip).Take(request.pageSize).ToListAsync(cancellationToken);

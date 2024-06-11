@@ -28,4 +28,5 @@ public class RAListingDataDto
     public decimal? SubscriptionAmount { get; set; }
     public string? LegalName { get; set; }
     public string? GST {  get; set; }
+    public string? InvoiceId { get; set; }
 }
