@@ -1,9 +1,11 @@
-﻿using ExpertService.Queries;
+﻿using ExpertService.Models;
+using ExpertService.Queries;
 using ExpertsService.Dtos;
 using MassTransit;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MigrationDB.Data;
+using Ocelot.RequestId;
 
 namespace ExpertsService.Handlers;
 public class GetRAListingByIdHandler : IRequestHandler<GetRAListingByIdQuery, IEnumerable<RAListingDataDto>>
@@ -26,14 +28,13 @@ public class GetRAListingByIdHandler : IRequestHandler<GetRAListingByIdQuery, IE
                     from exp in expertJoin.DefaultIfEmpty()
                     join subscr in _dbContext.Subscriptions on sub.SubscriptionId equals subscr.Id into subscriptionJoin
                     from subscr in subscriptionJoin.DefaultIfEmpty()
-                    where exp.Id == request.Id /*&& (sub.isActive != true || sub.IsDeleted != true)*/
+                    where exp.Id == request.Id
                     select new RAListingDataDto
                     {
                         RAName = exp.Name,
                         UserJoiningDate = usr.CreatedOn,
                         SubscribeDate = sub.CreatedOn,
                         UserMobileNo = usr.Id != null ? usr.MobileNumber : null,
-                        User = usr,
                         APName = (aff.Id != null && aff.Id.ToString().Length > 10) ? aff.Name : ((usr.Id != null && usr.ExpertsID != null && usr.ExpertsID.ToString().Length > 5) ? "SELF" : "ORGANIC"),
                         Amount = wallet.RAAmount,
                         Subscription = subscr.ServiceType ?? "No Subscrption",
@@ -41,13 +42,10 @@ public class GetRAListingByIdHandler : IRequestHandler<GetRAListingByIdQuery, IE
                         TransactionId = sub.TransactionId,
                         SubscriptionAmount = subscr.Amount,
                         LegalName = exp.LegalName,
-                        GST = exp.GST,
-                        InvoiceId = sub.InvoiceId,
-                        PremiumTelegramChannel = sub.PremiumTelegramChannel
-                        
+                        GST = exp.GST
                     };
 
-        var result = await query.Skip(skip).Take(request.pageSize).ToListAsync(cancellationToken);
+        var result = await query1.Union(query2).Skip(skip).Take(request.pageSize).ToListAsync(cancellationToken);
         return result;
     }
 }

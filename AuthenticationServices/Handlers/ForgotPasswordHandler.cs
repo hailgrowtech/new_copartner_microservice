@@ -33,9 +33,13 @@ namespace AuthenticationService.Handlers
 
             await _dbContext.ForgotPasswords.AddAsync(entity);
             await _dbContext.SaveChangesAsync(cancellationToken);
+            var resetLink = string.Empty;
             // Send email with the reset token
-            var resetLink = $"https://copartner.in/forgot-password?token={entity.Token}";
-           var statusCode = await _eMailFactory.PostEmailAsync(new string[] { entity.Email }, new string[] { }, "Password Reset", $"Reset your password using this link: {resetLink}","Support");
+            if (Convert.ToString(entity.UserType).ToUpper() == "RA")
+                resetLink = $"https://ra.copartner.in/set-new-password?token={entity.Token}";
+            else if (Convert.ToString(entity.UserType).ToUpper() == "AP")
+                 resetLink = $"https://ap.copartner.in/set-new-password?token={entity.Token}";
+            var statusCode = await _eMailFactory.PostEmailAsync(new string[] { entity.Email }, new string[] { }, "Password Reset", $"Reset your password using this link: {resetLink}","Support");
             return statusCode;
         }
     }
