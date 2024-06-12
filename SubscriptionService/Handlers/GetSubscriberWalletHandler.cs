@@ -26,7 +26,8 @@ public class GetSubscriberWalletHandler : IRequestHandler<GetSubscriberWalletQue
         }
 
         var referralMode = subscriber.User.ReferralMode;
-        var expertsId = subscriber.Subscription?.ExpertsId;
+       // var userExpertsId = subscriber.User.ExpertsID;
+        var expertsId = subscriber.User.ExpertsID;
         var affiliatePartnerId = subscriber.User.AffiliatePartnerId;
         var amount = subscriber.TotalAmount;
         var isCoPartner = subscriber.Subscription.Experts.isCoPartner;
@@ -41,6 +42,7 @@ public class GetSubscriberWalletHandler : IRequestHandler<GetSubscriberWalletQue
         {
             raAmount = expertsId != null ? amount : amount * ((decimal)_dbContext.Experts.Find(expertsId).FixCommission) / 100;
         }
+
         else if (referralMode == "AP")
         {
             var affiliatePartnerCommission = (_dbContext.Subscribers.Count(s => s.UserId == subscriber.UserId) < 2) ?
