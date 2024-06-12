@@ -192,5 +192,24 @@ namespace SubscriptionService.Logic
             return result;
         }
 
+        public async Task<ResponseDto> Get(int page, int pageSize, string link)
+        {
+            var subscribers = await _sender.Send(new GetSubscriberByLinkQuery(page, pageSize, link));
+            if (subscribers == null)
+            {
+                return new ResponseDto()
+                {
+                    IsSuccess = false,
+                    Data = null,
+                    ErrorMessages = new List<string>() { AppConstants.Expert_ExpertNotFound }
+                };
+            }
+            var subscriptionMstsReadDto = _mapper.Map<List<SubscriberReadDto>>(subscribers);
+            return new ResponseDto()
+            {
+                IsSuccess = true,
+                Data = subscriptionMstsReadDto,
+            };
+        }
     }
 }

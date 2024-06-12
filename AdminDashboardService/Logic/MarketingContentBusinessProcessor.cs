@@ -156,5 +156,25 @@ public class MarketingContentBusinessProcessor : IMarketingContentBusinessProces
         var marketingContentReadDto = _mapper.Map<ResponseDto>(marketingContent);
         return marketingContentReadDto;
     }
+
+    public async Task<ResponseDto> Get(int page = 1, int pageSize = 10, string contentType = null)
+    {
+        var marketingContent = await _sender.Send(new GetMarketingContentByContentTypeQuery(page, pageSize, contentType));
+        if (marketingContent == null)
+        {
+            return new ResponseDto()
+            {
+                IsSuccess = false,
+                Data = null,
+                ErrorMessages = new List<string>() { AppConstants.Expert_ExpertNotFound }
+            };
+        }
+        var marketingContentReadDto = _mapper.Map<List<MarketingContentReadDto>>(marketingContent);
+        return new ResponseDto()
+        {
+            IsSuccess = true,
+            Data = marketingContentReadDto,
+        };
+    }
 }
 

@@ -8,6 +8,7 @@ public interface IUserBusinessProcessor
 {
     Task<ResponseDto> Get(int page, int pageSize);
     Task<ResponseDto> Get(Guid? id);
+    Task<ResponseDto> Get(int page, int pageSize, string link);
     Task<ResponseDto> Post(UserCreateDto user);
     Task<ResponseDto> Put(Guid? id,string?MobileNo, UserCreateDto subscriberCreateDto);
 
