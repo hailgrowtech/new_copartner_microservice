@@ -11,6 +11,7 @@ namespace AdminDashboardService.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[RequestSizeLimit(100_000_000)]
 public class AWSStorageController : ControllerBase
 {
     private readonly IAWSStorageBusinessProcessor _logic;
