@@ -1,5 +1,6 @@
 ﻿using AffiliatePartnerService.Dtos;
 using AffiliatePartnerService.Logic;
+using CommonLibrary.CommonDTOs;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -66,6 +67,33 @@ namespace AffiliatePartnerService.Controllers
             var response = await _logicAPDetails.Get(page, pageSize);
             if (response.IsSuccess)
                 return Ok(response);
+            return NotFound(response);
+        }
+
+
+        [HttpGet("GetGeneratedAPLinks/{Id}", Name = "GetGeneratedAPLinks")]
+        public async Task<ActionResult<ResponseDto>> GetGeneratedAPLinks(Guid Id)
+        {
+            _logger.LogInformation("Fetching Affiliate Partners details for Id : " + Id.ToString());
+            var response = await _logicAPDetails.GetGeneratedAPLinkById(Id);
+            if (response.IsSuccess)
+            {
+                return Ok(response);
+            }
+            return NotFound(response);
+        }
+
+
+
+        [HttpPost("GenerateAPLink", Name = "GenerateAPLink")]
+        public async Task<ActionResult<ResponseDto>> GenerateAPLink([FromBody] APGenerateLinkRequestDto requestDto)
+        {
+            _logger.LogInformation("Fetching Affiliate Partners Referral Link details for Id : " + requestDto.AffiliatePartnerId);
+            var response = await _logicAPDetails.GenerateAPLink(requestDto);
+            if (response.IsSuccess)
+            {
+                return Ok(response.Data);
+            }
             return NotFound(response);
         }
 
