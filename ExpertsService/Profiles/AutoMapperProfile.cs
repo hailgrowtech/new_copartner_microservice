@@ -23,6 +23,8 @@ public class AutoMapperProfile : Profile
             .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Subscription entity to ResponseDto's Data property
 
         
+
+
     }
 
 }

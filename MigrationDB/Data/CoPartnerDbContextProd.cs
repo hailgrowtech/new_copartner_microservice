@@ -34,5 +34,6 @@ public class CoPartnerDbContextProd : DbContext
     public DbSet<RelationshipManager> RelationshipManagers { get; set; }
     public DbSet<Join> Joins { get; set; }
     public DbSet<EmailStatus> EmailStatus { get; set; }
+    public DbSet<APGeneratedLinks> APGeneratedLinks { get; set; }
 
 }

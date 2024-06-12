@@ -34,4 +34,6 @@ public class RAListingDataDto
     public string? GST {  get; set; }
     public string? InvoiceId { get; set; }
     public string? PremiumTelegramChannel { get; set; }
+    public string? SignatureImage { get; set; }
+
 }
