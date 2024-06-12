@@ -8,6 +8,7 @@ using CommonLibrary;
 using System.Web;
 using AffiliatePartnerService.Dtos;
 using Microsoft.EntityFrameworkCore;
+using System.Text.RegularExpressions;
 
 
 namespace AffiliatePartnerService.Handlers;
@@ -28,23 +29,38 @@ public class CreateAPGeneratedLinkHandler : IRequestHandler<CreateAPGeneratedLin
             return null;
         }
 
-        string firstNamePart = affiliatePartner.Name.Substring(0, 3).ToUpper();
-        string lastNamePart = affiliatePartner.Name.Substring(affiliatePartner.Name.LastIndexOf(" ") + 1, 2).ToUpper();
+        // Use the first 4 letters of the affiliate partner's name
+        string namePart = affiliatePartner.Name.Length >= 4
+            ? affiliatePartner.Name.Substring(0, 4).ToUpper()
+            : affiliatePartner.Name.ToUpper();
 
         // Fetch existing links to find the last generated number
         var existingLinks = await _dbContext.APGeneratedLinks
             .Where(link => link.APId == request.AffiliatePartnerId)
             .ToListAsync();
 
-        int startNumber = existingLinks.Count > 0
-            ? existingLinks.Max(link => int.Parse(link.GeneratedLink.Split(new[] { firstNamePart + lastNamePart }, StringSplitOptions.None)[1])) + 1
-            : 1;
+        int startNumber = 1;
+
+        if (existingLinks.Count > 0)
+        {
+            var regex = new Regex(Regex.Escape(namePart) + @"(\d+)$");
+            var lastLink = existingLinks
+                .Select(link => new { link.GeneratedLink, Match = regex.Match(link.GeneratedLink) })
+                .Where(x => x.Match.Success)
+                .OrderByDescending(x => int.Parse(x.Match.Groups[1].Value))
+                .FirstOrDefault();
+
+            if (lastLink != null)
+            {
+                startNumber = int.Parse(lastLink.Match.Groups[1].Value) + 1;
+            }
+        }
 
         var links = new List<APGeneratedLinkReadDTO>();
 
         for (int i = 0; i < request.Num; i++)
         {
-            string newLink = $"aplink.copartner.in/{firstNamePart}{lastNamePart}{startNumber + i}";
+            string newLink = $"aplink.copartner.in/{namePart}{startNumber + i}";
             var generatedLink = new APGeneratedLinks
             {
                 APId = request.AffiliatePartnerId,  // Ensure this is stored as a Guid
