@@ -29,7 +29,7 @@ public class GetRAListingByIdHandler : IRequestHandler<GetRAListingByIdQuery, IE
                     from exp in expertJoin.DefaultIfEmpty()
                     join subscr in _dbContext.Subscriptions on sub.SubscriptionId equals subscr.Id into subscriptionJoin
                     from subscr in subscriptionJoin.DefaultIfEmpty()
-                    where exp.Id == request.Id && (sub.isActive != true || sub.IsDeleted != true)
+                    where exp.Id == request.Id && (sub.isActive == true || sub.IsDeleted == false)
                      select new RAListingDataDto
                     {
                         RAName = exp.Name,
@@ -37,8 +37,14 @@ public class GetRAListingByIdHandler : IRequestHandler<GetRAListingByIdQuery, IE
                         SubscribeDate = sub.CreatedOn,
                         UserMobileNo = usr.Id != null ? usr.MobileNumber : null,
                         User = usr,
-                        APName = (aff.Id != null && aff.Id.ToString().Length > 10) ? aff.Name : ((usr.Id != null && usr.ExpertsID != null && usr.ExpertsID.ToString().Length > 5) ? "SELF" : "ORGANIC"),
-                        Amount = wallet.RAAmount,
+                        APName = (aff.Id != null && aff.Id.ToString().Length > 10)
+                             ? aff.Name
+                             : ((usr.Id != null && usr.ExpertsID != null && usr.ExpertsID == subscr.ExpertsId)
+                                 ? "SELF"
+                                 : ((usr.Id != null && usr.ExpertsID != null && usr.ExpertsID.ToString().Length > 5)
+                                     ? (_dbContext.Experts.FirstOrDefault(e => e.Id == usr.ExpertsID).Name)
+                                     : "ORGANIC")),
+                         Amount = wallet.RAAmount,
                         Subscription = subscr.ServiceType ?? "No Subscrption",
                         PlanType = subscr.PlanType ?? "No Plan",
                         TransactionId = sub.TransactionId,
@@ -60,7 +66,11 @@ public class GetRAListingByIdHandler : IRequestHandler<GetRAListingByIdQuery, IE
                      from exp in expertJoin.DefaultIfEmpty()
                      join subscr in _dbContext.Subscriptions on sub.SubscriptionId equals subscr.Id into subscriptionJoin
                      from subscr in subscriptionJoin.DefaultIfEmpty()
-                     where usr.ExpertsID == request.Id && usr.IsDeleted == false && (sub.isActive != true || sub.IsDeleted != true)
+                     where usr.ExpertsID == request.Id
+                        && usr.ExpertsID == subscr.ExpertsId
+                        && exp.Name != null
+                        && !usr.IsDeleted
+                        && (sub.isActive || !sub.IsDeleted)
                      select new RAListingDataDto
                      {
                          RAName = exp.Name,
