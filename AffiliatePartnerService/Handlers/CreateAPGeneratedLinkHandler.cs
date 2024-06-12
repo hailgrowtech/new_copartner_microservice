@@ -1,5 +1,4 @@
 ﻿using MediatR;
-
 using MigrationDB.Models;
 using MigrationDB.Data;
 using AffiliatePartnerService.Commands;
@@ -9,77 +8,82 @@ using System.Web;
 using AffiliatePartnerService.Dtos;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
+using System.Collections.Generic;
+using System.Threading;
+using System.Threading.Tasks;
 
-
-namespace AffiliatePartnerService.Handlers;
-public class CreateAPGeneratedLinkHandler : IRequestHandler<CreateAPGeneratedLinkCommand, List<APGeneratedLinkReadDTO>>
+namespace AffiliatePartnerService.Handlers
 {
-    private readonly CoPartnerDbContext _dbContext;
-
-    public CreateAPGeneratedLinkHandler(CoPartnerDbContext dbContext)
+    public class CreateAPGeneratedLinkHandler : IRequestHandler<CreateAPGeneratedLinkCommand, List<APGeneratedLinkReadDTO>>
     {
-        _dbContext = dbContext;
-    }
+        private readonly CoPartnerDbContext _dbContext;
 
-    public async Task<List<APGeneratedLinkReadDTO>> Handle(CreateAPGeneratedLinkCommand request, CancellationToken cancellationToken)
-    {
-        var affiliatePartner = await _dbContext.AffiliatePartners.FindAsync(request.AffiliatePartnerId);
-        if (affiliatePartner == null)
+        public CreateAPGeneratedLinkHandler(CoPartnerDbContext dbContext)
         {
-            return null;
+            _dbContext = dbContext;
         }
 
-        // Use the first 4 letters of the affiliate partner's name
-        string namePart = affiliatePartner.Name.Length >= 4
-            ? affiliatePartner.Name.Substring(0, 4).ToUpper()
-            : affiliatePartner.Name.ToUpper();
-
-        // Fetch existing links to find the last generated number
-        var existingLinks = await _dbContext.APGeneratedLinks
-            .Where(link => link.APId == request.AffiliatePartnerId)
-            .ToListAsync();
-
-        int startNumber = 1;
-
-        if (existingLinks.Count > 0)
+        public async Task<List<APGeneratedLinkReadDTO>> Handle(CreateAPGeneratedLinkCommand request, CancellationToken cancellationToken)
         {
-            var regex = new Regex(Regex.Escape(namePart) + @"(\d+)$");
-            var lastLink = existingLinks
-                .Select(link => new { link.GeneratedLink, Match = regex.Match(link.GeneratedLink) })
-                .Where(x => x.Match.Success)
-                .OrderByDescending(x => int.Parse(x.Match.Groups[1].Value))
-                .FirstOrDefault();
-
-            if (lastLink != null)
+            var affiliatePartner = await _dbContext.AffiliatePartners.FindAsync(request.AffiliatePartnerId);
+            if (affiliatePartner == null)
             {
-                startNumber = int.Parse(lastLink.Match.Groups[1].Value) + 1;
+                return null;
             }
-        }
 
-        var links = new List<APGeneratedLinkReadDTO>();
+            // Use the first 4 letters of the affiliate partner's name
+            string namePart = affiliatePartner.Name.Length >= 4
+                ? affiliatePartner.Name.Substring(0, 4).ToUpper()
+                : affiliatePartner.Name.ToUpper();
 
-        for (int i = 0; i < request.Num; i++)
-        {
-            string newLink = $"aplink.copartner.in/{namePart}{startNumber + i}";
-            var generatedLink = new APGeneratedLinks
+            // Fetch existing links to find the last generated number
+            var existingLinks = await _dbContext.APGeneratedLinks
+                .Where(link => link.APId == request.AffiliatePartnerId)
+                .ToListAsync();
+
+            int startNumber = 1;
+
+            if (existingLinks.Count > 0)
             {
-                APId = request.AffiliatePartnerId,  // Ensure this is stored as a Guid
-                GeneratedLink = newLink,
-                APReferralLink = request.APReferralLink
-            };
+                var regex = new Regex(Regex.Escape(namePart) + @"(\d+)$");
+                var lastLink = existingLinks
+                    .Select(link => new { link.GeneratedLink, Match = regex.Match(link.GeneratedLink) })
+                    .Where(x => x.Match.Success)
+                    .OrderByDescending(x => int.Parse(x.Match.Groups[1].Value))
+                    .FirstOrDefault();
 
-            await _dbContext.APGeneratedLinks.AddAsync(generatedLink, cancellationToken);
-            await _dbContext.SaveChangesAsync(cancellationToken);
+                if (lastLink != null)
+                {
+                    startNumber = int.Parse(lastLink.Match.Groups[1].Value) + 1;
+                }
+            }
 
-            links.Add(new APGeneratedLinkReadDTO
+            var links = new List<APGeneratedLinkReadDTO>();
+
+            for (int i = 0; i < request.Num; i++)
             {
-                Id = generatedLink.Id,
-                APId = generatedLink.APId,
-                GeneratedLink = generatedLink.GeneratedLink,
-                APReferralLink = generatedLink.APReferralLink
-            });
-        }
+                string newLinkSuffix = $"{namePart}{startNumber + i}";
+                string newLink = $"{request.APReferralLink}&apurl={newLinkSuffix}";
+                var generatedLink = new APGeneratedLinks
+                {
+                    APId = request.AffiliatePartnerId,  // Ensure this is stored as a Guid
+                    GeneratedLink = newLink,
+                    APReferralLink = request.APReferralLink
+                };
 
-        return links;
+                await _dbContext.APGeneratedLinks.AddAsync(generatedLink, cancellationToken);
+                await _dbContext.SaveChangesAsync(cancellationToken);
+
+                links.Add(new APGeneratedLinkReadDTO
+                {
+                    Id = generatedLink.Id,
+                    APId = generatedLink.APId,
+                    GeneratedLink = generatedLink.GeneratedLink,
+                    APReferralLink = generatedLink.APReferralLink
+                });
+            }
+
+            return links;
+        }
     }
 }
