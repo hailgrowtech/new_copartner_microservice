@@ -43,7 +43,8 @@ public class GetRAListingByIdHandler : IRequestHandler<GetRAListingByIdQuery, IE
                         LegalName = exp.LegalName,
                         GST = exp.GST,
                         InvoiceId = sub.InvoiceId,
-                        PremiumTelegramChannel = sub.PremiumTelegramChannel
+                        PremiumTelegramChannel = sub.PremiumTelegramChannel,
+                        SignatureImage = exp.SignatureImage
                         
                     };
 
