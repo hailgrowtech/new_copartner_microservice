@@ -26,8 +26,8 @@ public class GetSubscriberWalletHandler : IRequestHandler<GetSubscriberWalletQue
         }
 
         var referralMode = subscriber.User.ReferralMode;
-       // var userExpertsId = subscriber.User.ExpertsID;
-        var expertsId = subscriber.User.ExpertsID;
+         var userExpertsId = subscriber.User.ExpertsID;
+        var expertsId = subscriber.Subscription?.ExpertsId;
         var affiliatePartnerId = subscriber.User.AffiliatePartnerId;
         var amount = subscriber.TotalAmount;
         var isCoPartner = subscriber.Subscription.Experts.isCoPartner;
@@ -38,9 +38,13 @@ public class GetSubscriberWalletHandler : IRequestHandler<GetSubscriberWalletQue
             raAmount = amount;
         }
 
-        else if (referralMode == "RA")
+        else if (referralMode == "RA" && userExpertsId == expertsId)
         {
             raAmount = expertsId != null ? amount : amount * ((decimal)_dbContext.Experts.Find(expertsId).FixCommission) / 100;
+        }
+        else if (referralMode == "RA" && userExpertsId != expertsId)
+        {
+            raAmount = amount * ((decimal)_dbContext.Experts.Find(expertsId).FixCommission) / 100;
         }
 
         else if (referralMode == "AP")
