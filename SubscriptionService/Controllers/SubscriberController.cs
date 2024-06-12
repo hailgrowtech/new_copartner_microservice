@@ -39,6 +39,16 @@ public class SubscriberController : ControllerBase
         return Ok(subscribers);
     }
 
+
+    [HttpGet("{Id}")]
+    public async Task<ActionResult<SubscriberReadDto>> Get(Guid Id)
+    {
+        _logger.LogInformation("Fetching subscribers details for Id : " + Id.ToString());
+        var subscribers = await _logic.Get(Id);
+        return subscribers != null ? (ActionResult<SubscriberReadDto>)Ok(subscribers) : NotFound();
+    }
+
+
     /// <summary>
     /// Get an Experts.
     /// </summary>
@@ -48,11 +58,11 @@ public class SubscriberController : ControllerBase
     ///     GET : api/Experts/1
     /// </remarks>
     /// <param name="Id"></param>
-    [HttpGet("{Id}")]
-    public async Task<ActionResult<SubscriberReadDto>> Get(Guid Id)
+    [HttpGet("GetSubscriberByLink", Name = "GetSubscriberByLink")]
+    public async Task<ActionResult<SubscriberReadDto>> Get(int page = 1, int pageSize = 10, string link = null)
     {
-        _logger.LogInformation("Fetching subscribers details for Id : " + Id.ToString());
-        var subscribers = await _logic.Get(Id);
+        _logger.LogInformation("Fetching subscribers details for Link : ");
+        var subscribers = await _logic.Get(page, pageSize, link);
         return subscribers != null ? (ActionResult<SubscriberReadDto>)Ok(subscribers) : NotFound();
     }
 

@@ -37,6 +37,14 @@ public class UserController : ControllerBase
         return Ok(users);
     }
 
+    [HttpGet("GetUserByLink", Name = "GetUserByLink")]
+    public async Task<object> Get(int page = 1, int pageSize = 10, string link = null)
+    {
+        _logger.LogInformation("Fetching User Data..");
+        var users = await _logic.Get(page, pageSize, link);
+        return Ok(users);
+    }
+
     /// <summary>
     /// Get an User.
     /// </summary>
@@ -53,6 +61,7 @@ public class UserController : ControllerBase
         var user = await _logic.Get(Id);
         return  user != null ? (ActionResult<UserReadDto>)Ok(user) : NotFound();
     }
+
 
     [HttpPost]
     public async Task<object> Post(UserCreateDto userDto)

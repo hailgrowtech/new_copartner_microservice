@@ -193,5 +193,24 @@ public class UserBusinessProcessor : IUserBusinessProcessor
         }
     }
 
+    public async Task<ResponseDto> Get(int page = 1, int pageSize = 10, string link=null)
+    {
+        var user = await _sender.Send(new GetUserByLinkQuery(page, pageSize, link));
+        if (user == null)
+        {
+            return new ResponseDto()
+            {
+                IsSuccess = false,
+                Data = null,
+                ErrorMessages = new List<string>() { AppConstants.User_UserNotFound }
+            };
+        }
+        var userReadDto = _mapper.Map<List<UserReadDto>>(user);
+        return new ResponseDto()
+        {
+            IsSuccess = true,
+            Data = userReadDto,
+        };
+    }
 }
 
