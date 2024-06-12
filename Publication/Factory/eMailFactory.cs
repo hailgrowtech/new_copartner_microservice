@@ -63,7 +63,8 @@ public class eMailFactory
             Port = Convert.ToInt32(emailConfiguration.Port),
             Username = emailConfiguration.Username,
             Password = emailConfiguration.Password,
-            FromDisplayName = emailConfiguration.From
+            From = emailConfiguration.From,
+            FromDisplayName = emailConfiguration.FromDisplayName
         };
         return emailSettings;
     }
@@ -71,7 +72,7 @@ public class eMailFactory
     private MimeMessage CreateEmailMessage(Message message, EmailSettings _emailSettings)
     {
         var emailMessage = new MimeMessage();
-        emailMessage.From.Add(new MailboxAddress(_emailSettings.FromDisplayName, _emailSettings.FromDisplayName));
+        emailMessage.From.Add(new MailboxAddress(_emailSettings.FromDisplayName, _emailSettings.From));
         emailMessage.To.AddRange(message.To);
         emailMessage.Cc.AddRange(message.Cc);
         emailMessage.Subject = message.Subject;
@@ -138,5 +139,6 @@ public class EmailSettings
     public int Port { get; set; }
     public string Username { get; set; }
     public string Password { get; set; }
+    public string From { get; set; }
     public string FromDisplayName { get; set; }
 }

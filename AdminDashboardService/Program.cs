@@ -12,6 +12,7 @@ using Amazon.Runtime;
 using Amazon.S3;
 using CommonLibrary;
 using CommonLibrary.CommonDTOs;
+using Publication.Factory;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,11 +30,11 @@ builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(logger);
 
 // Add services to the container.
-//builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
-foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
-{
-    builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assembly));
-}
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
+//foreach (var assembly in AppDomain.CurrentDomain.GetAssemblies())
+//{
+//    builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assembly));
+//}
 var configuration = builder.Configuration;
 builder.Services.AddControllers();
 builder.Services.AddApplicationInsightsTelemetry();
@@ -117,7 +118,10 @@ builder.Services.AddScoped<IRelationshipManagerBusinessProcessor, RelationshipMa
 builder.Services.AddScoped<IUserDataListingBusinessProcessor, UserDataListingBusinessProcessor>();
 builder.Services.AddScoped<IJoinBusinessProcessor, JoinBusinessProcessor>();
 builder.Services.AddScoped<IAWSStorageBusinessProcessor, AWSStorageBusinessProcessor>();
+builder.Services.AddScoped<IEmailBusinessProcessor, EmailBusinessProcessor>();
 builder.Services.AddScoped<IJsonMapper, JsonMapper>();
+// Register eMailFactory
+builder.Services.AddTransient<eMailFactory>();
 //AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 

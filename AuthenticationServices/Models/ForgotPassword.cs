@@ -9,6 +9,7 @@ namespace AuthenticationService.Models;
 public class ForgotPassword : BaseModel
 {
     public Guid? UserId { get; set; }
+    public string? UserType { get; set; }
     public string Email{ get; set; }
     [JsonIgnore]
     public string? Token { get; set; }

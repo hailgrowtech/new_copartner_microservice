@@ -58,6 +58,11 @@ public class AutoMapperProfile : Profile
         CreateMap<Join, ResponseDto>()
             .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Blog entity to ResponseDto's Data property
 
+        // Source -> Target
+        CreateMap<EmailStatus, EmailCreateDto>().ReverseMap();
+        CreateMap<EmailStatus, ResponseDto>()
+            .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Blog entity to ResponseDto's Data property
+
     }
 
 }
