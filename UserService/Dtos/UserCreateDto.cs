@@ -16,5 +16,7 @@
         public Guid? ExpertsID { get; set; }
         public Guid? AdvertisingAgencyId { get; set; }
         public Guid? ExpertsAdvertisingAgencyId { get; set; }
+        public string? LandingPageUrl { get; set; }
+
     }
 }
