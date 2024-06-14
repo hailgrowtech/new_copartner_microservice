@@ -48,7 +48,7 @@ namespace SubscriptionService.Logic
             return new ResponseDto()
             {
                 IsSuccess = true,
-                Data = subscriptionMsts,
+                Data = subscriptionMstsReadDto,
             };
         }
 
@@ -64,11 +64,11 @@ namespace SubscriptionService.Logic
                     ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
                 };
             }
-           // var subscriptionMstsReadDto = _mapper.Map<SubscriptionReadDto>(subscriptionExperts);
+           var subscriptionMstsReadDto = _mapper.Map<List<SubscriptionReadDto>>(subscriptionExperts);
             return new ResponseDto()
             {
                 IsSuccess = true,
-                Data = subscriptionExperts,
+                Data = subscriptionMstsReadDto,
             };
         }
 
