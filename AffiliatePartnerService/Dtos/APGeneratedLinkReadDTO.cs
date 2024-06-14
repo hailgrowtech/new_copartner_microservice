@@ -6,5 +6,7 @@
         public Guid? APId { get; set; }
         public string? GeneratedLink { get; set; }
         public string? APReferralLink { get; set; }
+        public string? Tag { get; set; }
+
     }
 }
