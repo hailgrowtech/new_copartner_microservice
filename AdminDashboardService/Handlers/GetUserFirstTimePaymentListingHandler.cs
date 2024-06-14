@@ -31,8 +31,7 @@ namespace AdminDashboardService.Handlers
                                                    Payment = userGroup.FirstOrDefault().TotalAmount, // Assuming TotalAmount represents the payment amount
                                                    APId = userGroup.Key.AffiliatePartnerId,
                                                    RAId = userGroup.Key.ExpertsID
-                                                   //PaymentRAId = 
-                                                   //PaymentRAName = 
+
                                                }).Skip(skip)
                                                 .Take(request.PageSize)
                                                 .ToListAsync(cancellationToken);
