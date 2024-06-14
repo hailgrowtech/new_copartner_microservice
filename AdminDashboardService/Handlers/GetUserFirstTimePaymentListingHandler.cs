@@ -30,7 +30,8 @@ namespace AdminDashboardService.Handlers
                                                    Name = userGroup.Key.Name,
                                                    Payment = userGroup.FirstOrDefault().TotalAmount, // Assuming TotalAmount represents the payment amount
                                                    APId = userGroup.Key.AffiliatePartnerId,
-                                                   RAId = userGroup.Key.ExpertsID
+                                                   RAId = userGroup.Key.ExpertsID,
+                                                   ReferralMode = userGroup.Key.ReferralMode
 
                                                }).Skip(skip)
                                                 .Take(request.PageSize)
