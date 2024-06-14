@@ -16,6 +16,7 @@ namespace SubscriptionService.Dtos
         public int? DiscountPercentage { get; set; }
         public DateTime? DiscountValidFrom { get; set; }
         public DateTime? DiscountValidTo { get; set; }
+        public bool? isCustom { get; set; }
         public bool IsActive { get; set; }
     }
 }
