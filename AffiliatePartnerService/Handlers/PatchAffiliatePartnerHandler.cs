@@ -28,7 +28,7 @@ public class PatchAffiliatePartnerHandler : IRequestHandler<PatchAffiliatePartne
         if (currentAP == null)
         {
             // Handle the case where the expert does not exist
-            throw new Exception($"Expert with ID {command.Id} not found.");
+            throw new Exception($"Affiliate Partner with ID {command.Id} not found.");
         }
 
         // Apply the patch to the existing entity
