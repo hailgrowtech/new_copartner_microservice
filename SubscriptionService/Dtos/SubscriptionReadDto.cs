@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using CommonLibrary.CommonModels;
+using Microsoft.EntityFrameworkCore;
 using MigrationDB.Models;
 
 namespace SubscriptionService.Dtos
 {
-    public class SubscriptionReadDto
+    public class SubscriptionReadDto : BaseModel
     {
         public Guid Id { get; set; }
         public Experts? Experts { get; set; }
@@ -21,6 +22,7 @@ namespace SubscriptionService.Dtos
         public int? DiscountPercentage { get; set; }
         public DateTime? DiscountValidFrom { get; set; }
         public DateTime? DiscountValidTo { get; set; }
+        public bool? isCustom { get; set; }
         public bool isActive { get; set; }
     }
 }
