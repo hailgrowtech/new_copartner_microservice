@@ -5,6 +5,7 @@ using AutoMapper;
 using CommonLibrary;
 using CommonLibrary.CommonDTOs;
 using MediatR;
+using Microsoft.AspNetCore.JsonPatch;
 using MigrationDB.Model;
 
 namespace AffiliatePartnerService.Logic
@@ -22,7 +23,7 @@ namespace AffiliatePartnerService.Logic
 
         public async Task<ResponseDto> GetGeneratedAPLinkById(Guid id)
         {
-            var aPGeneratedLinks = await _sender.Send(new GetAPGeneratedLinkByIdQuery(id));
+            var aPGeneratedLinks = await _sender.Send(new GetAPGeneratedLinkListByIdQuery(id));
             if (aPGeneratedLinks == null)
             {
                 return new ResponseDto()
@@ -75,6 +76,41 @@ namespace AffiliatePartnerService.Logic
 
         }
 
+
+        public async Task<ResponseDto> PatchAPGeneratedLink(Guid Id, JsonPatchDocument<APGeneratedLinkCreateDTO> request)
+        {
+            var apgeneratedlinks = _mapper.Map<APGeneratedLinks>(request);
+
+            var existingAPGeneratedLink = await _sender.Send(new GetAPGeneratedLinkByIdQuery(Id));
+            if (existingAPGeneratedLink == null)
+            {
+                return new ResponseDto()
+                {
+                    IsSuccess = false,
+                    //   Data = _mapper.Map<ExpertsReadDto>(existingExperts),
+                    ErrorMessages = new List<string>() { AppConstants.Expert_ExpertNotFound }
+                };
+            }
+
+            var result = await _sender.Send(new PatchAPGeneratedLinkCommand(Id, request, existingAPGeneratedLink));
+            if (result == null)
+            {
+                return new ResponseDto()
+                {
+                    IsSuccess = false,
+                    Data = _mapper.Map<APGeneratedLinkReadDTO>(existingAPGeneratedLink),
+                    ErrorMessages = new List<string>() { AppConstants.Expert_FailedToUpdateExpert }
+                };
+            }
+
+            return new ResponseDto()
+            {
+                Data = _mapper.Map<APGeneratedLinkReadDTO>(result),
+                DisplayMessage = AppConstants.Expert_ExpertUpdated
+            };
+        }
+
+
         public async Task<ResponseDto> Get(int page = 1, int pageSize = 10)
         {
             var apListingDetailsList = await _sender.Send(new GetAPDetailsQuery());
@@ -86,8 +122,6 @@ namespace AffiliatePartnerService.Logic
             };
         }
 
-
-        
-
+   
     }
 }

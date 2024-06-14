@@ -19,7 +19,9 @@ public class AutoMapperProfile : Profile
         CreateMap<AffiliatePartner, ResponseDto>()
             .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map AffiliatePartner entity to ResponseDto's Data property
 
-       
+        CreateMap<APGeneratedLinks, JsonPatchDocument<APGeneratedLinkCreateDTO>>().ReverseMap();
+
+
     }
 
 }
