@@ -10,7 +10,9 @@ public class AutoMapperProfile : Profile
     public AutoMapperProfile()
     {
         // Source -> Target
-        CreateMap<Subscription, SubscriptionReadDto>().ReverseMap();
+        // CreateMap<Subscription, SubscriptionReadDto>().ReverseMap();
+        CreateMap<Subscription, SubscriptionReadDto>()
+            .ForMember(dest => dest.DiscountedAmount, opt => opt.MapFrom(src => CalculateDiscountedAmount(src)));
         CreateMap<Subscription, SubscriptionCreateDto>().ReverseMap();
         CreateMap<Subscription, JsonPatchDocument<SubscriptionCreateDto>>().ReverseMap();
         CreateMap<Subscription, ResponseDto>()
@@ -23,6 +25,23 @@ public class AutoMapperProfile : Profile
         CreateMap<Subscriber, JsonPatchDocument<SubscriberCreateDto>>().ReverseMap();
         CreateMap<Subscriber, ResponseDto>()
             .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Subscription entity to ResponseDto's Data property
+    }
+
+    private decimal? CalculateDiscountedAmount(Subscription subscription)
+    {
+        if (subscription.Amount.HasValue &&
+            subscription.DiscountPercentage.HasValue &&
+            subscription.DiscountValidFrom.HasValue &&
+            subscription.DiscountValidTo.HasValue)
+        {
+            var currentDate = DateTime.UtcNow;
+            if (currentDate >= subscription.DiscountValidFrom.Value && currentDate <= subscription.DiscountValidTo.Value)
+            {
+                var discount = subscription.Amount.Value * subscription.DiscountPercentage.Value / 100;
+                return subscription.Amount.Value - discount;
+            }
+        }
+        return subscription.Amount;
     }
 
 }

@@ -13,6 +13,9 @@ namespace SubscriptionService.Dtos
         public decimal Amount { get; set; }
         public string PremiumTelegramLink { get; set; }
         public string Description { get; set; }
+        public int? DiscountPercentage { get; set; }
+        public DateTime? DiscountValidFrom { get; set; }
+        public DateTime? DiscountValidTo { get; set; }
         public bool IsActive { get; set; }
     }
 }

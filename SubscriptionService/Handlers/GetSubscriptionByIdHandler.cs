@@ -16,7 +16,7 @@ namespace SubscriptionService.Handlers
 
         public async Task<Subscription> Handle(GetSubscriptionByIdQuery request, CancellationToken cancellationToken)
         {
-            var subscriptionMstsList = await _dbContext.Subscriptions.Where(a => a.Id == request.Id && a.IsDeleted!= true).SingleOrDefaultAsync(cancellationToken: cancellationToken);
+            var subscriptionMstsList = await _dbContext.Subscriptions.Include(s => s.Experts).Where(a => a.Id == request.Id && a.IsDeleted!= true).SingleOrDefaultAsync(cancellationToken: cancellationToken);
             return subscriptionMstsList;
         }
     }
