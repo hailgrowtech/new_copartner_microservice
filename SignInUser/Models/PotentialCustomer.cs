@@ -6,6 +6,7 @@ namespace SignInService.Models;
 [Table("PotentialCustomer")]
 public class PotentialCustomer
 {
+    [DatabaseGenerated(DatabaseGeneratedOption.None)]
     [Key]
     public Guid Id { get; set; } = Guid.NewGuid();
     public string CountryCode { get; set; }
@@ -19,5 +20,6 @@ public class PotentialCustomer
     public int? OTPGenAttemptForMobileNumberCount { get; set; }
     public int CurrentOTPValidationAttempt { get; set; }
     public int? OTPGenAttemptForPublicIpCount { get; set; }
+    public List<RefreshToken> RefreshTokens { get; set; }
 }
 

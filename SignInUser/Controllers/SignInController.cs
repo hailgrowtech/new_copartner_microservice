@@ -1,10 +1,14 @@
-﻿using CommonLibrary.CommonDTOs;
+﻿using CommonLibrary;
+using CommonLibrary.Authorization;
+using CommonLibrary.CommonDTOs;
 using Copartner;
 using MassTransit;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Razorpay.Api;
 using SignInService.Dtos;
+using SignInService.DTOs;
 using SignInService.Logic;
 
 namespace SignInUserService;
@@ -69,15 +73,63 @@ public class SignInController : ControllerBase
     {
         _logger.LogInformation("SignInController : Validate OTP ..");
         var response = await _signUpBusinessProcessor.ValidateOTP(request);
+
         if (response.IsSuccess)
         {
+            setTokenCookie(
+                new TokenRequestDTO()
+                {
+                    Token = ((PotentialCustomerDto)response.Data).RefreshToken
+                });
             //_publish.Publish<UserCreatedEvent>(new
             //{
             //    MobileNumber = request.MobileNumber
             //});
 
+
             return Ok(response);
         }
         return NotFound(response);
+    }
+    /// <summary>
+    /// Refresh User's Token.
+    /// </summary>
+    /// <returns>Returns new Refresh Token</returns>
+    // GET: api/Authentication
+    [AllowAnonymous]
+    [HttpPost("refresh-token")]
+    public async Task<IActionResult> RefreshToken()
+    {
+        var refreshToken = Request.Cookies[AppConstants.cookies_RefreshToken];
+        if (refreshToken != null)
+        {
+            var response = await _signUpBusinessProcessor.RefreshToken(refreshToken);
+
+            // Assuming TokenRequestDTO has a property named RefreshToken
+            var refreshTokenValue = ((SignInService.Dtos.PotentialCustomerDto)response.Data).RefreshToken;
+
+            if (string.IsNullOrEmpty(refreshTokenValue))
+            {
+                return BadRequest(new { message = "Refresh Token Not Found in Response." });
+            }
+
+            setTokenCookie(new TokenRequestDTO { Token = refreshTokenValue });
+            return Ok(response);
+        }
+        else
+        {
+            return BadRequest(new { message = "Refresh Token Not Found for User." });
+        }
+    }
+    // helper methods
+    private void setTokenCookie(TokenRequestDTO request)
+    {
+        // append cookie with refresh token to the http response
+        var cookieOptions = new CookieOptions
+        {
+            HttpOnly = true,
+            Expires = DateTime.UtcNow.AddDays(7)
+        };
+        Response.Cookies.Append(AppConstants.cookies_RefreshToken, request.Token, cookieOptions);
     }
 }
