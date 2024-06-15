@@ -6,6 +6,7 @@ using SignInService.JWToken;
 using SignInService.Logic;
 using System.Reflection;
 using SignInUserService;
+using Microsoft.Extensions.Options;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -30,7 +31,6 @@ builder.Services.AddCors();
 //builder.Services.AddServices(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddApplicationInsightsTelemetry();
-
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -60,6 +60,12 @@ builder.Services.AddSwaggerGen(c =>
     var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
     c.IncludeXmlComments(xmlPath);
 });
+// Register configuration settings
+builder.Services.Configure<CommonLibrary.AppSettings>(builder.Configuration.GetSection("AppSettings"));
+
+// Register as singleton if you need to inject it as a concrete type
+builder.Services.AddSingleton(resolver => resolver.GetRequiredService<IOptions<CommonLibrary.AppSettings>>().Value);
+
 
 //User Service Dependencies
 builder.Services.AddScoped<ISignInBusinessProcessor, SignInBusinessProcessor>();
@@ -78,7 +84,7 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 //{
 builder.Services.AddDbContext<SignInDbContextProd, SignInDbContext>();
 //}TODO:Deepak
-  
+
 
 
 var app = builder.Build();

@@ -13,5 +13,6 @@ public class PotentialCustomerDto
     public int CurrentOTPValidationAttempt { get; set; }
     public int? OTPGenAttemptForPublicIpCount { get; set; }
     public string Token { get; set; }
+    public string RefreshToken { get; set; }
 
 }
