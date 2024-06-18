@@ -1,5 +1,858 @@
 {
   "Routes": [
+
+    //For  Wallet Service
+    //WithdrawalController
+    {
+      "DownstreamPathTemplate": "/api/Withdrawal",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5135
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/Withdrawal",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AddQueriesToRequest": {
+        "page": "{page}",
+        "pageSize": "{pageSize}"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Withdrawal/{Id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5135
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/Withdrawal/{Id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Withdrawal/GetBankUPIDetails",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5135
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/Withdrawal/GetBankUPIDetails/",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Withdrawal/GetBankUPIById/{Id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5135
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/Withdrawal/GetBankUPIById/{Id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Withdrawal/BankUPIByUserId/{Id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5135
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/Withdrawal/BankUPIByUserId/{Id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AddQueriesToRequest": {
+        "userType": "{userType}",
+        "page": "{page}",
+        "pageSize": "{pageSize}"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Withdrawal/GetWithdrawalByUserId/{Id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5135
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/Withdrawal/GetWithdrawalByUserId/{Id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AddQueriesToRequest": {
+        "userType": "{userType}",
+        "page": "{page}",
+        "pageSize": "{pageSize}"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Withdrawal/PostBankUPIDetails",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5135
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/Withdrawal/PostBankUPIDetails",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/Withdrawal/PutBankUPIDetails/{Id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5135
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/Withdrawal/PutBankUPIDetails/{Id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+
+
+    //WalletController
+    {
+      "DownstreamPathTemplate": "/api/Wallet",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5135
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/Wallet",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AddQueriesToRequest": {
+        "page": "{page}",
+        "pageSize": "{pageSize}"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Wallet/{Id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5135
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/Wallet/{Id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Wallet/GetWalletWithdrawalBalance/{Id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5135
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/Wallet/GetWalletWithdrawalBalance/{Id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AddQueriesToRequest": {
+        "userType": "{userType}"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+
+    //For User Service
+    {
+      "DownstreamPathTemplate": "/api/User",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5131
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/User",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AddQueriesToRequest": {
+        "page": "{page}",
+        "pageSize": "{pageSize}"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/User/{Id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5131
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/User/{Id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/User/GetUserByLink",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5131
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/User/GetUserByLink",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AddQueriesToRequest": {
+        "page": "{page}",
+        "pageSize": "{pageSize}",
+        "link": "{link}"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+
+
+
+    //For AffiliatePartnerService
+
+    //APDashboardController
+    {
+      "DownstreamPathTemplate": "/api/APDashboard/PatchGenerateAPLink",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5133
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/APDashboard/PatchGenerateAPLink",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AddQueriesToRequest": {
+        "Id": "{Id}"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/APDashboard/GenerateAPLink",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5133
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/APDashboard/GenerateAPLink",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/APDashboard/GetGeneratedAPLinks/{Id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5133
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/APDashboard/GetDashboardAPListingData/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AddQueriesToRequest": {
+        "page": "{page}",
+        "pageSize": "{pageSize}"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/APDashboard/DashobaordAPDetails",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5133
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/APDashboard/DashobaordAPDetails",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AddQueriesToRequest": {
+        "page": "{page}",
+        "pageSize": "{pageSize}"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/APDashboard/GetDashboardAPListingData/{Id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5133
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/APDashboard/GetDashboardAPListingData/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AddQueriesToRequest": {
+        "page": "{page}",
+        "pageSize": "{pageSize}"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/APDashboard/DashboardAPListing",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5133
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/APDashboard/DashboardAPListing",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AddQueriesToRequest": {
+        "page": "{page}",
+        "pageSize": "{pageSize}"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+
+    //AffiliatePartnerController
+    {
+      "DownstreamPathTemplate": "/api/AffiliatePartner/Ad5LandingPage/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5133
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/AffiliatePartner/Ad5LandingPage/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/AffiliatePartner/Ad4LandingPage/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5133
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/AffiliatePartner/Ad4LandingPage/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/AffiliatePartner/Ad4LandingPage/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5133
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/AffiliatePartner/Ad4LandingPage/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/AffiliatePartner/Ad2LandingPage/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5133
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/AffiliatePartner/Ad2LandingPage/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/AffiliatePartner/Ad1LandingPage/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5133
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/AffiliatePartner/Ad1LandingPage/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/AffiliatePartner/GenerateReferralLink/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5133
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/AffiliatePartner/GenerateReferralLink/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/AffiliatePartner",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5133
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/AffiliatePartner",
+      "UpstreamHttpMethod": [ "POST", "GET", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/AffiliatePartner/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5133
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/AffiliatePartner/{id}", // Deepak sir please check get api using pagination.
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+
+
+    //For AdminDashboardService
+    //UserDataController
+    {
+      "DownstreamPathTemplate": "api/UserData/UserDataListing",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5134
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/UserData/UserDataListing",
+      "UpstreamHttpMethod": [ "POST", "GET", "PATCH" ],
+      "AddQueriesToRequest": {
+        "page": "{page}",
+        "pageSize": "{pageSize}"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "api/UserData/UserFirstTimePaymentListing",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5134
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/UserData/UserFirstTimePaymentListing",
+      "UpstreamHttpMethod": [ "POST", "GET", "PATCH" ],
+      "AddQueriesToRequest": {
+        "page": "{page}",
+        "pageSize": "{pageSize}"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "api/UserData/UserSecondTimePaymentListing",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5134
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/UserData/UserSecondTimePaymentListing",
+      "UpstreamHttpMethod": [ "POST", "GET", "PATCH" ],
+      "AddQueriesToRequest": {
+        "page": "{page}",
+        "pageSize": "{pageSize}"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+
+    //RelationshipManagerController
+    {
+      "DownstreamPathTemplate": "api/RelationshipManager/GetByUserId",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5134
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/RelationshipManager/GetByUserId",
+      "UpstreamHttpMethod": [ "POST", "GET", "PATCH" ],
+      "AddQueriesToRequest": {
+        "Id": "{Id}",
+        "UserType": "{UserType}"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/RelationshipManager",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5134
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/RelationshipManager",
+      "UpstreamHttpMethod": [ "POST", "GET", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/RelationshipManager/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5134
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/RelationshipManager/{id}", // Deepak sir please check get api using pagination.
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    //MarketingContentController
+    {
+      "DownstreamPathTemplate": "api/MarketingContent/GetMarketingContentByContentType",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5134
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/MarketingContent/GetMarketingContentByContentType",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AddQueriesToRequest": {
+        "page": "{page}",
+        "pageSize": "{pageSize}",
+        "contentType": "{contentType}"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/MarketingContent",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5134
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/MarketingContent",
+      "UpstreamHttpMethod": [ "POST", "GET", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/MarketingContent/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5134
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/MarketingContent/{id}", // Deepak sir please check get api using pagination.
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    //ExpertsAdvertisingAgencyController
+    {
+      "DownstreamPathTemplate": "/api/ExpertsAdvertisingAgency",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5134
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/ExpertsAdvertisingAgency",
+      "UpstreamHttpMethod": [ "POST", "GET", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/ExpertsAdvertisingAgency/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5134
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/ExpertsAdvertisingAgency/{id}", // Deepak sir please check get api using pagination.
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    //EmailController
+    {
+      "DownstreamPathTemplate": "/api/Email",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5134
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/Email",
+      "UpstreamHttpMethod": [ "POST", "GET", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Email/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5134
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/Email/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": [] 
+      }
+    },
+    //BlogsController
+    {
+      "DownstreamPathTemplate": "/api/Blogs",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5134
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/Blogs",
+      "UpstreamHttpMethod": [ "POST", "GET", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/Blogs/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5134
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/Blogs/{id}", // Deepak sir please check get api using pagination.
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    //AWSStorageController
+    {
+      "DownstreamPathTemplate": "/api/AWSStorage",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5134
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/AWSStorage",
+      "UpstreamHttpMethod": [ "POST", "GET", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/AWSStorage/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5134
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/AWSStorage/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    //Advertising Agency Controller
+    {
+      "DownstreamPathTemplate": "/api/AdvertisingAgency",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5134
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/AdvertisingAgency",
+      "UpstreamHttpMethod": [ "POST", "GET", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+    {
+      "DownstreamPathTemplate": "/api/AdvertisingAgency/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5134
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/AdvertisingAgency/{id}", // Deepak sir please check got other api using pagination.
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
     {
       "DownstreamPathTemplate": "/api/SignIn/GenerateOTP",
       "DownstreamScheme": "https",
@@ -53,6 +906,74 @@
       "UpstreamPathTemplate": "/CoPartnerGateway/Users/{id}",
       "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ]
     },
+    //For ExpertService
+    //RADashboard
+    {
+      "DownstreamPathTemplate": "/api/RADashboard/DashboardRAListing",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5132
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/DashboardRAListing",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AddQueriesToRequest": {
+        "page": "{page}",
+        "pageSize": "{pageSize}"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/RADashboard/GetDashboardRAListingData/{Id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5132
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/GetDashboardRAListingData/{Id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AddQueriesToRequest": {
+        "page": "{page}",
+        "pageSize": "{pageSize}"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/RADashboard/DashboardRADetails",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5132
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/DashboardRADetails",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AddQueriesToRequest": {
+        "isCoPartner": "{isCoPartner}",
+        "page": "{page}",
+        "pageSize": "{pageSize}"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+
+
+    //ExpertsController
     {
       "DownstreamPathTemplate": "/api/Experts",
       "DownstreamScheme": "https",
@@ -63,7 +984,15 @@
         }
       ],
       "UpstreamPathTemplate": "/CoPartnerGateway/Experts",
-      "UpstreamHttpMethod": [ "POST", "GET", "PATCH" ]
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AddQueriesToRequest": {
+        "page": "{page}",
+        "pageSize": "{pageSize}"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
     },
     {
       "DownstreamPathTemplate": "/api/Experts/{id}",
@@ -75,8 +1004,72 @@
         }
       ],
       "UpstreamPathTemplate": "/CoPartnerGateway/Experts/{id}",
-      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ]
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
     },
+
+    {
+      "DownstreamPathTemplate": "/api/Experts/GenerateReferralLink/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5132
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/GenerateReferralLink/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+
+    {
+      "DownstreamPathTemplate": "/api/Experts/GenerateExpertPaymentLink/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5132
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/GenerateExpertPaymentLink/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+
+
+
+    //For SubscriptionService 
+
+
+
+    //PaymentGateway
+    {
+      "DownstreamPathTemplate": "/api/PaymentGateway",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5009
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/PaymentGateway",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+
+    //SubscriptionController
     {
       "DownstreamPathTemplate": "/api/Subscription/",
       "DownstreamScheme": "https",
@@ -103,6 +1096,24 @@
       "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ]
     },
     {
+      "DownstreamPathTemplate": "/api/Subscription/GetByExpertsId/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5009
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/Subscription/GetByExpertsId{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+
+    //SubscriberController
+    {
       "DownstreamPathTemplate": "/api/Subscriber/",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
@@ -127,6 +1138,27 @@
       "UpstreamPathTemplate": "/CoPartnerGateway/Subscriber/{id}",
       "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ]
     },
+    {
+      "DownstreamPathTemplate": "/api/Subscriber/GetByUserId{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5009
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/Subscriber/GetByUserId{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
+
+
+
+
+
     {
       "DownstreamPathTemplate": "/api/Booking/GetVisitsByOwnerId/{id}",
       "UpstreamPathTemplate": "/gateway/Visit/{id}",
