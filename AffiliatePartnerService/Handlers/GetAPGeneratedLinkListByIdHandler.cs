@@ -32,7 +32,8 @@ namespace AffiliatePartnerService.Handlers
                             APId = ap.APId,
                             GeneratedLink = ap.GeneratedLink,
                             APReferralLink = ap.APReferralLink,
-                            Tag = ap.Tag
+                            Tag = ap.Tag,
+                            isArchive = ap.isArchive
                         };
 
             return query;
