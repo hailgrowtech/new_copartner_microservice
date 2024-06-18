@@ -68,7 +68,8 @@ namespace AffiliatePartnerService.Handlers
                 {
                     APId = request.AffiliatePartnerId,  // Ensure this is stored as a Guid
                     GeneratedLink = newLink,
-                    APReferralLink = request.APReferralLink
+                    APReferralLink = request.APReferralLink,
+                    isArchive = false
                 };
 
                 await _dbContext.APGeneratedLinks.AddAsync(generatedLink, cancellationToken);
@@ -79,7 +80,8 @@ namespace AffiliatePartnerService.Handlers
                     Id = generatedLink.Id,
                     APId = generatedLink.APId,
                     GeneratedLink = generatedLink.GeneratedLink,
-                    APReferralLink = generatedLink.APReferralLink
+                    APReferralLink = generatedLink.APReferralLink,
+                    isArchive = generatedLink.isArchive
                 });
             }
 

@@ -1,4 +1,5 @@
 ﻿using CommonLibrary.CommonModels;
+using System.ComponentModel;
 
 namespace MigrationDB.Model
 {
@@ -8,5 +9,7 @@ namespace MigrationDB.Model
         public string? GeneratedLink { get; set;}
         public string? APReferralLink { get; set;}
         public string? Tag { get; set; }
+        [DefaultValue("false")]
+        public bool? isArchive { get; set; }
     }
 }
