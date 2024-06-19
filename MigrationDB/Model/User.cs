@@ -20,4 +20,5 @@ public class User : BaseModel
     public Guid? AdvertisingAgencyId { get; set; }
     public Guid? ExpertsAdvertisingAgencyId { get; set; }
     public string? LandingPageUrl { get; set; }
+    public DateTime CreatedOn { get; set; }
 }
