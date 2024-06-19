@@ -35,5 +35,6 @@ public class RAListingDataDto
     public string? InvoiceId { get; set; }
     public string? PremiumTelegramChannel { get; set; }
     public string? SignatureImage { get; set; }
-
+    public decimal? GSTAmount { get; set; }
+    public decimal? TotalAmount { get; set; }
 }
