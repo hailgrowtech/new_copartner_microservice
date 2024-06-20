@@ -34,7 +34,7 @@ public class AutoMapperProfile : Profile
             subscription.DiscountValidFrom.HasValue &&
             subscription.DiscountValidTo.HasValue)
         {
-            var currentDate = DateTime.UtcNow;
+            var currentDate = DateTime.Now;
             if (currentDate >= subscription.DiscountValidFrom.Value && currentDate <= subscription.DiscountValidTo.Value)
             {
                 var discount = subscription.Amount.Value * subscription.DiscountPercentage.Value / 100;
