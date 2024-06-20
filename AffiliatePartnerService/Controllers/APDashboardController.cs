@@ -97,5 +97,19 @@ namespace AffiliatePartnerService.Controllers
             return NotFound(response);
         }
 
+
+        [HttpPatch("PatchGenerateAPLink", Name = "PatchGenerateAPLink")]
+        public async Task<object> PatchGenerateAPLink(Guid Id, [FromBody] JsonPatchDocument<APGeneratedLinkCreateDTO> subscribersDtoPatch)
+        {
+            var response = await _logicAPDetails.PatchAPGeneratedLink(Id, subscribersDtoPatch);
+            if (response.IsSuccess)
+            {
+                return Ok(response);
+            }
+            else
+            {
+                return NotFound(response);
+            }
+        }
     }
 }

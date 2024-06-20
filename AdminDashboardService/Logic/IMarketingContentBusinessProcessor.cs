@@ -7,6 +7,7 @@ namespace AdminDashboardService.Logic;
 public interface IMarketingContentBusinessProcessor
 {
     Task<ResponseDto> Get(int page = 1, int pageSize = 10);
+    Task<ResponseDto> Get(int page = 1, int pageSize = 10, string contentType = null);
     Task<ResponseDto> Get(Guid id);
     Task<ResponseDto> Post(MarketingContentCreateDto marketingContent);
     Task<ResponseDto> Put(Guid id, MarketingContentCreateDto marketingContentCreateDto);

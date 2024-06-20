@@ -1,4 +1,4 @@
-﻿using AdminDashboardService.Dtos;
+using AdminDashboardService.Dtos;
 using AdminDashboardService.Queries;
 using MediatR;
 using Microsoft.EntityFrameworkCore;

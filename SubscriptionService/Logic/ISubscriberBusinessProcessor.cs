@@ -9,6 +9,7 @@ namespace SubscriptionService.Logic
     public interface ISubscriberBusinessProcessor
     {
         Task<ResponseDto> Get();
+        Task<ResponseDto> Get(int page, int pageSize, string link);
         Task<ResponseDto> Get(Guid id);
         Task<ResponseDto> Post(SubscriberCreateDto subscriberCreateDto);
         Task<ResponseDto> Put(Guid id, SubscriberCreateDto subscriberCreateDto);

@@ -53,8 +53,10 @@ public class GetRAListingByIdHandler : IRequestHandler<GetRAListingByIdQuery, IE
                         LegalName = exp.LegalName,
                         GST = exp.GST,
                         InvoiceId = sub.InvoiceId,
-                        PremiumTelegramChannel = sub.PremiumTelegramChannel
-                    };
+                        PremiumTelegramChannel = sub.PremiumTelegramChannel,
+                         GSTAmount = sub.GSTAmount , // Handle null value
+                         TotalAmount = sub.TotalAmount // Handle null value
+                     };
 
         var query2 = from usr in _dbContext.Users
                      join sub in _dbContext.Subscribers on usr.Id equals sub.UserId into subscriberJoin
@@ -90,7 +92,9 @@ public class GetRAListingByIdHandler : IRequestHandler<GetRAListingByIdQuery, IE
                          LegalName = exp.LegalName,
                          GST = exp.GST,
                          InvoiceId = sub.InvoiceId,
-                         PremiumTelegramChannel = sub.PremiumTelegramChannel
+                         PremiumTelegramChannel = sub.PremiumTelegramChannel,
+                         GSTAmount = sub.GSTAmount,
+                         TotalAmount = sub.TotalAmount
                      };
 
         var result = await query1.Union(query2).Skip(skip).Take(request.pageSize).ToListAsync(cancellationToken);

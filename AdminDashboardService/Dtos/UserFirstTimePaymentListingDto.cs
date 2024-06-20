@@ -12,5 +12,8 @@
         public Guid? RAId { get; set; }
         public Guid? PaymentRAId { get; set; }
         public string PaymentRAName { get; set; }
+        public string? ReferralMode { get; set; }
+        //public string? AffiliatePartnerName { get; set; }
+        //public string? ExpertName { get; set; }
     }
 }
