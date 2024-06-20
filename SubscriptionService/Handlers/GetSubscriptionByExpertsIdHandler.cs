@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using CommonLibrary.Extensions;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MigrationDB.Data;
 using MigrationDB.Model;
@@ -18,7 +19,8 @@ namespace SubscriptionService.Handlers
         {
             var subscriptionMstsList = await _dbContext.Subscriptions.Where(a => a.ExpertsId == request.Id && a.IsDeleted!= true)
                 .Include(s => s.Experts).ToListAsync(cancellationToken: cancellationToken); 
-            return subscriptionMstsList;
+           // return subscriptionMstsList;
+            return subscriptionMstsList.Select(e => e.ConvertAllDateTimesToIST()).ToList();
         }
     }
 
