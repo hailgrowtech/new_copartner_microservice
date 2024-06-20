@@ -1,4 +1,5 @@
-﻿using ExpertService.Queries;
+﻿using CommonLibrary.Extensions;
+using ExpertService.Queries;
 using ExpertsService.Dtos;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
@@ -41,7 +42,7 @@ namespace ExpertsService.Handlers
                         select new RADetailsDto
                         {
                             Id = g.Key.Id,
-                            JoinDate = g.Key.CreatedOn,
+                            JoinDate = g.Key.CreatedOn.ToIST(),
                             Name = g.Key.Name,
                             SEBINo = g.Select(x => x.expert.SEBIRegNo).SingleOrDefault(),
                             FixCommission = g.Key.FixCommission,

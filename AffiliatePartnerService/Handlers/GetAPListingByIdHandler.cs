@@ -1,4 +1,5 @@
 ﻿using AffiliatePartnerService.Dtos;
+using CommonLibrary.Extensions;
 using ExpertService.Queries;
 using MassTransit;
 using MediatR;
@@ -32,7 +33,7 @@ public class GetAPListingByIdHandler : IRequestHandler<GetAPListingByIdQuery, IE
                     {
                         APName = aff.Name,
                         ReferralLink = aff.ReferralLink,
-                        UserJoiningDate = usr.CreatedOn,
+                        UserJoiningDate = usr.CreatedOn.ToIST(),
                         SubscribeDate = sub.CreatedOn,
                         UserMobileNo = usr.MobileNumber,
                         RAName = exp.Name,
