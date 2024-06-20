@@ -69,8 +69,10 @@ public class GetRAListingByIdHandler : IRequestHandler<GetRAListingByIdQuery, IE
                      join subscr in _dbContext.Subscriptions on sub.SubscriptionId equals subscr.Id into subscriptionJoin
                      from subscr in subscriptionJoin.DefaultIfEmpty()
                      where usr.ExpertsID == request.Id
+                        && subscr.PlanType == null
                         //&& usr.ExpertsID == subscr.ExpertsId
                         //&& exp.Name != null
+
                         && !usr.IsDeleted
                        // && (sub.isActive || !sub.IsDeleted)
                      select new RAListingDataDto
