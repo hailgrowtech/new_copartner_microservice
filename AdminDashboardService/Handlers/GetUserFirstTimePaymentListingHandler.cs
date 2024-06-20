@@ -10,7 +10,6 @@ public class GetUserFirstTimePaymentListingHandler : IRequestHandler<GetUserFirs
 {
     private readonly CoPartnerDbContext _dbContext;
     public GetUserFirstTimePaymentListingHandler(CoPartnerDbContext dbContext) => _dbContext = dbContext;
-
     public async Task<IEnumerable<UserFirstTimePaymentListingDto>> Handle(GetUserFirstTimePaymentListingQuery request, CancellationToken cancellationToken)
     {
         int skip = (request.Page - 1) * request.PageSize;
