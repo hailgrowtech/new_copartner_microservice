@@ -1,4 +1,5 @@
-﻿using ExpertService.Models;
+﻿using CommonLibrary.Extensions;
+using ExpertService.Models;
 using ExpertService.Queries;
 using ExpertsService.Dtos;
 using MassTransit;
@@ -33,8 +34,8 @@ public class GetRAListingByIdHandler : IRequestHandler<GetRAListingByIdQuery, IE
                      select new RAListingDataDto
                     {
                         RAName = exp.Name,
-                        UserJoiningDate = usr.CreatedOn,
-                        SubscribeDate = sub.CreatedOn,
+                        UserJoiningDate = usr.CreatedOn.ToIST(),
+                        SubscribeDate = sub.CreatedOn.ToIST(),
                         UserMobileNo = usr.Id != null ? usr.MobileNumber : null,
                         User = usr,
                         APName = (aff.Id != null && aff.Id.ToString().Length > 10)

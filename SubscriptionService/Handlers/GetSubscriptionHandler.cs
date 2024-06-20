@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using CommonLibrary.Extensions;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MigrationDB.Data;
 using MigrationDB.Model;
@@ -14,7 +15,8 @@ namespace SubscriptionService.Handlers
         {
             var entities = await _dbContext.Subscriptions.Include(s => s.Experts).Where(x=> x.IsDeleted != true).ToListAsync(cancellationToken: cancellationToken);
             if (entities == null) return null;
-            return entities;
+            // Convert all DateTime fields to IST
+            return entities.Select(e => e.ConvertAllDateTimesToIST()).ToList();
         }
     }
 }

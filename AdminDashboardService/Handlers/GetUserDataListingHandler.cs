@@ -3,7 +3,7 @@ using AdminDashboardService.Queries;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MigrationDB.Data;
-using MigrationDB.Model;
+using CommonLibrary.Extensions;
 
 namespace AdminDashboardService.Handlers
 {
@@ -16,8 +16,6 @@ namespace AdminDashboardService.Handlers
         {
             int skip = (request.Page - 1) * request.PageSize;
 
-
-
             var result = await (from u in _dbContext.Users
              where !u.IsDeleted
              join s in _dbContext.Subscribers on u.Id equals s.UserId into gj
@@ -26,7 +24,7 @@ namespace AdminDashboardService.Handlers
              select new UserDataListingDto
              {
                  UserId = u.Id,
-                 Date = u.CreatedOn, // Assuming CreatedOn is the registration date
+                 Date = u.CreatedOn.ToIST(), // Convert the date to IST, // Assuming CreatedOn is the registration date
                  Name = u.Name,
                  Mobile = u.MobileNumber,
                  APId = u.AffiliatePartnerId,
