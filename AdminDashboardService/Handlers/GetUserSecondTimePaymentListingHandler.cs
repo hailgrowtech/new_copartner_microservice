@@ -30,7 +30,11 @@ public class GetUserSecondTimePaymentListingHandler : IRequestHandler<GetUserSec
                                                  Date = sub.s.CreatedOn.ToIST(),
                                                  Mobile = sub.u.MobileNumber,
                                                  Name = sub.u.Name,
-                                                 Payment = sub.s.TotalAmount
+                                                 Payment = sub.s.TotalAmount,
+                                                 ReferralMode = sub.u.ReferralMode,
+                                                 APId = sub.u.AffiliatePartnerId,
+                                                 RAId = sub.u.ExpertsID
+
                                              }))
                                              .Skip(skip)
                                              .Take(request.PageSize)

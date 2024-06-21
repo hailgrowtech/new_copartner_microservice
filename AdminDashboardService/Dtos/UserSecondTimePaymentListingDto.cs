@@ -8,9 +8,10 @@
         public string Name { get; set; }
         public decimal Payment { get; set; }
         public string MobileNumber { get; set; }
+        public string? ReferralMode { get; set; }
         public Guid? APId { get; set; }
         public Guid? RAId { get; set; }
-        public Guid? PaymentRAId { get; set; }
-        public string PaymentRAName { get; set; }
+        //public Guid? PaymentRAId { get; set; }
+        //public string PaymentRAName { get; set; }
     }
 }
