@@ -202,16 +202,16 @@ public class SubscriptionBusinessProcessor : ISubscriptionBusinessProcessor
             {
                 subscriptionReadDto.DiscountValidFrom = null;
                 subscriptionReadDto.DiscountValidTo = null;
-                subscriptionReadDto.DiscountPercentage = 0;
-                subscriptionReadDto.DiscountedAmount = null;
+                subscriptionReadDto.DiscountPercentage = null;
+               // subscriptionReadDto.DiscountedAmount = null;
             }
         }
         else
         {
             subscriptionReadDto.DiscountValidFrom = null;
             subscriptionReadDto.DiscountValidTo = null;
-            subscriptionReadDto.DiscountPercentage = 0;
-            subscriptionReadDto.DiscountedAmount = null;
+            subscriptionReadDto.DiscountPercentage = null;
+           // subscriptionReadDto.DiscountedAmount = null;
         }
 
         return subscriptionReadDto;
