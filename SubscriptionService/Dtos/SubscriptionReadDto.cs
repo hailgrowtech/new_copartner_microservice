@@ -1,5 +1,6 @@
 ﻿using CommonLibrary.CommonModels;
 using Microsoft.EntityFrameworkCore;
+using MigrationDB.Model;
 using MigrationDB.Models;
 
 namespace SubscriptionService.Dtos
@@ -24,5 +25,10 @@ namespace SubscriptionService.Dtos
         public DateTime? DiscountValidTo { get; set; }
         public bool? isCustom { get; set; }
         public bool isActive { get; set; }
+
+        public static implicit operator SubscriptionReadDto(Subscription v)
+        {
+            throw new NotImplementedException();
+        }
     }
 }
