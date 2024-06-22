@@ -93,6 +93,7 @@ builder.Services.AddSwaggerGen(c =>
 //Experts Service Dependencies
 builder.Services.AddScoped<ISubscriptionBusinessProcessor, SubscriptionBusinessProcessor>();
 builder.Services.AddScoped<ISubscriberBusinessProcessor, SubscriberBusinessProcessor>();
+builder.Services.AddScoped<IPaymentResponseBusinessProcessor, PaymentResponseBusinessProcessor>();
 builder.Services.AddScoped<IJsonMapper, JsonMapper>();
 //AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
