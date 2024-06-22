@@ -18,12 +18,18 @@ public class AutoMapperProfile : Profile
         CreateMap<Subscription, ResponseDto>()
             .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Subscription entity to ResponseDto's Data property
 
-
         // Source -> Target
         CreateMap<Subscriber, SubscriberReadDto>().ReverseMap();
         CreateMap<Subscriber, SubscriberCreateDto>().ReverseMap();
         CreateMap<Subscriber, JsonPatchDocument<SubscriberCreateDto>>().ReverseMap();
         CreateMap<Subscriber, ResponseDto>()
+            .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Subscription entity to ResponseDto's Data property
+
+        // Source -> Target
+        CreateMap<PaymentResponse, PaymentResponseReadDto>().ReverseMap();
+        CreateMap<PaymentResponse, PaymentResponseCreateDto>().ReverseMap();
+        CreateMap<PaymentResponse, JsonPatchDocument<PaymentResponseCreateDto>>().ReverseMap();
+        CreateMap<PaymentResponse, ResponseDto>()
             .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Subscription entity to ResponseDto's Data property
     }
     private decimal? CalculateDiscountedAmount(Subscription subscription)
