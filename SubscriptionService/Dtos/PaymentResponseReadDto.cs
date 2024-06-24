@@ -17,4 +17,5 @@ public class PaymentResponseReadDto
     public decimal Amount { get; set; }
     public string? PaymentMode { get; set; }
     public DateTime TransactionDate { get; set; }
+    public string? Remarks { get; set; }
 }

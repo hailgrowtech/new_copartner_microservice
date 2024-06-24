@@ -18,7 +18,7 @@ namespace SubscriptionService.Handlers
         public async Task<PaymentResponse> Handle(GetPaymentResponseByIdQuery request, CancellationToken cancellationToken)
         {
             var paymentListList = await _dbContext.PaymentResponses
-               // .Include(s=>s.Subscriptions) .Include(s=>s.Users)
+                .Include(s=>s.Subscriptions) .Include(s=>s.Users)
                 .Where(a => a.Id == request.Id && a.IsDeleted!=true).SingleOrDefaultAsync(cancellationToken: cancellationToken);
             return paymentListList;
         }
