@@ -7,6 +7,7 @@ using MigrationDB.Model;
 using SubscriptionService.Commands;
 using SubscriptionService.Dtos;
 using SubscriptionService.Queries;
+using static MassTransit.ValidationResultExtensions;
 
 namespace SubscriptionService.Logic;
 public class PaymentResponseBusinessProcessor : IPaymentResponseBusinessProcessor
@@ -62,12 +63,12 @@ public class PaymentResponseBusinessProcessor : IPaymentResponseBusinessProcesso
             };
         }
 
-        var paymentMstsReadDto = _mapper.Map<PaymentResponseReadDto>(paymentMsts);
+        //var paymentMstsReadDto = _mapper.Map<PaymentResponseReadDto>(paymentMsts);
 
         return new ResponseDto()
         {
             IsSuccess = true,
-            Data = paymentMstsReadDto,
+            Data = paymentMsts,
         };
     }
     public async Task<ResponseDto> Patch(Guid Id, JsonPatchDocument<PaymentResponseCreateDto> request)
@@ -170,6 +171,18 @@ public class PaymentResponseBusinessProcessor : IPaymentResponseBusinessProcesso
     {
         var payment = await _sender.Send(new DeletePaymentResponseCommand(Id));
         var paymentReadDto = _mapper.Map<ResponseDto>(payment);
-        return paymentReadDto;
+        if (paymentReadDto == null)
+        {
+            return new ResponseDto()
+            {
+                IsSuccess = false,
+                ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
+            };
+        }
+        return new ResponseDto()
+        {
+            Data = paymentReadDto,
+            DisplayMessage = AppConstants.Common_RecordDeleted
+        };
     }
 }

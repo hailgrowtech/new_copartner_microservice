@@ -1155,9 +1155,51 @@
       }
     },
 
-
-
-
+    //Payment Response Controller
+    {
+      "DownstreamPathTemplate": "/api/PaymentResponse/",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Subscriber": null,
+          "Port": 5009
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/PaymentResponse",
+      "UpstreamHttpMethod": [ "POST", "GET", "PATCH" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/PaymentResponse/{id}",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5009
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/PaymentResponse/{id}",
+      "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ]
+    },
+    {
+      "DownstreamPathTemplate": "/api/PaymentResponse/GetPaymentByStatus",
+      "DownstreamScheme": "https",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "copartners.in",
+          "Port": 5009
+        }
+      ],
+      "UpstreamPathTemplate": "/CoPartnerGateway/PaymentResponse/GetPaymentByStatus",
+      "UpstreamHttpMethod": [ "GET" ],
+      "AddQueriesToRequest": {
+        "paymentStatus": "{page}"
+      },
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "Bearer"
+        //"AllowedScopes": []
+      }
+    },
 
     {
       "DownstreamPathTemplate": "/api/Booking/GetVisitsByOwnerId/{id}",
