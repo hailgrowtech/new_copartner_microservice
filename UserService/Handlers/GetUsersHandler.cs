@@ -1,9 +1,11 @@
-﻿using MediatR;
+﻿using CommonLibrary.Extensions;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MigrationDB.Data;
 using MigrationDB.Models;
 
 using UserService.Queries;
+using static MassTransit.ValidationResultExtensions;
 
 namespace UserService.Handlers;
 public class GetUsersHandler : IRequestHandler<GetUsersQuery, IEnumerable<User>>
@@ -19,7 +21,8 @@ public class GetUsersHandler : IRequestHandler<GetUsersQuery, IEnumerable<User>>
             .Skip(skip)
             .Take(request.PageSize)
             .ToListAsync(cancellationToken);
-        if (entities == null) return null; 
-        return entities;
+        if (entities == null) return null;
+        return entities.Select(e => e.ConvertAllDateTimesToIST()).ToList();
+       
     }
 }
