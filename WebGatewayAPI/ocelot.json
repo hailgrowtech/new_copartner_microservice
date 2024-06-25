@@ -315,7 +315,7 @@
           "Port": 5133
         }
       ],
-      "UpstreamPathTemplate": "/CoPartnerGateway/APDashboard/GetDashboardAPListingData/{id}",
+      "UpstreamPathTemplate": "/CoPartnerGateway/APDashboard/GetGeneratedAPLinks/{id}",
       "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
       "AddQueriesToRequest": {
         "page": "{page}",
@@ -421,7 +421,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "/api/AffiliatePartner/Ad4LandingPage/{id}",
+      "DownstreamPathTemplate": "/api/AffiliatePartner/Ad3LandingPage/{id}",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -429,7 +429,7 @@
           "Port": 5133
         }
       ],
-      "UpstreamPathTemplate": "/CoPartnerGateway/AffiliatePartner/Ad4LandingPage/{id}",
+      "UpstreamPathTemplate": "/CoPartnerGateway/AffiliatePartner/Ad3LandingPage/{id}",
       "UpstreamHttpMethod": [ "GET", "DELETE", "PUT", "PATCH" ],
       "AuthenticationOptions": {
         "AuthenticationProviderKey": "Bearer"
@@ -521,7 +521,7 @@
     //For AdminDashboardService
     //UserDataController
     {
-      "DownstreamPathTemplate": "api/UserData/UserDataListing",
+      "DownstreamPathTemplate": "/api/UserData/UserDataListing",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -541,7 +541,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "api/UserData/UserFirstTimePaymentListing",
+      "DownstreamPathTemplate": "/api/UserData/UserFirstTimePaymentListing",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -561,7 +561,7 @@
       }
     },
     {
-      "DownstreamPathTemplate": "api/UserData/UserSecondTimePaymentListing",
+      "DownstreamPathTemplate": "/api/UserData/UserSecondTimePaymentListing",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -583,7 +583,7 @@
 
     //RelationshipManagerController
     {
-      "DownstreamPathTemplate": "api/RelationshipManager/GetByUserId",
+      "DownstreamPathTemplate": "/api/RelationshipManager/GetByUserId",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
@@ -636,7 +636,7 @@
     },
     //MarketingContentController
     {
-      "DownstreamPathTemplate": "api/MarketingContent/GetMarketingContentByContentType",
+      "DownstreamPathTemplate": "/api/MarketingContent/GetMarketingContentByContentType",
       "DownstreamScheme": "https",
       "DownstreamHostAndPorts": [
         {
