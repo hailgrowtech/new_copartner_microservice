@@ -241,24 +241,24 @@ namespace CourseService.Migrations
                     b.ToTable("Experts");
                 });
 
-            modelBuilder.Entity("CourseService.Models.ExpertsType", b =>
-                {
-                    b.Property<int?>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+            //modelBuilder.Entity("CourseService.Models.ExpertsType", b =>
+            //    {
+            //        b.Property<int?>("Id")
+            //            .ValueGeneratedOnAdd()
+            //            .HasColumnType("int");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
+            //        SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int?>("Id"));
 
-                    b.Property<string>("Description")
-                        .HasColumnType("nvarchar(max)");
+            //        b.Property<string>("Description")
+            //            .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ExpertType")
-                        .HasColumnType("nvarchar(max)");
+            //        b.Property<string>("ExpertType")
+            //            .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Id");
+            //        b.HasKey("Id");
 
-                    b.ToTable("ExpertsType");
-                });
+            //        b.ToTable("ExpertsType");
+            //    });
 
             modelBuilder.Entity("CourseService.Models.User", b =>
                 {
