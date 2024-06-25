@@ -37,4 +37,5 @@ public class RAListingDataDto
     public string? SignatureImage { get; set; }
     public decimal? GSTAmount { get; set; }
     public decimal? TotalAmount { get; set; }
+    public int? DiscountPercentage { get; set; }
 }

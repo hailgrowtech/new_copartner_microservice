@@ -55,7 +55,8 @@ public class GetRAListingByIdHandler : IRequestHandler<GetRAListingByIdQuery, IE
                          InvoiceId = sub.InvoiceId,
                          PremiumTelegramChannel = sub.PremiumTelegramChannel,
                          GSTAmount = sub.GSTAmount, // Handle null value
-                         TotalAmount = sub.TotalAmount // Handle null value
+                         TotalAmount = sub.TotalAmount, // Handle null value                         ,
+                         DiscountPercentage = subscr.DiscountPercentage ?? 0
                      };
 
         var query2 = from usr in _dbContext.Users
@@ -94,11 +95,12 @@ public class GetRAListingByIdHandler : IRequestHandler<GetRAListingByIdQuery, IE
                          InvoiceId = sub.InvoiceId,
                          PremiumTelegramChannel = sub.PremiumTelegramChannel,
                          GSTAmount = sub.GSTAmount,
-                         TotalAmount = sub.TotalAmount
+                         TotalAmount = sub.TotalAmount,
+                         DiscountPercentage = subscr.DiscountPercentage ?? 0
                      };
 
         var result = await query1.Union(query2).Skip(skip).Take(request.pageSize).ToListAsync(cancellationToken);
-        return result.Select(e => e.ConvertAllDateTimesToIST()).ToList(); ;
+        return result.Select(e => e.ConvertAllDateTimesToIST()).ToList(); 
     }
 }
 

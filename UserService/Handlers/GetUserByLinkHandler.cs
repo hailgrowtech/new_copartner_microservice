@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using CommonLibrary.Extensions;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MigrationDB.Data;
 using MigrationDB.Models;
@@ -22,7 +23,7 @@ namespace UserService.Handlers
                 .Take(request.PageSize)
                 .ToListAsync(cancellationToken);
             if (entities == null) return null;
-            return entities;
+            return entities.Select(e => e.ConvertAllDateTimesToIST()).ToList();
         }
     }
 }
