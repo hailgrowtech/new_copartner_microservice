@@ -1,9 +1,10 @@
 ﻿using MediatR;
 using MigrationDB.Model;
+using SubscriptionService.Dtos;
 
 namespace SubscriptionService.Queries;
 
-public record GetSubscriberByLinkQuery : IRequest<IEnumerable<Subscriber>>
+public record GetSubscriberByLinkQuery : IRequest<IEnumerable<SubscriberReadDto>>
 {
     public int Page { get; init; }
     public int PageSize { get; init; }

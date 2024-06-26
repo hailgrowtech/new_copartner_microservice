@@ -10,6 +10,8 @@ namespace SubscriptionService.Dtos
         public Guid SubscriptionId { get; set; }
 
         public Guid UserId { get; set; }
+        public string MobileNumber { get; set; }
+
 
         public decimal GSTAmount { get; set; }
         public decimal TotalAmount { get; set; }
