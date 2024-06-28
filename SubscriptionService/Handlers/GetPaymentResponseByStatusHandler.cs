@@ -22,6 +22,7 @@ public class GetPaymentResponseByStatusHandler : IRequestHandler<GetPaymentRespo
             .Include(s => s.Subscriptions)
             .Include(s => s.Users)
             .Where(a => a.Status == request.paymentStatus && !a.IsDeleted)
+            .OrderByDescending(x => x.CreatedOn)
             .ToListAsync(cancellationToken);
 
         return payments;

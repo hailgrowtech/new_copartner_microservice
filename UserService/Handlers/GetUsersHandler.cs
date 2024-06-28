@@ -18,6 +18,7 @@ public class GetUsersHandler : IRequestHandler<GetUsersQuery, IEnumerable<User>>
         int skip = (request.Page - 1) * request.PageSize;
 
         var entities =  await _dbContext.Users.Where(x => x.IsDeleted != true)
+            .OrderByDescending(x => x.CreatedOn)
             .Skip(skip)
             .Take(request.PageSize)
             .ToListAsync(cancellationToken);

@@ -18,6 +18,7 @@ public class GetSubscriberWalletHandler : IRequestHandler<GetSubscriberWalletQue
                 .Include(s => s.User)
                 .Include(s => s.Subscription)
                 .Include(s=> s.Subscription.Experts)
+                .OrderByDescending(x => x.CreatedOn)
                 .FirstOrDefaultAsync(s => s.Id == request.Id);
 
         if (subscriber == null)

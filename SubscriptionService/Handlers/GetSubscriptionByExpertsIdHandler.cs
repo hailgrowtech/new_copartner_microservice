@@ -18,7 +18,9 @@ namespace SubscriptionService.Handlers
         public async Task<IEnumerable<Subscription>> Handle(GetSubscriptionByExpertsIdQuery request, CancellationToken cancellationToken)
         {
             var subscriptionMstsList = await _dbContext.Subscriptions.Where(a => a.ExpertsId == request.Id && a.IsDeleted!= true)
-                .Include(s => s.Experts).ToListAsync(cancellationToken: cancellationToken); 
+                .Include(s => s.Experts)
+                .OrderByDescending(x => x.CreatedOn)
+                .ToListAsync(cancellationToken: cancellationToken); 
            // return subscriptionMstsList;
             return subscriptionMstsList.Select(e => e.ConvertAllDateTimesToIST()).ToList();
         }

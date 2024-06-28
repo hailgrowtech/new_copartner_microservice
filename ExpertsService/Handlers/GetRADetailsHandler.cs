@@ -53,7 +53,10 @@ namespace ExpertsService.Handlers
                             LegalName =g.Key.LegalName
                         };
 
-            var result = await query.Skip(skip).Take(request.PageSize).ToListAsync();
+            var result = await query
+                //.OrderByDescending(x => x.JoinDate)
+                .Skip(skip)
+                .Take(request.PageSize).ToListAsync();
 
             return result;
         }
