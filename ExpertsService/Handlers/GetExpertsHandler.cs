@@ -15,7 +15,8 @@ public class GetExpertsHandler : IRequestHandler<GetExpertsQuery, IEnumerable<Ex
         int skip = (request.Page - 1) * request.PageSize;
 
         var entities =  await _dbContext.Experts.Where(x => x.IsDeleted != true)
-                         .Skip(skip)
+                        .OrderByDescending(x => x.CreatedOn)
+                        .Skip(skip)
                         .Take(request.PageSize)
                         .ToListAsync(cancellationToken);
         if (entities == null) return null; 

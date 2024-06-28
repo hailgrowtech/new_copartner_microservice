@@ -17,6 +17,7 @@ namespace AdminDashboardService.Handlers
 
 
             var entities = await _dbContext.MarketingContents.Where(x => x.IsDeleted != true && x.ContentType == request.ContentType)
+                                    .OrderByDescending(x => x.CreatedOn)
                                     .Skip(skip)
                                     .Take(request.PageSize)
                                     .ToListAsync(cancellationToken);

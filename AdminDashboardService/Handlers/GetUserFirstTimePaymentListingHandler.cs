@@ -29,10 +29,13 @@ public class GetUserFirstTimePaymentListingHandler : IRequestHandler<GetUserFirs
                                                Name = userGroup.Key.Name,
                                                Payment = userGroup.FirstOrDefault().TotalAmount, // Assuming TotalAmount represents the payment amount
                                                APId = userGroup.Key.AffiliatePartnerId,
-                                               RAId = userGroup.Key.ExpertsID
+                                               RAId = userGroup.Key.ExpertsID,
+                                               RASubscriber = userGroup.FirstOrDefault().Subscription.ExpertsId
                                                //PaymentRAId = 
                                                //PaymentRAName = 
-                                           }).Skip(skip)
+                                           })
+                                            //.OrderByDescending(x => x.Date)
+                                            .Skip(skip)
                                             .Take(request.PageSize)
                                             .ToListAsync(cancellationToken);
 

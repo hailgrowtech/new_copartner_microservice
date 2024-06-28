@@ -13,7 +13,9 @@ namespace SubscriptionService.Handlers
         public GetSubscriberHandler(CoPartnerDbContext dbContext) => _dbContext = dbContext;
         public async Task<IEnumerable<Subscriber>> Handle(GetSubscriberQuery request, CancellationToken cancellationToken)
         {
-            var entities = await _dbContext.Subscribers.Where(x=> x.IsDeleted != true).ToListAsync(cancellationToken: cancellationToken);
+            var entities = await _dbContext.Subscribers.Where(x=> x.IsDeleted != true)
+                .OrderByDescending(x => x.CreatedOn)
+                .ToListAsync(cancellationToken: cancellationToken);
             if (entities == null) return null;
             // Convert all DateTime fields to IST
             return entities.Select(e => e.ConvertAllDateTimesToIST()).ToList();

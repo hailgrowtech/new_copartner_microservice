@@ -33,9 +33,10 @@ public class GetUserSecondTimePaymentListingHandler : IRequestHandler<GetUserSec
                                                  Payment = sub.s.TotalAmount,
                                                  ReferralMode = sub.u.ReferralMode,
                                                  APId = sub.u.AffiliatePartnerId,
-                                                 RAId = sub.u.ExpertsID
-
+                                                 RAId = sub.u.ExpertsID,
+                                                 RASubscriber = sub.s.Subscription != null ? sub.s.Subscription.ExpertsId : (Guid?)null
                                              }))
+                                             //.OrderByDescending(x => x.Date)
                                              .Skip(skip)
                                              .Take(request.PageSize)
                                              .ToList();

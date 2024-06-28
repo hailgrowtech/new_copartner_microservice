@@ -11,6 +11,7 @@
         public string? ReferralMode { get; set; }
         public Guid? APId { get; set; }
         public Guid? RAId { get; set; }
+        public Guid? RASubscriber { get; set; }
         //public Guid? PaymentRAId { get; set; }
         //public string PaymentRAName { get; set; }
     }

@@ -32,6 +32,7 @@ namespace SubscriptionService.Handlers
                     InvoiceId = sub.InvoiceId,
                     CreatedOn = sub.CreatedOn,
                 })
+                .OrderByDescending(x => x.CreatedOn)
                 .ToListAsync(cancellationToken: cancellationToken);
 
             if (entities == null) return null;

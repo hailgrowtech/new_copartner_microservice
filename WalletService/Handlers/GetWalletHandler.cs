@@ -18,6 +18,7 @@ public class GetWalletHandler : IRequestHandler<GetWalletQuery, IEnumerable<Wall
         // Retrieve the page of wallets
         var entities = await _dbContext.Wallets
             .Where(x => x.IsDeleted != true)
+            .OrderByDescending(x => x.CreatedOn)
             .Skip(skip)
             .Take(request.PageSize)
             .ToListAsync(cancellationToken);

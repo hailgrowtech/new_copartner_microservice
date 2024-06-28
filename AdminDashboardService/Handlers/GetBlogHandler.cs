@@ -19,6 +19,7 @@ public class GetBlogHandler : IRequestHandler<GetBlogQuery, IEnumerable<Blog>>
         // Retrieve the page of wallets
         var entities = await _dbContext.Blogs
             .Where(x => x.IsDeleted != true)
+            //.OrderByDescending(x => x.CreatedOn)
             .Skip(skip)
             .Take(request.PageSize)
             .ToListAsync(cancellationToken);

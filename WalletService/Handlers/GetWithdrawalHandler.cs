@@ -75,6 +75,7 @@ public class GetWithdrawalHandler : IRequestHandler<GetWithdrawalQuery, IEnumera
         }
 
         var results = await query
+            .OrderByDescending(x => x.TransactionDate)
             .Skip((request.Page - 1) * request.PageSize)
             .Take(request.PageSize)
             .ToListAsync();
@@ -91,7 +92,9 @@ public class GetWithdrawalModeHandler : IRequestHandler<GetWithdrawalModeQuery, 
 
     public async Task<IEnumerable<WithdrawalMode>> Handle(GetWithdrawalModeQuery request, CancellationToken cancellationToken)
     {
-        var entities =  await _dbContext.WithdrawalModes.Where(x => x.IsDeleted != true).ToListAsync(cancellationToken: cancellationToken);
+        var entities =  await _dbContext.WithdrawalModes.Where(x => x.IsDeleted != true)
+            .OrderByDescending(x => x.CreatedOn)
+            .ToListAsync(cancellationToken: cancellationToken);
         if (entities == null) return null; 
         return entities;      
     }

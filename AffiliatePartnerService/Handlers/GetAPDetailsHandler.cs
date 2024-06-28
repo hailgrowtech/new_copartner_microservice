@@ -49,7 +49,9 @@ namespace AffiliatePartnerService.Handlers
 
                         };
 
-            var result = await query.ToListAsync(cancellationToken);
+            var result = await query
+                .OrderByDescending(x => x.JoinDate)
+                .ToListAsync(cancellationToken);
             return result;
         }
 

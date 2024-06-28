@@ -22,13 +22,17 @@ namespace AdminDashboardService.Handlers
                 if (request.Id.ToString().Length > 10)
                 {
                     var RelationshipManagersList = await _dbContext.RelationshipManagers.Where(a => a.Experts.Id == request.Id && a.IsDeleted != true)
-                        .Include(s => s.Experts).ToListAsync(cancellationToken: cancellationToken);
+                        .Include(s => s.Experts)
+                        .OrderByDescending(x => x.CreatedOn)
+                        .ToListAsync(cancellationToken: cancellationToken);
                     return RelationshipManagersList;
                 }
                 else
                 {
                     var RelationshipManagersList = await _dbContext.RelationshipManagers
-                        .Include(s => s.Experts).ToListAsync(cancellationToken: cancellationToken);
+                        .Include(s => s.Experts)
+                        .OrderByDescending(x => x.CreatedOn)
+                        .ToListAsync(cancellationToken: cancellationToken);
                     return RelationshipManagersList;
                 }
             }
@@ -37,13 +41,17 @@ namespace AdminDashboardService.Handlers
                 if (request.Id.ToString().Length > 10)
                 {
                     var RelationshipManagersList = await _dbContext.RelationshipManagers.Where(a => a.AffiliatePartners.Id == request.Id && a.IsDeleted != true)
-                    .Include(s => s.AffiliatePartners).ToListAsync(cancellationToken: cancellationToken);
+                    .Include(s => s.AffiliatePartners)
+                    .OrderByDescending(x => x.CreatedOn)
+                    .ToListAsync(cancellationToken: cancellationToken);
                     return RelationshipManagersList;
                 }
                 else
                 {
                     var RelationshipManagersList = await _dbContext.RelationshipManagers
-                    .Include(s => s.AffiliatePartners).ToListAsync(cancellationToken: cancellationToken);
+                    .Include(s => s.AffiliatePartners)
+                    .OrderByDescending(x => x.CreatedOn)
+                    .ToListAsync(cancellationToken: cancellationToken);
                     return RelationshipManagersList;
                 }
             }

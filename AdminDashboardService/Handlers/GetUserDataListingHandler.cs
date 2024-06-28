@@ -31,6 +31,7 @@ public class GetUserDataListingHandler : IRequestHandler<GetUserDataListingQuery
              ExpertId = u.ExpertsID
              
          })
+            //.OrderByDescending(x => x.Date)
             .Skip(skip)
             .Take(request.PageSize)
             .ToListAsync(cancellationToken);
