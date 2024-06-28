@@ -96,7 +96,7 @@ public class GetRAListingByIdHandler : IRequestHandler<GetRAListingByIdQuery, IE
                          PremiumTelegramChannel = sub.PremiumTelegramChannel,
                          GSTAmount = sub.GSTAmount,
                          TotalAmount = sub.TotalAmount,
-                         DiscountPercentage = subscr.DiscountPercentage ?? 0
+                         DiscountPercentage = subscr.DiscountPercentage ?? 0,
                      };
 
         var result = await query1.Union(query2).Skip(skip).Take(request.pageSize).ToListAsync(cancellationToken);
