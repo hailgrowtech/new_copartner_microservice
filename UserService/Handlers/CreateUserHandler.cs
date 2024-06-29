@@ -16,10 +16,17 @@ public class CreateUserHandler : IRequestHandler<CreateUserCommand, User>
 
     public async Task<User> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
-        var entity = request.User;
-        await _dbContext.Users.AddAsync(entity);
-        await _dbContext.SaveChangesAsync(cancellationToken);
-        request.User.Id = entity.Id;
-        return request.User;
+        try
+        {
+            var entity = request.User;
+            await _dbContext.Users.AddAsync(entity);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+            request.User.Id = entity.Id;
+            return request.User;
+        }
+        catch (Exception ex)
+        {
+            return null;
+        }
     }
 }

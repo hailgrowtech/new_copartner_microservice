@@ -1,10 +1,10 @@
 ﻿using MediatR;
 using ExpertService.Commands;
-
 using ExpertService.Profiles;
 using MigrationDB.Models;
 using MigrationDB.Data;
 using Microsoft.EntityFrameworkCore;
+using CommonLibrary.CommonModels;
 
 namespace ExpertService.Handlers;
 public class PatchExpertHandler : IRequestHandler<PatchExpertsCommand, Experts>
@@ -44,6 +44,9 @@ public class PatchExpertHandler : IRequestHandler<PatchExpertsCommand, Experts>
         // Attach the updated entity and mark it as modified
         _dbContext.Attach(expertsToUpdate);
         _dbContext.Entry(expertsToUpdate).State = EntityState.Modified;
+
+        // Preserve multiple properties 
+        _dbContext.PreserveProperties(expertsToUpdate, currentExpert, "CreatedOn");
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 

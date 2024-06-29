@@ -4,6 +4,7 @@ using MigrationDB.Data;
 using MigrationDB.Model;
 using SubscriptionService.Commands;
 using SubscriptionService.Profiles;
+using CommonLibrary.CommonModels;
 
 namespace SubscriptionService.Handlers
 {
@@ -43,6 +44,9 @@ namespace SubscriptionService.Handlers
             // Attach the updated entity and mark it as modified
             _dbContext.Attach(SubscriberToUpdate);
             _dbContext.Entry(SubscriberToUpdate).State = EntityState.Modified;
+
+            // Preserve multiple properties 
+            _dbContext.PreserveProperties(SubscriberToUpdate, currentSubscriber, "CreatedOn");
 
             await _dbContext.SaveChangesAsync(cancellationToken);
 

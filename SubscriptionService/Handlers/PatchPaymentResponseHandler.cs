@@ -4,6 +4,7 @@ using MigrationDB.Data;
 using MigrationDB.Model;
 using SubscriptionService.Commands;
 using SubscriptionService.Profiles;
+using CommonLibrary.CommonModels;
 
 namespace SubscriptionService.Handlers;
 public class PatchPaymentResponseHandler : IRequestHandler<PatchPaymentResponseCommand, PaymentResponse>
@@ -40,6 +41,9 @@ public class PatchPaymentResponseHandler : IRequestHandler<PatchPaymentResponseC
         // Attach the updated entity and mark it as modified
         _dbContext.Attach(PaymentToUpdate);
         _dbContext.Entry(PaymentToUpdate).State = EntityState.Modified;
+
+        // Preserve multiple properties 
+        _dbContext.PreserveProperties(PaymentToUpdate, currentPayment, "CreatedOn");
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 

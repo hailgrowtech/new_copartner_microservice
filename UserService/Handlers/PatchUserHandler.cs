@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using MigrationDB.Data;
 using MigrationDB.Models;
 using UserService.Commands;
+using CommonLibrary.CommonModels;
 using UserService.Data;
 
 using UserService.Profiles;
@@ -44,6 +45,9 @@ public class PatchUserHandler : IRequestHandler<PatchUserCommand, User>
         // Attach the updated entity and mark it as modified
         _dbContext.Attach(usersToUpdate);
         _dbContext.Entry(usersToUpdate).State = EntityState.Modified;
+
+        // Preserve multiple properties  _dbContext.PreserveProperties(userToUpdate, currentUser, "CreatedOn", "AnotherPropertyToPreserve");
+        _dbContext.PreserveProperties(usersToUpdate, currentUsers, "CreatedOn");
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 

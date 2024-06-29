@@ -1,8 +1,7 @@
 ﻿using MediatR;
 using AffiliatePartnerService.Commands;
-
 using AffiliatePartnerService.Profiles;
-using MigrationDB.Models;
+using CommonLibrary.CommonModels;
 using MigrationDB.Data;
 using MigrationDB.Model;
 using Microsoft.EntityFrameworkCore;
@@ -45,6 +44,9 @@ public class PatchAffiliatePartnerHandler : IRequestHandler<PatchAffiliatePartne
         // Attach the updated entity and mark it as modified
         _dbContext.Attach(apToUpdate);
         _dbContext.Entry(apToUpdate).State = EntityState.Modified;
+
+        // Preserve multiple properties 
+        _dbContext.PreserveProperties(apToUpdate, currentAP, "CreatedOn");
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
