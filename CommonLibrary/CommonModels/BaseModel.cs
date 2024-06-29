@@ -19,7 +19,7 @@ public class BaseModel
     public DateTime CreatedOn { get; set; } =  DateTime.UtcNow;
     public Guid? UpdatedBy { get; set; }
     [Column(TypeName = "datetime")]
-    public DateTime? UpdatedOn { get; set; }
+    public DateTime? UpdatedOn { get; set; }=  DateTime.UtcNow;
 
     [DefaultValue("false")]
     public bool IsDeleted { get; set; }

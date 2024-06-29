@@ -5,6 +5,7 @@ using MigrationDB.Model;
 using AdminDashboardService.Profiles;
 using AdminDashboardService.Commands;
 using Microsoft.EntityFrameworkCore;
+using CommonLibrary.CommonModels;
 
 namespace AdminDashboardService.Handlers;
 public class PatchAdAgencyDetailsHandler : IRequestHandler<PatchAdAgencyDetailsCommand, AdvertisingAgency>
@@ -44,6 +45,9 @@ public class PatchAdAgencyDetailsHandler : IRequestHandler<PatchAdAgencyDetailsC
         // Attach the updated entity and mark it as modified
         _dbContext.Attach(AdAgencyToUpdate);
         _dbContext.Entry(AdAgencyToUpdate).State = EntityState.Modified;
+
+        // Preserve multiple properties 
+        _dbContext.PreserveProperties(trackedEntity, currentAdAgency, "CreatedOn");
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 

@@ -5,6 +5,7 @@ using MigrationDB.Model;
 using AdminDashboardService.Commands;
 using AdminDashboardService.Profiles;
 using Microsoft.EntityFrameworkCore;
+using CommonLibrary.CommonModels;
 
 namespace AdminDashboardService.Handlers;
 public class PatchBlogHandler : IRequestHandler<PatchBlogCommand, Blog>
@@ -45,6 +46,8 @@ public class PatchBlogHandler : IRequestHandler<PatchBlogCommand, Blog>
         // Attach the updated entity and mark it as modified
         _dbContext.Attach(BlogsToUpdate);
         _dbContext.Entry(BlogsToUpdate).State = EntityState.Modified;
+        // Preserve multiple properties 
+        _dbContext.PreserveProperties(trackedEntity, currentBlogs, "CreatedOn");
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 

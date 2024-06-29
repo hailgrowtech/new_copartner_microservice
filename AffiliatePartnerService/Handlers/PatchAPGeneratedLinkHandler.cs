@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MigrationDB.Data;
 using MigrationDB.Model;
+using CommonLibrary.CommonModels;
 
 namespace AffiliatePartnerService.Handlers
 {
@@ -43,6 +44,9 @@ namespace AffiliatePartnerService.Handlers
             // Attach the updated entity and mark it as modified
             _dbContext.Attach(APGeneratedLinkToUpdate);
             _dbContext.Entry(APGeneratedLinkToUpdate).State = EntityState.Modified;
+
+            // Preserve multiple properties 
+            _dbContext.PreserveProperties(trackedEntity, currentAPGeneratedLink, "CreatedOn");
 
             await _dbContext.SaveChangesAsync(cancellationToken);
 

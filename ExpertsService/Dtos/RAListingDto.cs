@@ -38,4 +38,6 @@ public class RAListingDataDto
     public decimal? GSTAmount { get; set; }
     public decimal? TotalAmount { get; set; }
     public int? DiscountPercentage { get; set; }
+    public string? Address { get; set; }
+    public string? State { get; set; }
 }
