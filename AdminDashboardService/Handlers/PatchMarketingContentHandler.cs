@@ -4,6 +4,7 @@ using AdminDashboardService.Commands;
 using MigrationDB.Model;
 using AdminDashboardService.Profiles;
 using Microsoft.EntityFrameworkCore;
+using CommonLibrary.CommonModels;
 
 namespace AdminDashboardService.Handlers;
 public class PatchMarketingContentHandler : IRequestHandler<PatchMarketingServiceCommand, MarketingContent>
@@ -43,6 +44,8 @@ public class PatchMarketingContentHandler : IRequestHandler<PatchMarketingServic
         // Attach the updated entity and mark it as modified
         _dbContext.Attach(MarketingContentToUpdate);
         _dbContext.Entry(MarketingContentToUpdate).State = EntityState.Modified;
+        // Preserve multiple properties 
+        _dbContext.PreserveProperties(trackedEntity, currentMarketingContent, "CreatedOn");
 
         await _dbContext.SaveChangesAsync(cancellationToken);
 
