@@ -198,12 +198,11 @@ public class SubscriptionBusinessProcessor : ISubscriptionBusinessProcessor
                 var discount = subscriptionReadDto.Amount.Value * subscriptionReadDto.DiscountPercentage.Value / 100;
                 subscriptionReadDto.DiscountedAmount = subscriptionReadDto.Amount.Value - discount;
             }
-            else
+            else if (currentDate >= subscriptionReadDto.DiscountValidTo.Value)
             {
                 subscriptionReadDto.DiscountValidFrom = null;
                 subscriptionReadDto.DiscountValidTo = null;
                 subscriptionReadDto.DiscountPercentage = null;
-               // subscriptionReadDto.DiscountedAmount = null;
             }
         }
         else
@@ -211,7 +210,7 @@ public class SubscriptionBusinessProcessor : ISubscriptionBusinessProcessor
             subscriptionReadDto.DiscountValidFrom = null;
             subscriptionReadDto.DiscountValidTo = null;
             subscriptionReadDto.DiscountPercentage = null;
-           // subscriptionReadDto.DiscountedAmount = null;
+            // subscriptionReadDto.DiscountedAmount = null;
         }
 
         return subscriptionReadDto;
