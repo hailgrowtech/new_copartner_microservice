@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+﻿ using AutoMapper;
 using CommonLibrary;
 using CommonLibrary.CommonDTOs;
 using MediatR;
@@ -198,7 +198,7 @@ public class SubscriptionBusinessProcessor : ISubscriptionBusinessProcessor
                 var discount = subscriptionReadDto.Amount.Value * subscriptionReadDto.DiscountPercentage.Value / 100;
                 subscriptionReadDto.DiscountedAmount = subscriptionReadDto.Amount.Value - discount;
             }
-            else if (currentDate >= subscriptionReadDto.DiscountValidTo.Value)
+            else if(currentDate >= subscriptionReadDto.DiscountValidTo.Value)
             {
                 subscriptionReadDto.DiscountValidFrom = null;
                 subscriptionReadDto.DiscountValidTo = null;

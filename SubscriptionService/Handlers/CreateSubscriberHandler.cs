@@ -44,7 +44,24 @@ public class CreateSubscriberHandler : IRequestHandler<CreateSubscriberCommand, 
         }
 
         var expertName = subscription.Experts.Name;
-        var prefix = "CP" + expertName.Substring(0, 3).ToUpper();
+        var expertType = subscription.Experts.ExpertTypeId;
+
+        string ServiceType = null;
+
+        if (subscription.ServiceType == "1")
+        {
+            ServiceType = "C";
+        }
+        else if (subscription.ServiceType == "2")
+        {
+            ServiceType = "E";
+        }
+        else if (subscription.ServiceType == "3")
+        {
+            ServiceType = "F";
+        }
+
+        var prefix = "CP" + expertName.Substring(0, 3).ToUpper() + ServiceType;
 
         var lastSubscriber = await _dbContext.Subscribers
             .OrderByDescending(s => s.Id)
