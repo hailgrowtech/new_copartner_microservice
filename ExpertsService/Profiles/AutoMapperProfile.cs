@@ -4,6 +4,7 @@ using ExpertService.Dtos;
 using CommonLibrary.CommonDTOs;
 using MigrationDB.Models;
 using ExpertsService.Dtos;
+using MigrationDB.Model;
 
 namespace ExpertService.Profiles;
 public class AutoMapperProfile : Profile
@@ -22,7 +23,15 @@ public class AutoMapperProfile : Profile
         CreateMap<Experts, ResponseDto>()
             .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Subscription entity to ResponseDto's Data property
 
-        
+
+        // Source -> Target
+        CreateMap<WebinarMst, WebinarMstReadDto>().ReverseMap();
+        CreateMap<WebinarMst, WebinarMstCreateDto>().ReverseMap();
+        CreateMap<WebinarMst, JsonPatchDocument<WebinarMstCreateDto>>().ReverseMap();
+        CreateMap<WebinarMst, ResponseDto>()
+            .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Subscription entity to ResponseDto's Data property
+
+
 
 
     }
