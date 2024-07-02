@@ -210,7 +210,7 @@ public class SubscriptionBusinessProcessor : ISubscriptionBusinessProcessor
             subscriptionReadDto.DiscountValidFrom = null;
             subscriptionReadDto.DiscountValidTo = null;
             subscriptionReadDto.DiscountPercentage = null;
-           // subscriptionReadDto.DiscountedAmount = null;
+            // subscriptionReadDto.DiscountedAmount = null;
         }
 
         return subscriptionReadDto;
