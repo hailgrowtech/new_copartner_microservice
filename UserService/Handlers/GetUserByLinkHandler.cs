@@ -18,7 +18,7 @@ namespace UserService.Handlers
         {
             int skip = (request.Page - 1) * request.PageSize;
 
-            var entities = await _dbContext.Users.Where(x => x.IsDeleted != true && x.LandingPageUrl == request.link)
+            var entities = await _dbContext.Users.Where(x => x.IsDeleted != true && (x.LandingPageUrl == request.link || x.LandingPageUrl == request.link+"/"))
                 .OrderByDescending(x => x.CreatedOn)
                 .Skip(skip)
                 .Take(request.PageSize)
