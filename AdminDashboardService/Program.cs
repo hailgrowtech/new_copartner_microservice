@@ -119,6 +119,7 @@ builder.Services.AddScoped<IUserDataListingBusinessProcessor, UserDataListingBus
 builder.Services.AddScoped<IJoinBusinessProcessor, JoinBusinessProcessor>();
 builder.Services.AddScoped<IAWSStorageBusinessProcessor, AWSStorageBusinessProcessor>();
 builder.Services.AddScoped<IEmailBusinessProcessor, EmailBusinessProcessor>();
+builder.Services.AddScoped<ITelegramMessageBusinessProcessor, TelegramMessageBusinessProcessor>();
 builder.Services.AddScoped<IJsonMapper, JsonMapper>();
 // Register eMailFactory
 builder.Services.AddTransient<eMailFactory>();

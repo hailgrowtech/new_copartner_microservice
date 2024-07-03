@@ -63,6 +63,14 @@ public class AutoMapperProfile : Profile
         CreateMap<EmailStatus, ResponseDto>()
             .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Blog entity to ResponseDto's Data property
 
+
+        // Source -> Target
+        CreateMap<TelegramMessage, TelegramMessageReadDto>().ReverseMap();
+        CreateMap<TelegramMessage, TelegramMessageCreateDto>().ReverseMap();
+        CreateMap<TelegramMessage, JsonPatchDocument<TelegramMessageCreateDto>>().ReverseMap();
+        CreateMap<TelegramMessage, ResponseDto>()
+            .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Blog entity to ResponseDto's Data property
+
     }
 
 }
