@@ -32,7 +32,12 @@ public class AutoMapperProfile : Profile
             .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Subscription entity to ResponseDto's Data property
 
 
-
+        // Source -> Target
+        CreateMap<WebinarBooking, WebinarBookingReadDto>().ReverseMap();
+        CreateMap<WebinarBooking, WebinarBookingCreateDto>().ReverseMap();
+        CreateMap<WebinarBooking, JsonPatchDocument<WebinarBookingCreateDto>>().ReverseMap();
+        CreateMap<WebinarBooking, ResponseDto>()
+            .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Subscription entity to ResponseDto's Data property
 
     }
 
