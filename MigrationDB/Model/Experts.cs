@@ -29,7 +29,9 @@ public class Experts : BaseModel
     public string? SignatureImage { get; set; }
     public string? GST { get; set; }
     public string? TelegramChannel { get; set; }
-    public string? PremiumTelegramChannel { get; set; }
+    public string? PremiumTelegramChannel1 { get; set; }
+    public string? PremiumTelegramChannel2 { get; set; }
+    public string? PremiumTelegramChannel3 { get; set; }
     public int? TelegramFollower { get; set; }
     public bool isCoPartner { get; set; }
     public int? FixCommission { get; set; }
