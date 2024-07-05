@@ -50,11 +50,11 @@ namespace AdminDashboardService.Logic
                     ErrorMessages = new List<string>() { AppConstants.Expert_ExpertNotFound }
                 };
             }
-            var telegramMessageReadDto = _mapper.Map<TelegramMessageReadDto>(telegramMessage);
+            var telegramMessageReadDtos = _mapper.Map<IEnumerable<TelegramMessageReadDto>>(telegramMessage);
             return new ResponseDto()
             {
                 IsSuccess = true,
-                Data = telegramMessageReadDto,
+                Data = telegramMessageReadDtos,
             };
         }
 
@@ -123,7 +123,7 @@ namespace AdminDashboardService.Logic
                 {
                     IsSuccess = false,
                     Data = _mapper.Map<TelegramMessageReadDto>(existingTelegramMessage),
-                    ErrorMessages = new List<string>() { AppConstants.Expert_ExpertExistsWithMobileOrEmail }
+                    ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
                 };
             }
 

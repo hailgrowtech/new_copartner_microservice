@@ -29,7 +29,7 @@ namespace ExpertsService.Controllers
             return Ok(webinars);
         }
 
-        [HttpGet("{Id}", Name = "Get")]
+        [HttpGet("{Id}")]
         public async Task<ActionResult<WebinarBookingReadDto>> Get(Guid Id)
         {
             _logger.LogInformation("Fetching webinar booking details for Id : " + Id.ToString());

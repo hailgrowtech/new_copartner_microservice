@@ -30,7 +30,7 @@ namespace ExpertsService.Controllers
             return Ok(webinars);
         }
 
-        [HttpGet("{Id}", Name = "Get")]
+        [HttpGet("{Id}")]
         public async Task<ActionResult<WebinarMstReadDto>> Get(Guid Id)
         {
             _logger.LogInformation("Fetching experts details for Id : " + Id.ToString());
