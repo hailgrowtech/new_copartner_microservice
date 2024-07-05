@@ -62,5 +62,15 @@ namespace AdminDashboardService.Controllers
                 return NotFound(response);
             }
         }
+
+
+        [HttpDelete("{Id:guid}")]
+        public async Task<ActionResult> Delete(Guid Id)
+        {
+            var telegramMessage = await _logic.Delete(Id);
+            return telegramMessage != null ? Ok(telegramMessage) : NotFound();
+        }
+
+
     }
 }
