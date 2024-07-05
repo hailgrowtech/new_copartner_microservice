@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\WeatherForecastController.cs" />
+    <Compile Remove="Controllers\WebinarMstController.cs" />
   </ItemGroup>
 
   <ItemGroup>
