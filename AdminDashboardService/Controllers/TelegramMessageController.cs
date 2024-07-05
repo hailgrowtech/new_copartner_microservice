@@ -27,11 +27,11 @@ namespace AdminDashboardService.Controllers
             return Ok(experts);
         }
 
-        [HttpGet("{Id}", Name = "GetByRAAP")]
-        public async Task<ActionResult<TelegramMessageReadDto>> Get(Guid id, string userType, int page = 1, int pageSize = 10)
+        [HttpGet("{Id}")]
+        public async Task<ActionResult<TelegramMessageReadDto>> Get(Guid Id, string userType, int page = 1, int pageSize = 10)
         {
-            _logger.LogInformation("Fetching Telegram Messages for Id : " + id.ToString());
-            var experts = await _logic.Get(id, userType, page, pageSize);
+            _logger.LogInformation("Fetching Telegram Messages for Id : " + Id.ToString());
+            var experts = await _logic.Get(Id, userType, page, pageSize);
             return experts != null ? (ActionResult<TelegramMessageReadDto>)Ok(experts) : NotFound();
         }
 

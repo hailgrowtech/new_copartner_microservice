@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MigrationDB.Migrations
 {
     /// <inheritdoc />
-    public partial class Migration21062024 : Migration
+    public partial class Migration05072024 : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -102,6 +102,29 @@ namespace MigrationDB.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ExpertAvailabilities",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ExpertId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Module = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Availability = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DeletedOn = table.Column<DateTime>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ExpertAvailabilities", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ExpertsAdvertisingAgency",
                 columns: table => new
                 {
@@ -179,31 +202,6 @@ namespace MigrationDB.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PaymentResponses",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    SubscriptionsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    UsersId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TransactionId = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
-                    PaymentMode = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
-                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    UpdatedOn = table.Column<DateTime>(type: "datetime", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
-                    DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    DeletedOn = table.Column<DateTime>(type: "datetime", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PaymentResponses", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "RelationshipManager",
                 columns: table => new
                 {
@@ -225,6 +223,34 @@ namespace MigrationDB.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RelationshipManager", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "TelegramMessages",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ChannelName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ChatId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    JoinMessage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    LeaveMessage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    MarketingMessage = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AssignedTo = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ExpertsName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ExpertsId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    AffiliatePartnersName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    AffiliatePartnersId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DeletedOn = table.Column<DateTime>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TelegramMessages", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -283,6 +309,52 @@ namespace MigrationDB.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Wallet", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WebinarBookings",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    WebinarId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DeletedOn = table.Column<DateTime>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WebinarBookings", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "WebinarMsts",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    WebinarName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ExpertId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    StartTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    EndTime = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    Duration = table.Column<int>(type: "int", nullable: true),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true),
+                    Description = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    WebinarLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DeletedOn = table.Column<DateTime>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_WebinarMsts", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -527,6 +599,44 @@ namespace MigrationDB.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PaymentResponses",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SubscriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    TransactionId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Amount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    PaymentMode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    Remarks = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DeletedOn = table.Column<DateTime>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PaymentResponses", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PaymentResponses_Subscription_SubscriptionId",
+                        column: x => x.SubscriptionId,
+                        principalTable: "Subscription",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PaymentResponses_User_UserId",
+                        column: x => x.UserId,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Subscriber",
                 columns: table => new
                 {
@@ -627,6 +737,16 @@ namespace MigrationDB.Migrations
                 filter: "[RelationshipManagerId] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PaymentResponses_SubscriptionId",
+                table: "PaymentResponses",
+                column: "SubscriptionId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PaymentResponses_UserId",
+                table: "PaymentResponses",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Subscriber_SubscriptionId",
                 table: "Subscriber",
                 column: "SubscriptionId");
@@ -664,6 +784,9 @@ namespace MigrationDB.Migrations
                 name: "EmailStatus");
 
             migrationBuilder.DropTable(
+                name: "ExpertAvailabilities");
+
+            migrationBuilder.DropTable(
                 name: "ExpertsAdvertisingAgency");
 
             migrationBuilder.DropTable(
@@ -682,7 +805,16 @@ namespace MigrationDB.Migrations
                 name: "Subscriber");
 
             migrationBuilder.DropTable(
+                name: "TelegramMessages");
+
+            migrationBuilder.DropTable(
                 name: "Wallet");
+
+            migrationBuilder.DropTable(
+                name: "WebinarBookings");
+
+            migrationBuilder.DropTable(
+                name: "WebinarMsts");
 
             migrationBuilder.DropTable(
                 name: "Withdrawal");
