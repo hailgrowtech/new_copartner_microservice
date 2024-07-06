@@ -8,13 +8,12 @@ namespace ExpertsService.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class WebinarMstController : ControllerBase
+    public class ExpertAvailabilityController : ControllerBase
     {
-        private readonly IWebinarMstBusinessProcessor _logic;
-        private readonly ILogger<WebinarMstController> _logger;
-        //private readonly ITopicProducer<UserCreatedEventDTO> _topicProducer;
+        private readonly IExpertAvailabilityBusinessProcessor _logic;
+        private readonly ILogger<ExpertAvailabilityController> _logger;
 
-        public WebinarMstController(IWebinarMstBusinessProcessor logic, ILogger<WebinarMstController> logger)
+        public ExpertAvailabilityController(IExpertAvailabilityBusinessProcessor logic, ILogger<ExpertAvailabilityController> logger)
         {
             _logic = logic;
             _logger = logger;
@@ -23,23 +22,23 @@ namespace ExpertsService.Controllers
         [HttpGet]
         public async Task<object> Get(int page = 1, int pageSize = 10)
         {
-            _logger.LogInformation("Fetching WebinarMst Data Data..");
+            _logger.LogInformation("Fetching Expert Availability Data..");
             var webinars = await _logic.Get(page, pageSize);
             return Ok(webinars);
         }
 
         [HttpGet("{Id}")]
-        public async Task<ActionResult<WebinarMstReadDto>> Get(Guid Id)
+        public async Task<ActionResult<ExpertAvailabilityReadDto>> Get(Guid Id)
         {
-            _logger.LogInformation("Fetching webinar mst details for Id : " + Id.ToString());
+            _logger.LogInformation("Fetching Expert Availability details for Id : " + Id.ToString());
             var webinars = await _logic.Get(Id);
-            return webinars != null ? (ActionResult<WebinarMstReadDto>)Ok(webinars) : NotFound();
+            return webinars != null ? (ActionResult<ExpertAvailabilityReadDto>)Ok(webinars) : NotFound();
         }
 
         [HttpPost]
-        public async Task<object> Post(WebinarMstCreateDto webinarMstCreateDto)
+        public async Task<object> Post(ExpertAvailabilityCreateDto expertAvailabilityCreateDto)
         {
-            var response = await _logic.Post(webinarMstCreateDto);
+            var response = await _logic.Post(expertAvailabilityCreateDto);
 
             if (response.IsSuccess)
             {
@@ -51,9 +50,9 @@ namespace ExpertsService.Controllers
         }
 
         [HttpPatch]
-        public async Task<object> Patch(Guid Id, [FromBody] JsonPatchDocument<WebinarMstCreateDto> webinarmstpatch)
+        public async Task<object> Patch(Guid Id, [FromBody] JsonPatchDocument<ExpertAvailabilityCreateDto> expertAvailabilityPatch)
         {
-            var response = await _logic.Patch(Id, webinarmstpatch);
+            var response = await _logic.Patch(Id, expertAvailabilityPatch);
             if (response.IsSuccess)
             {
                 return Ok(response);
