@@ -22,9 +22,11 @@ namespace AdminDashboardService.Logic
             this._mapper = mapper;
         }
 
-        public Task<ResponseDto> Delete(Guid id)
+        public async Task<ResponseDto> Delete(Guid id)
         {
-            throw new NotImplementedException();
+            var telegramMessage = await _sender.Send(new DeleteTelegramMessageCommand(id));
+            var telegramMessageReadDto = _mapper.Map<ResponseDto>(telegramMessage);
+            return telegramMessageReadDto;
         }
 
         public async Task<ResponseDto> Get(int page = 1, int pageSize = 10)
