@@ -92,6 +92,10 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddScoped<IExpertsBusinessProcessor, ExpertsBusinessProcessor>();
 builder.Services.AddScoped<IRAListingBusinessProcessor, RAListingBusinessProcessor>();
 builder.Services.AddScoped<IRADetailsBusinessProcessor, RADetailsBusinessProcessor>();
+builder.Services.AddScoped<IWebinarBookingBusinessProcessor, WebinarBookingBusinessProcessor>();
+builder.Services.AddScoped<IWebinarMstBusinessProcessor, WebinarMstBusinessProcessor>();
+builder.Services.AddScoped<IExpertAvailabilityBusinessProcessor, ExpertAvailabilityBusinessProcessor>();
+
 builder.Services.AddScoped<IJsonMapper, JsonMapper>();
 //AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());

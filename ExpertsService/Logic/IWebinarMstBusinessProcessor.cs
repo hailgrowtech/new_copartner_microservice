@@ -12,5 +12,7 @@ namespace ExpertsService.Logic
         Task<ResponseDto> Post(WebinarMstCreateDto webinarMst);
         Task<ResponseDto> Put(Guid id, WebinarMstCreateDto webinarMstCreateDto);
         Task<ResponseDto> Patch(Guid Id, JsonPatchDocument<WebinarMstCreateDto> webinarMstDto);
+        Task<ResponseDto> Delete(Guid id);
+
     }
 }
