@@ -33,7 +33,7 @@ namespace AdminDashboardService.Handlers
             else if (request.userType.Equals("AP", StringComparison.OrdinalIgnoreCase))
             {
                 var result = await _dbContext.TelegramMessages
-                    .Where(w => w.AssignedTo == "RA" && w.ExpertsId == request.Id && w.IsDeleted != true)
+                    .Where(w => w.AssignedTo == "AP" && w.AffiliatePartnersId == request.Id && w.IsDeleted != true)
                     .ToListAsync(cancellationToken: cancellationToken);
 
                 return result;
