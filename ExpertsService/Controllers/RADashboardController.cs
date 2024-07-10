@@ -69,4 +69,22 @@ public class RADashboardController : ControllerBase
         var raListingDetails = await _logicRADetails.Get(isCoPartner,page, pageSize);
         return Ok(raListingDetails);
     }
+
+    /// <summary>
+    /// Gets RA Invoice Data.
+    /// </summary>
+    /// <remarks>
+    /// Sample request:
+    /// 
+    ///     GET : api/GetDashboardRAListingData/1
+    /// </remarks>
+    /// <param name="Id"></param>
+    /// /// <param name="Id">RA Guid</param>
+    [HttpGet("GetRAInvoice/{Id}", Name = "GetRAInvoiceData")]
+    public async Task<ActionResult<RAListingDataDto>> GetRAInvoice(Guid Id, int page = 1, int pageSize = 10)
+    {
+        _logger.LogInformation("Fetching experts details for Id : " + Id.ToString());
+        var experts = await _logicRA.Get(Id, page, pageSize);
+        return experts != null ? (ActionResult<RAListingDataDto>)Ok(experts) : NotFound();
+    }
 }
