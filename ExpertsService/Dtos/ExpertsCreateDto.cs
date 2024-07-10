@@ -19,7 +19,9 @@ namespace ExpertService.Dtos
         public decimal? Rating { get; set; }
         public string? MobileNumber { get; set; }
         public string? ChannelName { get; set; }
-        public string ChatId { get; set; }
+        public string? ChatId1 { get; set; }
+        public string? ChatId2 { get; set; }
+        public string? ChatId3 { get; set; }
         public string? PAN { get; set; }
         public string? Address { get; set; }
         public string? State { get; set; }

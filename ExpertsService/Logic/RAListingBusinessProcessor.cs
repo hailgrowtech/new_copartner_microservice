@@ -53,5 +53,24 @@ namespace ExpertsService.Logic
         {
             throw new NotImplementedException();
         }
+        public async Task<ResponseDto> GetInvoice(Guid id, int page = 1, int pageSize = 10)
+        {
+            var raListingData = await _sender.Send(new GetRAListingByIdQuery(id, page, pageSize));
+            if (raListingData == null)
+            {
+                return new ResponseDto()
+                {
+                    IsSuccess = false,
+                    Data = null,
+                    ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
+                };
+            }
+            // var raListingReadDto = _mapper.Map<RAListingDataReadDto>(raListingData);
+            return new ResponseDto()
+            {
+                IsSuccess = true,
+                Data = raListingData,
+            };
+        }
     }
 }

@@ -18,6 +18,7 @@ namespace MigrationDB.Model
         public decimal GSTAmount { get; set; }
         [Precision(18, 2)]
         public decimal TotalAmount { get; set; }
+        public int? DiscountPercentage { get; set; }
         public string PaymentMode { get; set; }
         public string? TransactionId { get; set; }
         public DateTime? TransactionDate { get; set; }

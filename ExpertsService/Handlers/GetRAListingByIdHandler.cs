@@ -56,7 +56,7 @@ public class GetRAListingByIdHandler : IRequestHandler<GetRAListingByIdQuery, IE
                          PremiumTelegramChannel = sub.PremiumTelegramChannel,
                          GSTAmount = sub.GSTAmount, // Handle null value
                          TotalAmount = sub.TotalAmount, // Handle null value                         ,
-                         DiscountPercentage = subscr.DiscountPercentage ?? 0,
+                         DiscountPercentage = sub.DiscountPercentage ?? 0,
                          Address = exp.Address,
                          State = exp.State
                      };
@@ -98,7 +98,7 @@ public class GetRAListingByIdHandler : IRequestHandler<GetRAListingByIdQuery, IE
                          PremiumTelegramChannel = sub.PremiumTelegramChannel,
                          GSTAmount = sub.GSTAmount,
                          TotalAmount = sub.TotalAmount,
-                         DiscountPercentage = subscr.DiscountPercentage ?? 0,
+                         DiscountPercentage = sub.DiscountPercentage ?? 0,
                          Address = exp.Address,
                          State= exp.State
                      };
