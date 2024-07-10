@@ -25,21 +25,6 @@ public class AutoMapperProfile : Profile
 
 
         // Source -> Target
-        CreateMap<WebinarMst, WebinarMstReadDto>().ReverseMap();
-        CreateMap<WebinarMst, WebinarMstCreateDto>().ReverseMap();
-        CreateMap<WebinarMst, JsonPatchDocument<WebinarMstCreateDto>>().ReverseMap();
-        CreateMap<WebinarMst, ResponseDto>()
-            .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Subscription entity to ResponseDto's Data property
-
-
-        // Source -> Target
-        CreateMap<WebinarBooking, WebinarBookingReadDto>().ReverseMap();
-        CreateMap<WebinarBooking, WebinarBookingCreateDto>().ReverseMap();
-        CreateMap<WebinarBooking, JsonPatchDocument<WebinarBookingCreateDto>>().ReverseMap();
-        CreateMap<WebinarBooking, ResponseDto>()
-            .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Subscription entity to ResponseDto's Data property
-
-        // Source -> Target
         CreateMap<ExpertAvailability, ExpertAvailabilityReadDto>().ReverseMap();
         CreateMap<ExpertAvailability, ExpertAvailabilityCreateDto>().ReverseMap();
         CreateMap<ExpertAvailability, JsonPatchDocument<ExpertAvailabilityCreateDto>>().ReverseMap();
