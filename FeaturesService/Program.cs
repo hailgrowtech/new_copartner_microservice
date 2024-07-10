@@ -1,16 +1,16 @@
-﻿using CommonLibrary.Authorization;
+using CommonLibrary.Authorization;
 using FluentValidation;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Reflection;
-using ExpertService.Configuration;
+using FeaturesService.Configuration;
 
-using ExpertService.Logic;
-using ExpertService.Profiles;
+using FeaturesService.Logic;
+using FeaturesService.Profiles;
 using MigrationDB.Data;
-using ExpertsService.Logic;
+using FeaturesService.Logic;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,7 +22,7 @@ var logger = new LoggerConfiguration()
     //.WriteTo.File()
     .CreateLogger();
 
-builder.Logging.ClearProviders(); 
+builder.Logging.ClearProviders();
 builder.Logging.AddSerilog(logger);
 
 // Add services to the container.
@@ -40,35 +40,35 @@ builder.Services.AddControllers().AddNewtonsoftJson(); //For Use in JsonPatchDoc
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo
     {
-        c.SwaggerDoc("v1", new OpenApiInfo
+        Title = "Features Service API",
+        Version = "v1",
+        Description = "An API to perform Features operations",
+        TermsOfService = new Uri("https://hailgrotech.com/"),
+        Contact = new OpenApiContact
         {
-            Title = "Experts Service API",
-            Version = "v1",
-            Description = "An API to perform Experts operations",
-            TermsOfService = new Uri("https://hailgrotech.com/"),
-            Contact = new OpenApiContact
-            {
-                Name = "CoPartner",
-                Email = "hailgrotech.com",
-                Url = new Uri("https://hailgrotech.com/"),
-            },
-            License = new OpenApiLicense
-            {
-                Name = "Copartner API LICX",
-                Url = new Uri("https://hailgrotech.com/"),
-            }
-        });
-        c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+            Name = "CoPartner",
+            Email = "hailgrotech.com",
+            Url = new Uri("https://hailgrotech.com/"),
+        },
+        License = new OpenApiLicense
         {
-            Name = "Authorization",
-            Type = SecuritySchemeType.ApiKey,
-            Scheme = "Bearer",
-            BearerFormat = "JWT",
-            In = ParameterLocation.Header,
-            Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
-        });
-        c.AddSecurityRequirement(new OpenApiSecurityRequirement {
+            Name = "Copartner API LICX",
+            Url = new Uri("https://hailgrotech.com/"),
+        }
+    });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
+    });
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement {
         {
             new OpenApiSecurityScheme {
                 Reference = new OpenApiReference {
@@ -79,20 +79,19 @@ builder.Services.AddSwaggerGen(c =>
             new string[] {}
         }
     });
-        // Set the comments path for the Swagger JSON and UI.
-        var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-        var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
-        c.IncludeXmlComments(xmlPath);
-    });
+    // Set the comments path for the Swagger JSON and UI.
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+    c.IncludeXmlComments(xmlPath);
+});
 
 
 //Resolve Dependencies Start
 
 //Experts Service Dependencies
-builder.Services.AddScoped<IExpertsBusinessProcessor, ExpertsBusinessProcessor>();
-builder.Services.AddScoped<IRAListingBusinessProcessor, RAListingBusinessProcessor>();
-builder.Services.AddScoped<IRADetailsBusinessProcessor, RADetailsBusinessProcessor>();
-builder.Services.AddScoped<IExpertAvailabilityBusinessProcessor, ExpertAvailabilityBusinessProcessor>();
+
+builder.Services.AddScoped<IWebinarBookingBusinessProcessor, WebinarBookingBusinessProcessor>();
+builder.Services.AddScoped<IWebinarMstBusinessProcessor, WebinarMstBusinessProcessor>();
 
 builder.Services.AddScoped<IJsonMapper, JsonMapper>();
 //AutoMapper
@@ -108,7 +107,7 @@ builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 //}
 //else
 //{
-    builder.Services.AddDbContext<CoPartnerDbContextProd, CoPartnerDbContext>();
+builder.Services.AddDbContext<CoPartnerDbContextProd, CoPartnerDbContext>();
 //}
 
 
@@ -132,7 +131,7 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Experts Service API V1");
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Features Service API V1");
     });
 }
 
