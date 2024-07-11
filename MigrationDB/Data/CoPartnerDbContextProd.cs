@@ -40,5 +40,7 @@ public class CoPartnerDbContextProd : DbContext
     public DbSet<WebinarBooking> WebinarBookings { get; set; }
     public DbSet<ExpertAvailability> ExpertAvailabilities { get; set; }
     public DbSet<TelegramMessage> TelegramMessages { get; set; }
+    public DbSet<ChatUser> ChatUsers { get; set; }
+    public DbSet<ChatMessage> ChatMessages { get; set; }
 
 }

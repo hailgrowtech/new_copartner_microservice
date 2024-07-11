@@ -11,6 +11,7 @@ using FeaturesService.Logic;
 using FeaturesService.Profiles;
 using MigrationDB.Data;
 using FeaturesService.Logic;
+using FeaturesService.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -113,6 +114,7 @@ builder.Services.AddDbContext<CoPartnerDbContextProd, CoPartnerDbContext>();
 
 builder.Services.AddCors();
 
+builder.Services.AddSignalR();
 
 //Mass Transit RabbitMQ
 
@@ -151,5 +153,6 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapHub<ChatHub>("/chathub");
 
 app.Run();
