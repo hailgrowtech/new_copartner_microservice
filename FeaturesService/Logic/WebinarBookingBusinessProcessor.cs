@@ -1,5 +1,5 @@
-﻿using AutoMapper;
-using Azure.Core;
+﻿using AgoraIO.Media;
+using AutoMapper;
 using CommonLibrary;
 using CommonLibrary.CommonDTOs;
 using FeaturesService.Commands;
@@ -16,8 +16,8 @@ public class WebinarBookingBusinessProcessor : IWebinarBookingBusinessProcessor
     private readonly ISender _sender;
     private readonly IMapper _mapper;
 
-    private const string AppId = "67d5feceed9d4a319444345b0c034182";
-    private const string AppCertificate = "c3ef02b4430f4c1992377b2477378693";
+    private const string AppId = "694e36f5e4da4440b9d3df6a711efc26";
+    private const string AppCertificate = "b8bc4bc937564bb2966f5a1df8e1fd26";
     public WebinarBookingBusinessProcessor(ISender sender, IMapper mapper)
     {
         this._sender = sender;
@@ -129,16 +129,13 @@ public class WebinarBookingBusinessProcessor : IWebinarBookingBusinessProcessor
 
     public string GenerateToken(string channelName, string uid)
     {
-        //var expirationTimeInSeconds = 3600;
-        //var currentTimestamp = (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
-        //var privilegeExpiredTs = currentTimestamp + expirationTimeInSeconds;
-
-        //var token = new AgoraAccessToken(AppId, AppCertificate, channelName, uid);
-        //token.AddPrivilege(AgoraAccessToken.Privileges.kJoinChannel, privilegeExpiredTs);
-        //return token.Build();
         var expirationTimeInSeconds = 3600;
-        var token = new AgoraAccessToken(AppId, AppCertificate, channelName, uid);
-        token.AddPrivilege(AgoraAccessToken.Privileges.kJoinChannel, (int)(DateTime.UtcNow.AddSeconds(expirationTimeInSeconds) - new DateTime(1970, 1, 1)).TotalSeconds);
-        return token.Build();
+        var currentTimestamp = (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
+        var privilegeExpiredTs = currentTimestamp + expirationTimeInSeconds;
+
+        var token = new AccessToken(AppId, AppCertificate, channelName, uid);
+        token.addPrivilege(Privileges.kJoinChannel, (uint)privilegeExpiredTs);
+        return token.build();
+
     }
 }

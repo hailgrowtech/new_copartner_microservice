@@ -69,25 +69,27 @@ namespace FeaturesService.Controllers
         [HttpPost("GenerateWebinarLink")]
         public IActionResult GenerateWebinarLink([FromBody] WebinarRequest request)
         {
-            // Generate a unique ChannelName if not provided
             if (string.IsNullOrEmpty(request.ChannelName))
             {
                 request.ChannelName = Guid.NewGuid().ToString();
             }
 
-            // Generate a unique Uid if not provided
             if (string.IsNullOrEmpty(request.Uid))
             {
                 request.Uid = new Random().Next(1, int.MaxValue).ToString();
             }
+
             var token = _logic.GenerateToken(request.ChannelName, request.Uid);
-           var link = $"{Request.Scheme}://{Request.Host}/api/Webinar/JoinWebinar?channelName={request.ChannelName}&uid={request.Uid}&token={token}";
-            //var link = Url.Action("JoinWebinar", "Webinar", new { channelName = request.ChannelName, uid = request.Uid, token }, Request.Scheme);
-            if (link == null)
+
+            // Construct the Agora link
+            var agoraLink = $"https://console.agora.io/invite?sign={token}";
+
+            if (string.IsNullOrEmpty(agoraLink))
             {
                 return BadRequest("Failed to generate webinar link.");
             }
-            return Ok(new { link });
+
+            return Ok(new { link = agoraLink });
         }
 
         [HttpGet("JoinWebinar")]
