@@ -14,6 +14,7 @@ namespace MigrationDB.Model
         public string? Tag { get; set; }
         public string? ServiceType { get; set; }
         public string? PlanType { get; set; }
+        public string? ChatId { get; set; }
         public int?  DurationMonth { get; set; }
         [Precision(18, 2)]
         public decimal?  Amount { get; set; }

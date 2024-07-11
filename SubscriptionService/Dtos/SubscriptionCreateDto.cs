@@ -9,6 +9,7 @@ namespace SubscriptionService.Dtos
         public string ImagePath { get; set; }
         public string ServiceType { get; set; }
         public string PlanType { get; set; }
+        public string? ChatId { get; set; }
         public int DurationMonth { get; set; }
         public decimal Amount { get; set; }
         public string PremiumTelegramLink { get; set; }
