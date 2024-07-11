@@ -13,6 +13,7 @@ namespace FeaturesService.Controllers
     {
         private readonly IWebinarBookingBusinessProcessor _logic;
         private readonly ILogger<WebinarBookingController> _logger;
+        private const string CopartnerAppId = "67d5feceed9d4a319444345b0c034182";
         //private readonly ITopicProducer<UserCreatedEventDTO> _topicProducer;
 
         public WebinarBookingController(IWebinarBookingBusinessProcessor logic, ILogger<WebinarBookingController> logger)
@@ -64,5 +65,41 @@ namespace FeaturesService.Controllers
                 return NotFound(response);
             }
         }
+
+        [HttpPost("GenerateWebinarLink")]
+        public IActionResult GenerateWebinarLink([FromBody] WebinarRequest request)
+        {
+            // Generate a unique ChannelName if not provided
+            if (string.IsNullOrEmpty(request.ChannelName))
+            {
+                request.ChannelName = Guid.NewGuid().ToString();
+            }
+
+            // Generate a unique Uid if not provided
+            if (string.IsNullOrEmpty(request.Uid))
+            {
+                request.Uid = new Random().Next(1, int.MaxValue).ToString();
+            }
+            var token = _logic.GenerateToken(request.ChannelName, request.Uid);
+           var link = $"{Request.Scheme}://{Request.Host}/api/Webinar/JoinWebinar?channelName={request.ChannelName}&uid={request.Uid}&token={token}";
+            //var link = Url.Action("JoinWebinar", "Webinar", new { channelName = request.ChannelName, uid = request.Uid, token }, Request.Scheme);
+            if (link == null)
+            {
+                return BadRequest("Failed to generate webinar link.");
+            }
+            return Ok(new { link });
+        }
+
+        [HttpGet("JoinWebinar")]
+        public IActionResult JoinWebinar([FromQuery] string channelName, [FromQuery] string uid, [FromQuery] string token)
+        {
+            var joinInfo = new { ChannelName = channelName, Uid = uid, Token = token, AppId = CopartnerAppId };
+            return Ok(joinInfo);
+        }
+    }
+    public class WebinarRequest
+    {
+        public string ChannelName { get; set; }
+        public string Uid { get; set; }
     }
 }

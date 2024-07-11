@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Azure.Core;
 using CommonLibrary;
 using CommonLibrary.CommonDTOs;
 using FeaturesService.Commands;
@@ -8,120 +9,136 @@ using MediatR;
 using Microsoft.AspNetCore.JsonPatch;
 using MigrationDB.Model;
 
-namespace FeaturesService.Logic
+namespace FeaturesService.Logic;
+
+public class WebinarBookingBusinessProcessor : IWebinarBookingBusinessProcessor
 {
-    public class WebinarBookingBusinessProcessor : IWebinarBookingBusinessProcessor
+    private readonly ISender _sender;
+    private readonly IMapper _mapper;
+
+    private const string AppId = "67d5feceed9d4a319444345b0c034182";
+    private const string AppCertificate = "c3ef02b4430f4c1992377b2477378693";
+    public WebinarBookingBusinessProcessor(ISender sender, IMapper mapper)
     {
-        private readonly ISender _sender;
-        private readonly IMapper _mapper;
+        this._sender = sender;
+        this._mapper = mapper;
+    }
 
-        public WebinarBookingBusinessProcessor(ISender sender, IMapper mapper)
+    public async Task<ResponseDto> Get(int page = 1, int pageSize = 10)
+    {
+        var webinarBookingList = await _sender.Send(new GetWebinarBookingQuery(page, pageSize));
+        var webinarBookingReadDtoList = _mapper.Map<List<WebinarBookingReadDto>>(webinarBookingList);
+        return new ResponseDto()
         {
-            this._sender = sender;
-            this._mapper = mapper;
-        }
+            IsSuccess = true,
+            Data = webinarBookingReadDtoList,
+        };
+    }
 
-        public async Task<ResponseDto> Get(int page = 1, int pageSize = 10)
+    public async Task<ResponseDto> Get(Guid id)
+    {
+        var webinarBooking = await _sender.Send(new GetWebinarBookingByIdQuery(id));
+        if (webinarBooking == null)
         {
-            var webinarBookingList = await _sender.Send(new GetWebinarBookingQuery(page, pageSize));
-            var webinarBookingReadDtoList = _mapper.Map<List<WebinarBookingReadDto>>(webinarBookingList);
             return new ResponseDto()
             {
-                IsSuccess = true,
-                Data = webinarBookingReadDtoList,
+                IsSuccess = false,
+                Data = null,
+                ErrorMessages = new List<string>() { AppConstants.Expert_ExpertNotFound }
+            };
+        }
+        var webinarBookingReadDto = _mapper.Map<WebinarBookingReadDto>(webinarBooking);
+        return new ResponseDto()
+        {
+            IsSuccess = true,
+            Data = webinarBookingReadDto,
+        };
+    }
+
+    public async Task<ResponseDto> Patch(Guid Id, JsonPatchDocument<WebinarBookingCreateDto> request)
+    {
+        var webinar = _mapper.Map<WebinarBooking>(request);
+
+        var existingwebinars = await _sender.Send(new GetWebinarBookingByIdQuery(Id));
+        if (existingwebinars == null)
+        {
+            return new ResponseDto()
+            {
+                IsSuccess = false,
+                //   Data = _mapper.Map<ExpertsReadDto>(existingExperts),
+                ErrorMessages = new List<string>() { AppConstants.Expert_ExpertNotFound }
             };
         }
 
-        public async Task<ResponseDto> Get(Guid id)
+        var result = await _sender.Send(new PatchWebinarBookingCommand(Id, request, existingwebinars));
+        if (result == null)
         {
-            var webinarBooking = await _sender.Send(new GetWebinarBookingByIdQuery(id));
-            if (webinarBooking == null)
-            {
-                return new ResponseDto()
-                {
-                    IsSuccess = false,
-                    Data = null,
-                    ErrorMessages = new List<string>() { AppConstants.Expert_ExpertNotFound }
-                };
-            }
-            var webinarBookingReadDto = _mapper.Map<WebinarBookingReadDto>(webinarBooking);
             return new ResponseDto()
             {
-                IsSuccess = true,
-                Data = webinarBookingReadDto,
+                IsSuccess = false,
+                Data = _mapper.Map<WebinarBookingReadDto>(existingwebinars),
+                ErrorMessages = new List<string>() { AppConstants.Expert_FailedToUpdateExpert }
             };
         }
 
-        public async Task<ResponseDto> Patch(Guid Id, JsonPatchDocument<WebinarBookingCreateDto> request)
+        return new ResponseDto()
         {
-            var webinar = _mapper.Map<WebinarBooking>(request);
+            Data = _mapper.Map<WebinarBookingReadDto>(result),
+            DisplayMessage = AppConstants.Expert_ExpertUpdated
+        };
+    }
 
-            var existingwebinars = await _sender.Send(new GetWebinarBookingByIdQuery(Id));
-            if (existingwebinars == null)
-            {
-                return new ResponseDto()
-                {
-                    IsSuccess = false,
-                    //   Data = _mapper.Map<ExpertsReadDto>(existingExperts),
-                    ErrorMessages = new List<string>() { AppConstants.Expert_ExpertNotFound }
-                };
-            }
+    public async Task<ResponseDto> Post(WebinarBookingCreateDto request)
+    {
+        var webinar = _mapper.Map<WebinarBooking>(request);
 
-            var result = await _sender.Send(new PatchWebinarBookingCommand(Id, request, existingwebinars));
-            if (result == null)
-            {
-                return new ResponseDto()
-                {
-                    IsSuccess = false,
-                    Data = _mapper.Map<WebinarBookingReadDto>(existingwebinars),
-                    ErrorMessages = new List<string>() { AppConstants.Expert_FailedToUpdateExpert }
-                };
-            }
-
+        var existingwebinars = await _sender.Send(new GetWebinarBookingByIdQuery(webinar.Id));
+        if (existingwebinars != null)
+        {
             return new ResponseDto()
             {
-                Data = _mapper.Map<WebinarBookingReadDto>(result),
-                DisplayMessage = AppConstants.Expert_ExpertUpdated
+                IsSuccess = false,
+                Data = _mapper.Map<WebinarBookingReadDto>(existingwebinars),
+                ErrorMessages = new List<string>() { AppConstants.Expert_ExpertExistsWithMobileOrEmail }
             };
         }
 
-        public async Task<ResponseDto> Post(WebinarBookingCreateDto request)
+        var result = await _sender.Send(new CreateWebinarBookingCommand(webinar));
+        if (result == null)
         {
-            var webinar = _mapper.Map<WebinarBooking>(request);
-
-            var existingwebinars = await _sender.Send(new GetWebinarBookingByIdQuery(webinar.Id));
-            if (existingwebinars != null)
-            {
-                return new ResponseDto()
-                {
-                    IsSuccess = false,
-                    Data = _mapper.Map<WebinarBookingReadDto>(existingwebinars),
-                    ErrorMessages = new List<string>() { AppConstants.Expert_ExpertExistsWithMobileOrEmail }
-                };
-            }
-
-            var result = await _sender.Send(new CreateWebinarBookingCommand(webinar));
-            if (result == null)
-            {
-                return new ResponseDto()
-                {
-                    IsSuccess = false,
-                    Data = _mapper.Map<WebinarBookingReadDto>(existingwebinars),
-                    ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_FailedToCreateAffiliatePartner }
-                };
-            }
-
-            var resultDto = _mapper.Map<WebinarBookingReadDto>(result);
             return new ResponseDto()
             {
-                Data = resultDto,
-                DisplayMessage = AppConstants.Expert_ExpertCreated
+                IsSuccess = false,
+                Data = _mapper.Map<WebinarBookingReadDto>(existingwebinars),
+                ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_FailedToCreateAffiliatePartner }
             };
         }
 
-        public Task<ResponseDto> Put(Guid id, WebinarBookingCreateDto webinarBookingCreateDto)
+        var resultDto = _mapper.Map<WebinarBookingReadDto>(result);
+        return new ResponseDto()
         {
-            throw new NotImplementedException();
-        }
+            Data = resultDto,
+            DisplayMessage = AppConstants.Expert_ExpertCreated
+        };
+    }
+
+    public Task<ResponseDto> Put(Guid id, WebinarBookingCreateDto webinarBookingCreateDto)
+    {
+        throw new NotImplementedException();
+    }
+
+    public string GenerateToken(string channelName, string uid)
+    {
+        //var expirationTimeInSeconds = 3600;
+        //var currentTimestamp = (int)(DateTime.UtcNow - new DateTime(1970, 1, 1)).TotalSeconds;
+        //var privilegeExpiredTs = currentTimestamp + expirationTimeInSeconds;
+
+        //var token = new AgoraAccessToken(AppId, AppCertificate, channelName, uid);
+        //token.AddPrivilege(AgoraAccessToken.Privileges.kJoinChannel, privilegeExpiredTs);
+        //return token.Build();
+        var expirationTimeInSeconds = 3600;
+        var token = new AgoraAccessToken(AppId, AppCertificate, channelName, uid);
+        token.AddPrivilege(AgoraAccessToken.Privileges.kJoinChannel, (int)(DateTime.UtcNow.AddSeconds(expirationTimeInSeconds) - new DateTime(1970, 1, 1)).TotalSeconds);
+        return token.Build();
     }
 }
