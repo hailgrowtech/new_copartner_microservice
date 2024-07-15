@@ -31,6 +31,13 @@ public class AutoMapperProfile : Profile
         CreateMap<PaymentResponse, JsonPatchDocument<PaymentResponseCreateDto>>().ReverseMap();
         CreateMap<PaymentResponse, ResponseDto>()
             .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Subscription entity to ResponseDto's Data property
+
+        // Source -> Target
+        CreateMap<MinisubscriptionLink, MiniSubscriptionReadDto>().ReverseMap();
+        CreateMap<MinisubscriptionLink, MiniSubscriptionCreateDto>().ReverseMap();
+        CreateMap<MinisubscriptionLink, JsonPatchDocument<MiniSubscriptionCreateDto>>().ReverseMap();
+        CreateMap<MinisubscriptionLink, ResponseDto>()
+            .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Subscription entity to ResponseDto's Data property
     }
     private decimal? CalculateDiscountedAmount(Subscription subscription)
     {

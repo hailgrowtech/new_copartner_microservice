@@ -19,5 +19,7 @@ namespace SubscriptionService.Logic
         Task <WalletEvent>  ProcessSubscriberWallet(Guid subscriberId);
 
         Task<ResponseDto> GetByUserId(Guid id);
+
+
     }
 }
