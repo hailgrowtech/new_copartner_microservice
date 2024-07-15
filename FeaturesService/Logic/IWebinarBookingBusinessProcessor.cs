@@ -11,5 +11,5 @@ public interface IWebinarBookingBusinessProcessor
     Task<ResponseDto> Post(WebinarBookingCreateDto webinarBookingCreateDto);
     Task<ResponseDto> Put(Guid id, WebinarBookingCreateDto webinarBookingCreateDto);
     Task<ResponseDto> Patch(Guid Id, JsonPatchDocument<WebinarBookingCreateDto> webinarBookingDto);
-    string GenerateToken(string channelName, string uid);
+    string GenerateToken(string channelName, string uid, bool isHost);
 }

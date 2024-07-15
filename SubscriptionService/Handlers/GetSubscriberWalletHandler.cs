@@ -32,6 +32,7 @@ public class GetSubscriberWalletHandler : IRequestHandler<GetSubscriberWalletQue
         var affiliatePartnerId = subscriber.User.AffiliatePartnerId;
         var amount = subscriber.TotalAmount;
         var isCoPartner = subscriber.Subscription.Experts.isCoPartner;
+        var IsSpecialSubscription = subscriber.Subscription.IsSpecialSubscription;
 
         decimal raAmount = 0, apAmount = 0, cpAmount = 0;
         if(!isCoPartner)
@@ -48,6 +49,12 @@ public class GetSubscriberWalletHandler : IRequestHandler<GetSubscriberWalletQue
             raAmount = amount * ((decimal)_dbContext.Experts.Find(expertsId).FixCommission) / 100;
         }
 
+        else if(referralMode == "AP" && IsSpecialSubscription == true)
+        {
+            var affiliatePartnerCommission = _dbContext.AffiliatePartners.Find(affiliatePartnerId).FixCommission1;
+            apAmount = amount * ((decimal)affiliatePartnerCommission) / 100;
+            raAmount = amount * ((decimal)_dbContext.Experts.Find(expertsId).FixCommission) / 100;
+        }
         else if (referralMode == "AP")
         {
             var affiliatePartnerCommission = (_dbContext.Subscribers.Count(s => s.UserId == subscriber.UserId) < 2) ?
