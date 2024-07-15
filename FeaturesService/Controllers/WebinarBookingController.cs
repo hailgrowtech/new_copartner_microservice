@@ -1,5 +1,4 @@
 using FeaturesService.Dtos;
-using FeaturesService.Dtos;
 using FeaturesService.Logic;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
@@ -66,28 +65,36 @@ namespace FeaturesService.Controllers
             }
         }
 
-        [HttpPost("GenerateWebinarLink")]
-        public IActionResult GenerateWebinarLink([FromBody] WebinarRequest request)
+        [HttpPost("GenerateWebinarToken")]
+        public IActionResult GenerateWebinarToken([FromBody] WebinarRequest request)
         {
-            // Generate a unique ChannelName if not provided
             if (string.IsNullOrEmpty(request.ChannelName))
             {
                 request.ChannelName = Guid.NewGuid().ToString();
             }
 
-            // Generate a unique Uid if not provided
-            if (string.IsNullOrEmpty(request.Uid))
+            if (string.IsNullOrEmpty(request.UId))
             {
-                request.Uid = new Random().Next(1, int.MaxValue).ToString();
+                request.UId = new Random().Next(1, int.MaxValue).ToString();
             }
-            var token = _logic.GenerateToken(request.ChannelName, request.Uid);
-           var link = $"{Request.Scheme}://{Request.Host}/api/Webinar/JoinWebinar?channelName={request.ChannelName}&uid={request.Uid}&token={token}";
-            //var link = Url.Action("JoinWebinar", "Webinar", new { channelName = request.ChannelName, uid = request.Uid, token }, Request.Scheme);
-            if (link == null)
+
+            var token = _logic.GenerateToken(request.ChannelName, request.UId, request.IsHost);
+
+            // Construct the Agora link
+            // string agoraLink = $"https://console.agora.io/join?channel={request.ChannelName}&token={token}&uid={request.Uid}";
+
+           // var agoraLink = $"{Request.Scheme}://{Request.Host}/api/Webinar/JoinWebinar?channelName={request.ChannelName}&uid={request.Uid}&token={token}";
+            //var agoraLink = Url.Action("JoinWebinar", "Webinar", new { channelName = request.ChannelName, uid = request.Uid, token }, Request.Scheme);
+
+
+            if (string.IsNullOrEmpty(token))
             {
-                return BadRequest("Failed to generate webinar link.");
+                return BadRequest("Failed to generate webinar token.");
             }
-            return Ok(new { link });
+
+            return Ok(token);
+
+          //  return Ok(new { link = agoraLink });
         }
 
         [HttpGet("JoinWebinar")]
@@ -100,6 +107,7 @@ namespace FeaturesService.Controllers
     public class WebinarRequest
     {
         public string ChannelName { get; set; }
-        public string Uid { get; set; }
+        public string UId { get; set; }
+        public bool IsHost { get; set; } = true;
     }
 }

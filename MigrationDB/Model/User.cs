@@ -20,5 +20,4 @@ public class User : BaseModel
     public Guid? AdvertisingAgencyId { get; set; }
     public Guid? ExpertsAdvertisingAgencyId { get; set; }
     public string? LandingPageUrl { get; set; }
-    public string? ConnectionId { get; set; }
 }

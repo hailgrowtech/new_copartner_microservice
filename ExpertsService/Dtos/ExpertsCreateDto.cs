@@ -36,6 +36,7 @@ namespace ExpertService.Dtos
         public bool isCoPartner { get; set; }
         public int? FixCommission { get; set; }      
         public Guid? RelationshipManagerId { get; set; }
+        public int? WebinarUId { get; set; }
         public bool isActive { get; set; }
     }
 }
