@@ -43,17 +43,10 @@ namespace SubscriptionService.Handlers
             }
             else
             {
-                // It's a good practice to use UriBuilder for constructing URLs to handle edge cases
-                var uriBuilder = new UriBuilder("https://copartner.in/ra-detail2");
-                var query = HttpUtility.ParseQueryString(string.Empty);
-                query["subsid"] = request.SubscriptionId.ToString(); // Ensure the ID is converted to a string
-                //query["raid"] = request.ExpertsId.ToString(); // Ensure the ID is converted to a string
-                uriBuilder.Query = query.ToString();
-
-                var referralLink = uriBuilder.ToString();
+                var baseUri = "https://copartner.in/ra-detail2";
+                var referralLink = $"{baseUri}/{request.SubscriptionId}";
 
                 var links = new MinisubscriptionLink();
-
 
                 var generatedLink = new MinisubscriptionLink
                 {
@@ -61,6 +54,7 @@ namespace SubscriptionService.Handlers
                     SubscriptionId = request.SubscriptionId,
                     MiniSubscriptionLink = referralLink
                 };
+
 
                 await _dbContext.MinisubscriptionLink.AddAsync(generatedLink, cancellationToken);
                 await _dbContext.SaveChangesAsync(cancellationToken);

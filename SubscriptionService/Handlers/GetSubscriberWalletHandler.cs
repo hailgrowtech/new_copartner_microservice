@@ -55,9 +55,9 @@ public class GetSubscriberWalletHandler : IRequestHandler<GetSubscriberWalletQue
             apAmount = amount * ((decimal)affiliatePartnerCommission) / 100;
             raAmount = amount * ((decimal)_dbContext.Experts.Find(expertsId).FixCommission) / 100;
         }
-        else if (referralMode == "AP")
+        else if (referralMode == "AP" && IsSpecialSubscription == false)
         {
-            var affiliatePartnerCommission = (_dbContext.Subscribers.Count(s => s.UserId == subscriber.UserId) < 2) ?
+            var affiliatePartnerCommission = (_dbContext.Subscribers.Count(s => s.UserId == subscriber.UserId && s.Subscription.IsSpecialSubscription == false) < 2) ?
                 _dbContext.AffiliatePartners.Find(affiliatePartnerId).FixCommission1 :
                 _dbContext.AffiliatePartners.Find(affiliatePartnerId).FixCommission2;
 
