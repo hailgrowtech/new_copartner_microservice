@@ -1,17 +1,14 @@
 using CommonLibrary.Authorization;
 using FluentValidation;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Reflection;
 using FeaturesService.Configuration;
-
 using FeaturesService.Logic;
 using FeaturesService.Profiles;
 using MigrationDB.Data;
-using FeaturesService.Logic;
 using FeaturesService.Hubs;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -94,6 +91,7 @@ builder.Services.AddSwaggerGen(c =>
 builder.Services.AddScoped<IWebinarBookingBusinessProcessor, WebinarBookingBusinessProcessor>();
 builder.Services.AddScoped<IWebinarMstBusinessProcessor, WebinarMstBusinessProcessor>();
 
+
 builder.Services.AddScoped<IJsonMapper, JsonMapper>();
 //AutoMapper
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
@@ -110,7 +108,8 @@ builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);
 //{
 builder.Services.AddDbContext<CoPartnerDbContextProd, CoPartnerDbContext>();
 //}
-
+//builder.Services.AddDbContext<CoPartnerDbContext>(options =>
+//    options.UseSqlServer(builder.Configuration.GetConnectionString("CoPartnerConnectionString")));
 
 builder.Services.AddCors();
 
@@ -153,6 +152,7 @@ app.UseHttpsRedirection();
 app.UseAuthorization();
 
 app.MapControllers();
-app.MapHub<ChatHub>("/chathub");
+
+app.MapHub<ChatHub>("/ChatHub");
 
 app.Run();

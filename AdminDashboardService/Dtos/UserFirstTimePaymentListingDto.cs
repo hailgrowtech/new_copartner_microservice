@@ -14,6 +14,7 @@
         public string PaymentRAName { get; set; }
         public string? ReferralMode { get; set; }
         public Guid? RASubscriber { get; set; }
+        public bool? IsSpecialSubscription { get; set; }
         //public string? AffiliatePartnerName { get; set; }
         //public string? ExpertName { get; set; }
     }

@@ -1,54 +1,70 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
 using MigrationDB.Data;
 using MigrationDB.Model;
+using System;
+using System.Linq;
+using System.Threading.Tasks;
 
-namespace FeaturesService.Hubs;
-public class ChatHub : Hub
+namespace FeaturesService.Hubs
 {
-    private readonly CoPartnerDbContext _context;
-
-    public ChatHub(CoPartnerDbContext context)
+    public class ChatHub : Hub
     {
-        _context = context;
-    }
+        private readonly CoPartnerDbContext _dbContext;
 
-    public async Task SendMessage(string sender, string receiver, string message)
-    {
-        var senderUser = _context.ChatUsers.SingleOrDefault(u => u.Username == sender);
-        var receiverUser = _context.ChatUsers.SingleOrDefault(u => u.Username == receiver);
-
-        if (senderUser == null || receiverUser == null)
+        public ChatHub(CoPartnerDbContext dbContext)
         {
-            throw new InvalidOperationException("User not found");
+            _dbContext = dbContext;
         }
 
-        var newMessage = new ChatMessage
+        public async Task SendMessage(string sender, string receiver, string message)
         {
-            Contents = message,
-            Timestamp = DateTime.Now,
-            SenderId = senderUser.Id,
-            ReceiverId = receiverUser.Id
-        };
+            var senderUser = await _dbContext.ChatUsers.SingleOrDefaultAsync(u => u.Username == sender);
+            var receiverUser = await _dbContext.ChatUsers.SingleOrDefaultAsync(u => u.Username == receiver);
 
-        _context.ChatMessages.Add(newMessage);
-        await _context.SaveChangesAsync();
+            if (senderUser == null || receiverUser == null)
+            {
+                throw new InvalidOperationException("Sender or receiver not found.");
+            }
 
-        await Clients.User(receiverUser.ConnectionId).SendAsync("ReceiveMessage", sender, message);
-    }
+            var newMessage = new ChatMessage
+            {
+                Contents = message,
+                Timestamp = DateTime.UtcNow,
+                SenderId = senderUser.Id,
+                ReceiverId = receiverUser.Id
+            };
 
-    public override async Task OnConnectedAsync()
-    {
-        var username = Context.GetHttpContext().Request.Query["username"];
-        var user = _context.ChatUsers.SingleOrDefault(u => u.Username == username);
+            await _dbContext.ChatMessages.AddAsync(newMessage);
+            await _dbContext.SaveChangesAsync();
 
-        if (user != null)
+            if (!string.IsNullOrEmpty(receiverUser.ConnectionId))
+            {
+                await Clients.Client(receiverUser.ConnectionId).SendAsync("ReceiveMessage", sender, message);
+            }
+        }
+
+        public override async Task OnConnectedAsync()
         {
+            var username = Context.GetHttpContext()?.Request.Query["username"].ToString();
+            if (string.IsNullOrEmpty(username))
+            {
+                throw new InvalidOperationException("Username is required.");
+            }
+
+            var user = await _dbContext.ChatUsers.SingleOrDefaultAsync(u => u.Username == username);
+            if (user == null)
+            {
+                throw new InvalidOperationException("User not found.");
+            }
+
             user.ConnectionId = Context.ConnectionId;
-            _context.ChatUsers.Update(user);
-            await _context.SaveChangesAsync();
+            _dbContext.ChatUsers.Update(user);
+            await _dbContext.SaveChangesAsync();
 
-            // Send previous messages to the connected user
-            var messages = _context.ChatMessages
+            var messages = await _dbContext.ChatMessages
+                .Include(m => m.Sender)
+                .Include(m => m.Receiver)
                 .Where(m => m.SenderId == user.Id || m.ReceiverId == user.Id)
                 .OrderBy(m => m.Timestamp)
                 .Select(m => new
@@ -58,25 +74,24 @@ public class ChatHub : Hub
                     Content = m.Contents,
                     Timestamp = m.Timestamp
                 })
-                .ToList();
+                .ToListAsync();
 
             await Clients.Caller.SendAsync("LoadPreviousMessages", messages);
+
+            await base.OnConnectedAsync();
         }
 
-        await base.OnConnectedAsync();
-    }
-
-    public override async Task OnDisconnectedAsync(Exception exception)
-    {
-        var user = _context.ChatUsers.SingleOrDefault(u => u.ConnectionId == Context.ConnectionId);
-
-        if (user != null)
+        public override async Task OnDisconnectedAsync(Exception exception)
         {
-            user.ConnectionId = null;
-            _context.ChatUsers.Update(user);
-            await _context.SaveChangesAsync();
-        }
+            var user = await _dbContext.ChatUsers.SingleOrDefaultAsync(u => u.ConnectionId == Context.ConnectionId);
+            if (user != null)
+            {
+                user.ConnectionId = null;
+                _dbContext.ChatUsers.Update(user);
+                await _dbContext.SaveChangesAsync();
+            }
 
-        await base.OnDisconnectedAsync(exception);
+            await base.OnDisconnectedAsync(exception);
+        }
     }
 }

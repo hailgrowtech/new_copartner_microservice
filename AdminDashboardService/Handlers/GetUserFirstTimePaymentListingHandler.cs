@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MigrationDB.Data;
 using CommonLibrary.Extensions;
+using System.Linq;
 
 namespace AdminDashboardService.Handlers;
 public class GetUserFirstTimePaymentListingHandler : IRequestHandler<GetUserFirstTimePaymentListingQuery, IEnumerable<UserFirstTimePaymentListingDto>>
@@ -30,7 +31,8 @@ public class GetUserFirstTimePaymentListingHandler : IRequestHandler<GetUserFirs
                                                Payment = userGroup.FirstOrDefault().TotalAmount, // Assuming TotalAmount represents the payment amount
                                                APId = userGroup.Key.AffiliatePartnerId,
                                                RAId = userGroup.Key.ExpertsID,
-                                               RASubscriber = userGroup.FirstOrDefault().Subscription.ExpertsId
+                                               RASubscriber = userGroup.FirstOrDefault().Subscription.ExpertsId,
+                                               IsSpecialSubscription = userGroup.FirstOrDefault().Subscription.IsSpecialSubscription
                                                //PaymentRAId = 
                                                //PaymentRAName = 
                                            })

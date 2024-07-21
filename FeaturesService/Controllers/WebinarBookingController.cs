@@ -92,9 +92,9 @@ namespace FeaturesService.Controllers
                 return BadRequest("Failed to generate webinar token.");
             }
 
-            return Ok(token);
+           // return Ok(token);
 
-          //  return Ok(new { link = agoraLink });
+            return Ok(new { agoraToken = token });
         }
 
         [HttpGet("JoinWebinar")]

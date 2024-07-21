@@ -18,8 +18,9 @@ public class GetUserSecondTimePaymentListingHandler : IRequestHandler<GetUserSec
 
         var userData = await (from u in _dbContext.Users
                               join s in _dbContext.Subscribers on u.Id equals s.UserId
+                              join subsc in _dbContext.Subscriptions on s.SubscriptionId equals subsc.Id 
                               where !u.IsDeleted && !s.IsDeleted
-                              select new { u, s })
+                              select new { u, s, subsc })
                          .ToListAsync(cancellationToken);
 
         var usersWithSecondPayment = userData.GroupBy(x => x.u.Id)
@@ -34,7 +35,8 @@ public class GetUserSecondTimePaymentListingHandler : IRequestHandler<GetUserSec
                                                  ReferralMode = sub.u.ReferralMode,
                                                  APId = sub.u.AffiliatePartnerId,
                                                  RAId = sub.u.ExpertsID,
-                                                 RASubscriber = sub.s.Subscription != null ? sub.s.Subscription.ExpertsId : (Guid?)null
+                                                 RASubscriber = sub.s.Subscription != null ? sub.s.Subscription.ExpertsId : (Guid?)null,
+                                                 IsSpecialSubscription = sub.subsc.IsSpecialSubscription
                                              }))
                                              //.OrderByDescending(x => x.Date)
                                              .Skip(skip)

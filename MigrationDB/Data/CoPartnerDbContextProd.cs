@@ -44,4 +44,21 @@ public class CoPartnerDbContextProd : DbContext
     public DbSet<ChatMessage> ChatMessages { get; set; }
     public DbSet<MinisubscriptionLink> MinisubscriptionLink { get; set; }
 
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        modelBuilder.Entity<ChatMessage>()
+            .HasOne(cm => cm.Sender)
+            .WithMany()
+            .HasForeignKey(cm => cm.SenderId)
+            .OnDelete(DeleteBehavior.Restrict); // Ensure this is set to Restrict
+
+        modelBuilder.Entity<ChatMessage>()
+            .HasOne(cm => cm.Receiver)
+            .WithMany()
+            .HasForeignKey(cm => cm.ReceiverId)
+            .OnDelete(DeleteBehavior.Restrict); // Ensure this is set to Restrict
+
+        base.OnModelCreating(modelBuilder);
+    }
+
 }
