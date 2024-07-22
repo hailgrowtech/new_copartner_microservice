@@ -25,9 +25,11 @@ namespace ExpertsService.Logic
         }
 
 
-        public Task<ResponseDto> Delete(Guid id)
+        public async Task<ResponseDto> Delete(Guid id)
         {
-            throw new NotImplementedException();
+            var expert = await _sender.Send(new DeleteStandardQuestionsCommand(id));
+            var expertReadDto = _mapper.Map<ResponseDto>(expert);
+            return expertReadDto;
         }
 
         public async Task<ResponseDto> Get(int page = 1, int pageSize = 10)
