@@ -43,6 +43,7 @@ public class CoPartnerDbContextProd : DbContext
     public DbSet<ChatUser> ChatUsers { get; set; }
     public DbSet<ChatMessage> ChatMessages { get; set; }
     public DbSet<MinisubscriptionLink> MinisubscriptionLink { get; set; }
+    public DbSet<StandardQuestions> StandardQuestions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
