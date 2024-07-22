@@ -31,6 +31,13 @@ public class AutoMapperProfile : Profile
         CreateMap<ExpertAvailability, ResponseDto>()
             .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Subscription entity to ResponseDto's Data property
 
+        // Source -> Target
+        CreateMap<StandardQuestions, StandardQuestionsReadDto>().ReverseMap();
+        CreateMap<StandardQuestions, StandardQuestionsCreateDto>().ReverseMap();
+        CreateMap<StandardQuestions, JsonPatchDocument<StandardQuestionsCreateDto>>().ReverseMap();
+        CreateMap<StandardQuestions, ResponseDto>()
+            .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Subscription entity to ResponseDto's Data property
+
     }
 
 }

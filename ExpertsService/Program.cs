@@ -93,6 +93,7 @@ builder.Services.AddScoped<IExpertsBusinessProcessor, ExpertsBusinessProcessor>(
 builder.Services.AddScoped<IRAListingBusinessProcessor, RAListingBusinessProcessor>();
 builder.Services.AddScoped<IRADetailsBusinessProcessor, RADetailsBusinessProcessor>();
 builder.Services.AddScoped<IExpertAvailabilityBusinessProcessor, ExpertAvailabilityBusinessProcessor>();
+builder.Services.AddScoped<IStandardQuestionsBusinessProcessor, StandardQuestionsBusinessProcessor>();
 
 builder.Services.AddScoped<IJsonMapper, JsonMapper>();
 //AutoMapper
