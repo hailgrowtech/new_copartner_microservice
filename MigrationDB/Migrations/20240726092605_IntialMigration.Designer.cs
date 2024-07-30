@@ -12,15 +12,15 @@ using MigrationDB.Data;
 namespace MigrationDB.Migrations
 {
     [DbContext(typeof(CoPartnerDbContext))]
-    [Migration("20240704025258_Migration04072024")]
-    partial class Migration04072024
+    [Migration("20240726092605_IntialMigration")]
+    partial class IntialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "8.0.3")
+                .HasAnnotation("ProductVersion", "8.0.6")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -245,6 +245,140 @@ namespace MigrationDB.Migrations
                     b.ToTable("Blog");
                 });
 
+            modelBuilder.Entity("MigrationDB.Model.ChatMessage", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Contents")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("ReceiverId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("SenderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReceiverId");
+
+                    b.HasIndex("SenderId");
+
+                    b.ToTable("ChatMessage");
+                });
+
+            modelBuilder.Entity("MigrationDB.Model.ChatPlan", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime");
+
+                    b.Property<int?>("DiscountPercentage")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("DiscountValidFrom")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("DiscountValidTo")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("ExpertsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("PlanName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PlanType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal?>("Price")
+                        .HasPrecision(18, 2)
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ExpertsId");
+
+                    b.ToTable("ChatPlan");
+                });
+
+            modelBuilder.Entity("MigrationDB.Model.ChatUser", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ConnectionId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("UserType")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Username")
+                        .IsUnique();
+
+                    b.ToTable("ChatUser");
+                });
+
             modelBuilder.Entity("MigrationDB.Model.EmailStatus", b =>
                 {
                     b.Property<Guid>("Id")
@@ -307,6 +441,9 @@ namespace MigrationDB.Migrations
 
                     b.Property<bool>("Availability")
                         .HasColumnType("bit");
+
+                    b.Property<Guid?>("BookingReferenceId")
+                        .HasColumnType("uniqueidentifier");
 
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
@@ -607,6 +744,9 @@ namespace MigrationDB.Migrations
                     b.Property<DateTime?>("DeletedOn")
                         .HasColumnType("datetime");
 
+                    b.Property<int?>("DiscountPercentage")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("GSTAmount")
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
@@ -668,6 +808,9 @@ namespace MigrationDB.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("ChatId")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid>("CreatedBy")
                         .HasColumnType("uniqueidentifier");
 
@@ -702,6 +845,9 @@ namespace MigrationDB.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<bool?>("IsSpecialSubscription")
                         .HasColumnType("bit");
 
                     b.Property<string>("PlanType")
@@ -1221,8 +1367,13 @@ namespace MigrationDB.Migrations
                     b.Property<string>("ChannelName")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ChatId")
-                        .IsRequired()
+                    b.Property<string>("ChatId1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ChatId2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ChatId3")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("CreatedBy")
@@ -1272,7 +1423,13 @@ namespace MigrationDB.Migrations
                     b.Property<string>("PAN")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("PremiumTelegramChannel")
+                    b.Property<string>("PremiumTelegramChannel1")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PremiumTelegramChannel2")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PremiumTelegramChannel3")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<decimal?>("Rating")
@@ -1305,6 +1462,9 @@ namespace MigrationDB.Migrations
 
                     b.Property<DateTime?>("UpdatedOn")
                         .HasColumnType("datetime");
+
+                    b.Property<int?>("WebinarUId")
+                        .HasColumnType("int");
 
                     b.Property<bool>("isActive")
                         .HasColumnType("bit");
@@ -1427,6 +1587,36 @@ namespace MigrationDB.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("MigrationDB.Model.ChatMessage", b =>
+                {
+                    b.HasOne("MigrationDB.Model.ChatUser", "Receiver")
+                        .WithMany("ReceivedMessages")
+                        .HasForeignKey("ReceiverId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("MigrationDB.Model.ChatUser", "Sender")
+                        .WithMany("SentMessages")
+                        .HasForeignKey("SenderId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Receiver");
+
+                    b.Navigation("Sender");
+                });
+
+            modelBuilder.Entity("MigrationDB.Model.ChatPlan", b =>
+                {
+                    b.HasOne("MigrationDB.Models.Experts", "Experts")
+                        .WithMany()
+                        .HasForeignKey("ExpertsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Experts");
+                });
+
             modelBuilder.Entity("MigrationDB.Model.PaymentResponse", b =>
                 {
                     b.HasOne("MigrationDB.Model.Subscription", "Subscriptions")
@@ -1522,6 +1712,13 @@ namespace MigrationDB.Migrations
                     b.HasOne("MigrationDB.Model.RelationshipManager", null)
                         .WithOne("Experts")
                         .HasForeignKey("MigrationDB.Models.Experts", "RelationshipManagerId");
+                });
+
+            modelBuilder.Entity("MigrationDB.Model.ChatUser", b =>
+                {
+                    b.Navigation("ReceivedMessages");
+
+                    b.Navigation("SentMessages");
                 });
 
             modelBuilder.Entity("MigrationDB.Model.RelationshipManager", b =>

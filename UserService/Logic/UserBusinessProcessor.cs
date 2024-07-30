@@ -86,8 +86,25 @@ public class UserBusinessProcessor : IUserBusinessProcessor
         };
     }
     public async Task<ResponseDto> Patch(Guid Id, JsonPatchDocument<UserCreateDto> request)
-    {
-        var user = _mapper.Map<User>(request);
+    {            
+        if (request.Operations[0].path.ToString().ToLower() == "mobilenumber")
+        {
+            var user = _mapper.Map<User>(request);
+            user.MobileNumber = request.Operations[0].value.ToString();
+            var checkUser = await _sender.Send(new GetUserByMobileNumberOrEmailQuery(user));
+            if (checkUser != null)
+            {
+                if (checkUser.Id != Id)
+                {
+                    return new ResponseDto()
+                    {
+                        IsSuccess = false,
+                        Data = _mapper.Map<UserReadDto>(checkUser),
+                        ErrorMessages = new List<string>() { AppConstants.User_UserExistsWithMobileOrEmail }
+                    };
+                }
+            }
+        }      
 
         var existingUser = await _sender.Send(new GetUserByIdQuery(Id));
         if (existingUser == null)

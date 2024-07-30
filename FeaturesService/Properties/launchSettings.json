@@ -7,7 +7,7 @@
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "https://localhost:5136;http://localhost:7094"
+      "applicationUrl": "http://localhost:7094"
     },
     "IIS Express": {
       "commandName": "IISExpress",

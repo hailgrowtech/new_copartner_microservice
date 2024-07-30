@@ -1,7 +1,10 @@
 ﻿using CommonLibrary.CommonModels;
 using MigrationDB.Models;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MigrationDB.Model;
+
+[Table("ChatMessage")]
 public class ChatMessage : BaseModel
 {
     public string Contents { get; set; }

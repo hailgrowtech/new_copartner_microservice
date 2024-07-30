@@ -1,3 +1,4 @@
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using MigrationDB.Model;
 using MigrationDB.Models;
@@ -40,7 +41,33 @@ public class CoPartnerDbContextProd : DbContext
     public DbSet<WebinarBooking> WebinarBookings { get; set; }
     public DbSet<ExpertAvailability> ExpertAvailabilities { get; set; }
     public DbSet<TelegramMessage> TelegramMessages { get; set; }
+    public DbSet<ChatPlan> ChatPlans { get; set; }
     public DbSet<ChatUser> ChatUsers { get; set; }
     public DbSet<ChatMessage> ChatMessages { get; set; }
+
+
+
+    //protected override void OnModelCreating(ModelBuilder modelBuilder)
+    //{
+    //    modelBuilder.Entity<ChatUser>()
+    //        .HasKey(u => u.Id);
+
+    //    modelBuilder.Entity<ChatUser>()
+    //        .HasIndex(u => u.Username)
+    //        .IsUnique(); // Ensure Username is unique, if required
+    //                     //    base.OnModelCreating(modelBuilder);
+
+    //    modelBuilder.Entity<ChatMessage>()
+    //        .HasOne(m => m.Sender)
+    //        .WithMany(u => u.SentMessages)
+    //        .HasForeignKey(m => m.SenderId)
+    //        .OnDelete(DeleteBehavior.NoAction);
+
+    //    modelBuilder.Entity<ChatMessage>()
+    //        .HasOne(m => m.Receiver)
+    //        .WithMany(u => u.ReceivedMessages)
+    //        .HasForeignKey(m => m.ReceiverId)
+    //        .OnDelete(DeleteBehavior.NoAction);
+    //}
 
 }

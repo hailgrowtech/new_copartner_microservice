@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MigrationDB.Migrations
 {
     /// <inheritdoc />
-    public partial class Migration05072024 : Migration
+    public partial class IntialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -77,6 +77,20 @@ namespace MigrationDB.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ChatUser",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    ConnectionId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChatUser", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "EmailStatus",
                 columns: table => new
                 {
@@ -106,6 +120,7 @@ namespace MigrationDB.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    BookingReferenceId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     ExpertId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     StartTime = table.Column<DateTime>(type: "datetime2", nullable: true),
                     EndTime = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -410,6 +425,38 @@ namespace MigrationDB.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ChatMessage",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Contents = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    SenderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ReceiverId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DeletedOn = table.Column<DateTime>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChatMessage", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ChatMessage_ChatUser_ReceiverId",
+                        column: x => x.ReceiverId,
+                        principalTable: "ChatUser",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ChatMessage_ChatUser_SenderId",
+                        column: x => x.SenderId,
+                        principalTable: "ChatUser",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "AffiliatePartner",
                 columns: table => new
                 {
@@ -465,19 +512,24 @@ namespace MigrationDB.Migrations
                     Rating = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true),
                     MobileNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ChannelName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ChatId = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ChatId1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ChatId2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ChatId3 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PAN = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Address = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     State = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SignatureImage = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     GST = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TelegramChannel = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PremiumTelegramChannel = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PremiumTelegramChannel1 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PremiumTelegramChannel2 = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PremiumTelegramChannel3 = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TelegramFollower = table.Column<int>(type: "int", nullable: true),
                     isCoPartner = table.Column<bool>(type: "bit", nullable: false),
                     FixCommission = table.Column<int>(type: "int", nullable: true),
                     SEBIRegCertificatePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RelationshipManagerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    WebinarUId = table.Column<int>(type: "int", nullable: true),
                     isActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -495,6 +547,38 @@ namespace MigrationDB.Migrations
                         column: x => x.RelationshipManagerId,
                         principalTable: "RelationshipManager",
                         principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ChatPlan",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ExpertsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    PlanType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    PlanName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Duration = table.Column<int>(type: "int", nullable: true),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true),
+                    DiscountPercentage = table.Column<int>(type: "int", nullable: true),
+                    DiscountValidFrom = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    DiscountValidTo = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DeletedOn = table.Column<DateTime>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChatPlan", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ChatPlan_Experts_ExpertsId",
+                        column: x => x.ExpertsId,
+                        principalTable: "Experts",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -537,6 +621,7 @@ namespace MigrationDB.Migrations
                     Tag = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     ServiceType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PlanType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ChatId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DurationMonth = table.Column<int>(type: "int", nullable: true),
                     Amount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: true),
                     PremiumTelegramLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -544,6 +629,7 @@ namespace MigrationDB.Migrations
                     DiscountPercentage = table.Column<int>(type: "int", nullable: true),
                     DiscountValidFrom = table.Column<DateTime>(type: "datetime2", nullable: true),
                     DiscountValidTo = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    IsSpecialSubscription = table.Column<bool>(type: "bit", nullable: true),
                     isCustom = table.Column<bool>(type: "bit", nullable: true),
                     isActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -645,6 +731,7 @@ namespace MigrationDB.Migrations
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     GSTAmount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
                     TotalAmount = table.Column<decimal>(type: "decimal(18,2)", precision: 18, scale: 2, nullable: false),
+                    DiscountPercentage = table.Column<int>(type: "int", nullable: true),
                     PaymentMode = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     TransactionId = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TransactionDate = table.Column<DateTime>(type: "datetime2", nullable: true),
@@ -707,6 +794,27 @@ namespace MigrationDB.Migrations
                 name: "IX_AffiliatePartner_RelationshipManagerId",
                 table: "AffiliatePartner",
                 column: "RelationshipManagerId",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChatMessage_ReceiverId",
+                table: "ChatMessage",
+                column: "ReceiverId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChatMessage_SenderId",
+                table: "ChatMessage",
+                column: "SenderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChatPlan_ExpertsId",
+                table: "ChatPlan",
+                column: "ExpertsId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChatUser_Username",
+                table: "ChatUser",
+                column: "Username",
                 unique: true);
 
             migrationBuilder.CreateIndex(
@@ -778,6 +886,12 @@ namespace MigrationDB.Migrations
                 name: "Blog");
 
             migrationBuilder.DropTable(
+                name: "ChatMessage");
+
+            migrationBuilder.DropTable(
+                name: "ChatPlan");
+
+            migrationBuilder.DropTable(
                 name: "CourseStatus");
 
             migrationBuilder.DropTable(
@@ -821,6 +935,9 @@ namespace MigrationDB.Migrations
 
             migrationBuilder.DropTable(
                 name: "WithdrawalMode");
+
+            migrationBuilder.DropTable(
+                name: "ChatUser");
 
             migrationBuilder.DropTable(
                 name: "CourseBooking");

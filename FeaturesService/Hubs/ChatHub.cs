@@ -1,21 +1,25 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using MigrationDB.Data;
 using MigrationDB.Model;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Data.SqlClient;
+using System.Data;
 
 namespace FeaturesService.Hubs;
 public class ChatHub : Hub
 {
-    private readonly CoPartnerDbContext _context;
-
-    public ChatHub(CoPartnerDbContext context)
+    private readonly CoPartnerDbContext _dbContext;
+    private readonly IConfiguration _configuration;
+    public ChatHub(CoPartnerDbContext dbContext, IConfiguration configuration)
     {
-        _context = context;
+        _configuration = configuration;
+        _dbContext = dbContext;
     }
 
     public async Task SendMessage(string sender, string receiver, string message)
     {
-        var senderUser = _context.ChatUsers.SingleOrDefault(u => u.Username == sender);
-        var receiverUser = _context.ChatUsers.SingleOrDefault(u => u.Username == receiver);
+        var senderUser = _dbContext.ChatUsers.SingleOrDefault(u => u.Username == sender);
+        var receiverUser = _dbContext.ChatUsers.SingleOrDefault(u => u.Username == receiver);
 
         if (senderUser == null || receiverUser == null)
         {
@@ -30,51 +34,96 @@ public class ChatHub : Hub
             ReceiverId = receiverUser.Id
         };
 
-        _context.ChatMessages.Add(newMessage);
-        await _context.SaveChangesAsync();
+        _dbContext.ChatMessages.Add(newMessage);
+        await _dbContext.SaveChangesAsync();
 
-        await Clients.User(receiverUser.ConnectionId).SendAsync("ReceiveMessage", sender, message);
+        await Clients.Client(receiverUser.ConnectionId).SendAsync("ReceiveMessage", sender, message);
     }
 
     public override async Task OnConnectedAsync()
     {
-        var username = Context.GetHttpContext().Request.Query["username"];
-        var user = _context.ChatUsers.SingleOrDefault(u => u.Username == username);
-
-        if (user != null)
+        try
         {
-            user.ConnectionId = Context.ConnectionId;
-            _context.ChatUsers.Update(user);
-            await _context.SaveChangesAsync();
+            var username = Context.GetHttpContext()?.Request.Query["username"].ToString();
+            if (string.IsNullOrEmpty(username))
+            {
+                throw new InvalidOperationException("Username query parameter is missing.");
+            }
 
-            // Send previous messages to the connected user
-            var messages = _context.ChatMessages
-                .Where(m => m.SenderId == user.Id || m.ReceiverId == user.Id)
-                .OrderBy(m => m.Timestamp)
-                .Select(m => new
+            //var user = await _dbContext.ChatUsers
+            //             .AsNoTracking()
+            //             .SingleOrDefaultAsync(u => u.Username == username);
+
+            // Define your connection string
+            var connectionString = _configuration.GetConnectionString("CoPartnerConnectionString");
+
+            ChatUser user = null;
+            var userQuery = "SELECT Id, Username, ConnectionId FROM ChatUser WHERE Username = @username";
+
+            using (var connection = new SqlConnection(connectionString))
+            {
+                await connection.OpenAsync();
+
+                using (var adapter = new SqlDataAdapter(userQuery, connection))
                 {
-                    Sender = m.Sender.Username,
-                    Receiver = m.Receiver.Username,
-                    Content = m.Contents,
-                    Timestamp = m.Timestamp
-                })
-                .ToList();
+                    adapter.SelectCommand.Parameters.AddWithValue("@username", username);
 
-            await Clients.Caller.SendAsync("LoadPreviousMessages", messages);
+                    var dataSet = new DataSet();
+                    adapter.Fill(dataSet, "ChatUser");
+
+                    if (dataSet.Tables["ChatUser"].Rows.Count > 0)
+                    {
+                        var row = dataSet.Tables["ChatUser"].Rows[0];
+                        user = new ChatUser
+                        {
+                            Id = (Guid)row["Id"],
+                            Username = row["Username"].ToString(),
+                            ConnectionId = row["ConnectionId"].ToString()
+                        };
+                    }
+                }
+            }
+
+            if (user != null)
+            {
+                user.ConnectionId = Context.ConnectionId;
+                _dbContext.ChatUsers.Update(user);
+                await _dbContext.SaveChangesAsync();
+
+                var messages = _dbContext.ChatMessages
+                    .Where(m => m.SenderId == user.Id || m.ReceiverId == user.Id)
+                    .OrderBy(m => m.Timestamp)
+                    .Select(m => new
+                    {
+                        Sender = m.Sender.Username,
+                        Receiver = m.Receiver.Username,
+                        Content = m.Contents,
+                        Timestamp = m.Timestamp
+                    })
+                    .ToList();
+
+                await Clients.Caller.SendAsync("LoadPreviousMessages", messages);
+            }
+
+            await base.OnConnectedAsync();
         }
-
-        await base.OnConnectedAsync();
+        catch (Exception ex)
+        {
+            // Log exception
+            Console.WriteLine(ex);
+            throw; // Optional: rethrow exception to preserve original behavior
+        }
     }
 
     public override async Task OnDisconnectedAsync(Exception exception)
     {
-        var user = _context.ChatUsers.SingleOrDefault(u => u.ConnectionId == Context.ConnectionId);
+        var user = _dbContext.ChatUsers.SingleOrDefault(u => u.ConnectionId == Context.ConnectionId);
 
         if (user != null)
         {
             user.ConnectionId = null;
-            _context.ChatUsers.Update(user);
-            await _context.SaveChangesAsync();
+            _dbContext.ChatUsers.Update(user);
+            await _dbContext.SaveChangesAsync();
         }
 
         await base.OnDisconnectedAsync(exception);

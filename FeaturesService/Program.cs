@@ -1,16 +1,12 @@
 using CommonLibrary.Authorization;
 using FluentValidation;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Reflection;
 using FeaturesService.Configuration;
-
 using FeaturesService.Logic;
 using FeaturesService.Profiles;
 using MigrationDB.Data;
-using FeaturesService.Logic;
 using FeaturesService.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -93,6 +89,7 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddScoped<IWebinarBookingBusinessProcessor, WebinarBookingBusinessProcessor>();
 builder.Services.AddScoped<IWebinarMstBusinessProcessor, WebinarMstBusinessProcessor>();
+builder.Services.AddScoped<IChatBusinessProcessor, ChatBusinessProcessor>();
 
 builder.Services.AddScoped<IJsonMapper, JsonMapper>();
 //AutoMapper
@@ -121,11 +118,11 @@ builder.Services.AddSignalR();
 var app = builder.Build();
 
 //migrate any database changes on startup (includes initial db creation)
-using (var scope = app.Services.CreateScope())
-{
-    var dataContext = scope.ServiceProvider.GetRequiredService<CoPartnerDbContext>();
-    //dataContext.Database.Migrate();
-}
+//using (var scope = app.Services.CreateScope())
+//{
+//    var dataContext = scope.ServiceProvider.GetRequiredService<CoPartnerDbContext>();
+//    //dataContext.Database.Migrate();
+//}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
@@ -133,7 +130,7 @@ if (app.Environment.IsDevelopment() || app.Environment.IsProduction())
     app.UseSwagger();
     app.UseSwaggerUI(c =>
     {
-        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Features Service API V1");
+        c.SwaggerEndpoint("../swagger/v1/swagger.json", "Features Service API V1");
     });
 }
 
@@ -154,5 +151,6 @@ app.UseAuthorization();
 
 app.MapControllers();
 app.MapHub<ChatHub>("/chathub");
+
 
 app.Run();
