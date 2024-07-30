@@ -29,7 +29,20 @@ public class AutoMapperProfile : Profile
         CreateMap<WebinarBooking, ResponseDto>()
             .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Subscription entity to ResponseDto's Data property
 
-        
+        // Source -> Target
+        CreateMap<ChatPlan, ChatPlanReadDto>().ReverseMap();
+        CreateMap<ChatPlan, ChatPlanCreateDto>().ReverseMap();
+        CreateMap<ChatPlan, JsonPatchDocument<ChatPlanCreateDto>>().ReverseMap();
+        CreateMap<ChatPlan, ResponseDto>()
+            .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Subscription entity to ResponseDto's Data property
+
+
+        // Source -> Target
+        CreateMap<ChatUser, ChatUserReadDto>().ReverseMap();
+        CreateMap<ChatUser, ChatUserCreateDto>().ReverseMap();
+        CreateMap<ChatUser, JsonPatchDocument<ChatUserCreateDto>>().ReverseMap();
+        CreateMap<ChatUser, ResponseDto>()
+            .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Subscription entity to ResponseDto's Data property
 
     }
 

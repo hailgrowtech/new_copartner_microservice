@@ -100,7 +100,7 @@ public class UserController : ControllerBase
 
     [HttpPatch]
     public async Task<object> Patch(Guid Id, [FromBody] JsonPatchDocument<UserCreateDto> userDtoPatch)
-    {
+    {        
         var response = await _logic.Patch(Id, userDtoPatch);
         if (response.IsSuccess)
         {

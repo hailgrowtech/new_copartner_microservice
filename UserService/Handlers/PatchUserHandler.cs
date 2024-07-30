@@ -31,6 +31,7 @@ public class PatchUserHandler : IRequestHandler<PatchUserCommand, User>
             throw new Exception($"User with ID {command.Id} not found.");
         }
 
+
         // Apply the patch to the existing entity
         var usersToUpdate = _jsonMapper.ToDomain(command.JsonPatchDocument, currentUsers);
         usersToUpdate.Id = command.Id;
