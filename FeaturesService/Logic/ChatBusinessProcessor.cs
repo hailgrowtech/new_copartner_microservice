@@ -8,6 +8,8 @@ using FeaturesService.Queries;
 using MediatR;
 using Microsoft.AspNetCore.JsonPatch;
 using MigrationDB.Model;
+using Ocelot.Errors;
+using static MassTransit.ValidationResultExtensions;
 
 namespace FeaturesService.Logic;
 
@@ -53,6 +55,26 @@ public class ChatBusinessProcessor : IChatBusinessProcessor
         {
             IsSuccess = true,
             Data = chatPlanReadDto,
+        };
+    }
+
+    public async Task<ResponseDto> GetChatPlanByExpertsId(Guid id, int page , int pageSize)
+    {
+        var apListingData = await _sender.Send(new GetChatPlanByExpertsIdQuery(id, page, pageSize));
+        if (apListingData == null)
+        {
+            return new ResponseDto()
+            {
+                IsSuccess = false,
+                Data = null,
+                ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
+            };
+        }
+        // var raListingReadDto = _mapper.Map<RAListingDataReadDto>(raListingData);
+        return new ResponseDto()
+        {
+            IsSuccess = true,
+            Data = apListingData,
         };
     }
 
@@ -121,6 +143,26 @@ public class ChatBusinessProcessor : IChatBusinessProcessor
             DisplayMessage = AppConstants.Common_RecordCreated
         };
     }
+
+    public async Task<ResponseDto> Delete(Guid id)
+    {
+        var chatPlan = await _sender.Send(new DeleteChatPlanCommand(id));
+        var expertReadDto = _mapper.Map<ResponseDto>(chatPlan);
+        if (expertReadDto == null)
+        {
+            return new ResponseDto()
+            {
+                IsSuccess = false,
+                Data = null,
+                ErrorMessages = new List<string>() { AppConstants.Common_FailedToDeleteRecord }
+            };
+        }
+            return new ResponseDto()
+            {
+                Data = expertReadDto,
+                DisplayMessage = AppConstants.Common_RecordDeleted
+            };
+    }
     public Task<ResponseDto> Put(Guid id, ChatPlanCreateDto chatPlanCreateDto)
     {
         throw new NotImplementedException();
@@ -129,13 +171,13 @@ public class ChatBusinessProcessor : IChatBusinessProcessor
     {
         var chatUser= _mapper.Map<ChatUser>(request);
 
-        var existingChatUser = await _sender.Send(new GetChatUserByIdQuery(chatUser.Id));
+        var existingChatUser = await _sender.Send(new GetChatUserByUsernameQuery(chatUser.Id));
         if (existingChatUser != null)
         {
             return new ResponseDto()
             {
                 IsSuccess = false,
-                Data = _mapper.Map<ChatUserReadDto>(existingChatUser),
+                Data = null,
                 ErrorMessages = new List<string>() { AppConstants.Common_AlreadyExistsRecord }
             };
         }
@@ -147,7 +189,7 @@ public class ChatBusinessProcessor : IChatBusinessProcessor
             {
                 IsSuccess = false,
                 Data = _mapper.Map<ChatUserReadDto>(existingChatUser),
-                ErrorMessages = new List<string>() { AppConstants.AffiliatePartner_FailedToCreateAffiliatePartner }
+                ErrorMessages = new List<string>() { AppConstants.Common_FailedToCreateNewRecord }
             };
         }
 
@@ -178,6 +220,67 @@ public class ChatBusinessProcessor : IChatBusinessProcessor
         };
     }
 
+    public async Task<ResponseDto> PostFreeChat(FreeChatCreateDto request)
+    {
+        var freeChat = _mapper.Map<FreeChat>(request);
+
+        var existingFreeChatUser = await _sender.Send(new GetFreeChatByIdQuery(freeChat.UserId,freeChat.ExpertsId));
+        if (existingFreeChatUser != null)
+        {
+            return new ResponseDto()
+            {
+                IsSuccess = false,
+                Data = null,
+                ErrorMessages = new List<string>() { AppConstants.Common_AlreadyExistsRecord }
+            };
+        }
+
+        var result = await _sender.Send(new CreateFreeChatCommand(freeChat));
+        if (result == null)
+        {
+            return new ResponseDto()
+            {
+                IsSuccess = false,
+                Data = _mapper.Map<ChatUserReadDto>(existingFreeChatUser),
+                ErrorMessages = new List<string>() { AppConstants.Common_FailedToCreateNewRecord }
+            };
+        }
+
+        var resultDto = _mapper.Map<FreeChatReadDto>(result);
+        return new ResponseDto()
+        {
+            Data = resultDto,
+            DisplayMessage = AppConstants.Common_RecordCreated
+        };
+    }
+
+    public async Task<ResponseDto> GetFreeChatUser(Guid id)
+    {
+        try
+        {
+            var freeChat = await _sender.Send(new GetFreeChatByUserIdQuery(id));
+            if (freeChat == null)
+            {
+                return new ResponseDto()
+                {
+                    IsSuccess = false,
+                    Data = null,
+                    ErrorMessages = new List<string>() { AppConstants.Common_NoRecordFound }
+                };
+            }
+          //  var freeChatReadDto = _mapper.Map<FreeChatReadDto>(freeChat);
+            var freeChatReadDtoList = _mapper.Map<List<FreeChatReadDto>>(freeChat);
+            return new ResponseDto()
+            {
+                IsSuccess = true,
+                Data = freeChatReadDtoList,
+            };
+        }
+        catch(Exception ex)
+        {
+            return null;
+        }
+    }
     public ChatPlanReadDto ToCalculateDiscountedAmount(ChatPlanReadDto chatPlanReadDto)
     {
         if (chatPlanReadDto.Price.HasValue &&

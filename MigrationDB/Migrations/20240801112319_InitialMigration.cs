@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace MigrationDB.Migrations
 {
     /// <inheritdoc />
-    public partial class IntialMigration : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -82,8 +82,8 @@ namespace MigrationDB.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserType = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Username = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ConnectionId = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Username = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ConnectionId = table.Column<string>(type: "nvarchar(max)", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -176,6 +176,27 @@ namespace MigrationDB.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FreeChat",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ExpertsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Availed = table.Column<bool>(type: "bit", nullable: false),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DeletedOn = table.Column<DateTime>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FreeChat", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Join",
                 columns: table => new
                 {
@@ -217,6 +238,27 @@ namespace MigrationDB.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "MinisubscriptionLink",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ExpertId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    SubscriptionId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    MiniSubscriptionLink = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DeletedOn = table.Column<DateTime>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_MinisubscriptionLink", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RelationshipManager",
                 columns: table => new
                 {
@@ -238,6 +280,28 @@ namespace MigrationDB.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_RelationshipManager", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "StandardQuestions",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ExpertId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ChatId = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Question = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Answer = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
+                    UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    UpdatedOn = table.Column<DateTime>(type: "datetime", nullable: true),
+                    IsDeleted = table.Column<bool>(type: "bit", nullable: false),
+                    DeletedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    DeletedOn = table.Column<DateTime>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_StandardQuestions", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -433,6 +497,8 @@ namespace MigrationDB.Migrations
                     Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
                     SenderId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ReceiverId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    ChatUserId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
+                    ChatUserId1 = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
@@ -445,15 +511,27 @@ namespace MigrationDB.Migrations
                 {
                     table.PrimaryKey("PK_ChatMessage", x => x.Id);
                     table.ForeignKey(
+                        name: "FK_ChatMessage_ChatUser_ChatUserId",
+                        column: x => x.ChatUserId,
+                        principalTable: "ChatUser",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_ChatMessage_ChatUser_ChatUserId1",
+                        column: x => x.ChatUserId1,
+                        principalTable: "ChatUser",
+                        principalColumn: "Id");
+                    table.ForeignKey(
                         name: "FK_ChatMessage_ChatUser_ReceiverId",
                         column: x => x.ReceiverId,
                         principalTable: "ChatUser",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_ChatMessage_ChatUser_SenderId",
                         column: x => x.SenderId,
                         principalTable: "ChatUser",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -530,6 +608,7 @@ namespace MigrationDB.Migrations
                     SEBIRegCertificatePath = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     RelationshipManagerId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
                     WebinarUId = table.Column<int>(type: "int", nullable: true),
+                    IsChatLive = table.Column<bool>(type: "bit", nullable: true),
                     isActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedBy = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreatedOn = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -555,6 +634,7 @@ namespace MigrationDB.Migrations
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     ExpertsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SubscriptionType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PlanType = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     PlanName = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Duration = table.Column<int>(type: "int", nullable: true),
@@ -797,6 +877,16 @@ namespace MigrationDB.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
+                name: "IX_ChatMessage_ChatUserId",
+                table: "ChatMessage",
+                column: "ChatUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChatMessage_ChatUserId1",
+                table: "ChatMessage",
+                column: "ChatUserId1");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_ChatMessage_ReceiverId",
                 table: "ChatMessage",
                 column: "ReceiverId");
@@ -810,12 +900,6 @@ namespace MigrationDB.Migrations
                 name: "IX_ChatPlan_ExpertsId",
                 table: "ChatPlan",
                 column: "ExpertsId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ChatUser_Username",
-                table: "ChatUser",
-                column: "Username",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Course_ExpertsId",
@@ -907,13 +991,22 @@ namespace MigrationDB.Migrations
                 name: "ExpertsType");
 
             migrationBuilder.DropTable(
+                name: "FreeChat");
+
+            migrationBuilder.DropTable(
                 name: "Join");
 
             migrationBuilder.DropTable(
                 name: "MarketingContent");
 
             migrationBuilder.DropTable(
+                name: "MinisubscriptionLink");
+
+            migrationBuilder.DropTable(
                 name: "PaymentResponses");
+
+            migrationBuilder.DropTable(
+                name: "StandardQuestions");
 
             migrationBuilder.DropTable(
                 name: "Subscriber");

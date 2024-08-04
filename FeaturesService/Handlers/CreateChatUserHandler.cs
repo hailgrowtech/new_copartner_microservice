@@ -5,21 +5,21 @@ using MigrationDB.Model;
 
 namespace FeaturesService.Handlers;
 
-public class CreateChatUserHandler : IRequestHandler<CreateChatUserCommand, ChatUser>
+public class CreateFreeChatHandler : IRequestHandler<CreateFreeChatCommand, FreeChat>
 {
     private readonly CoPartnerDbContext _dbContext;
-    public CreateChatUserHandler(CoPartnerDbContext dbContext)
+    public CreateFreeChatHandler(CoPartnerDbContext dbContext)
     {
         _dbContext = dbContext;
     }
 
-    public async Task<ChatUser> Handle(CreateChatUserCommand request, CancellationToken cancellationToken)
+    public async Task<FreeChat> Handle(CreateFreeChatCommand request, CancellationToken cancellationToken)
     {
-        var entity = request.ChatUser;
-        await _dbContext.ChatUsers.AddAsync(entity);
+        var entity = request.FreeChat;
+        await _dbContext.FreeChats.AddAsync(entity);
         await _dbContext.SaveChangesAsync(cancellationToken);
-        request.ChatUser.Id = entity.Id;
+        request.FreeChat.Id = entity.Id;
         //request.Experts.isActive = entity.isActive;
-        return request.ChatUser;
+        return request.FreeChat;
     }
 }

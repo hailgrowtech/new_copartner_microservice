@@ -13,4 +13,5 @@ public class ChatMessage : BaseModel
     public ChatUser Sender { get; set; }
     public Guid ReceiverId { get; set; }
     public ChatUser Receiver { get; set; }
+
 }

@@ -21,26 +21,18 @@ public class GetChatMessageByIdHandler : IRequestHandler<GetChatMessageByIdQuery
         {
             var userId = request.Id;
 
-            // Fetch users who are either senders or receivers of chat messages, excluding the user with the given Id
-            var result = await (from user in _dbContext.ChatUsers
-                                join senderMessage in _dbContext.ChatMessages
-                                on user.Id equals senderMessage.SenderId into senderMessages
-                                from senderMessage in senderMessages.DefaultIfEmpty()
-                                join receiverMessage in _dbContext.ChatMessages
-                                on user.Id equals receiverMessage.ReceiverId into receiverMessages
-                                from receiverMessage in receiverMessages.DefaultIfEmpty()
-                                where (senderMessage != null || receiverMessage != null)
-                                      && (senderMessage == null || !senderMessage.IsDeleted)
-                                      && (receiverMessage == null || !receiverMessage.IsDeleted)
-                                      && user.Id != userId
-                                select new ChatUser
-                                {
-                                    Id = user.Id,
-                                    Username = user.Username,
-                                    UserType = user.UserType
-                                })
-                    .Distinct()
-                    .ToListAsync(cancellationToken);
+            // Query to replicate the SQL logic
+            var result = await (from message in _dbContext.ChatMessages
+                                join user in _dbContext.ChatUsers
+                                on message.SenderId equals user.Id into senderUsers
+                                from senderUser in senderUsers.DefaultIfEmpty()
+                                join user in _dbContext.ChatUsers
+                                on message.ReceiverId equals user.Id into receiverUsers
+                                from receiverUser in receiverUsers.DefaultIfEmpty()
+                                where message.SenderId == request.Id || message.ReceiverId == request.Id
+                                select senderUser ?? receiverUser)
+                     .Distinct()
+                     .ToListAsync(cancellationToken);
 
             return result;
         }

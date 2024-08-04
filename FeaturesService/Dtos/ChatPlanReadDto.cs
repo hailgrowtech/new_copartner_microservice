@@ -18,4 +18,5 @@ public class ChatPlanReadDto
     public decimal? DiscountedAmount { get; set; }
     public DateTime? DiscountValidFrom { get; set; }
     public DateTime? DiscountValidTo { get; set; }
+    public DateTime CreatedOn { get; set; }
 }

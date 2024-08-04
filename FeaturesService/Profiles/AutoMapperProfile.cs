@@ -44,6 +44,13 @@ public class AutoMapperProfile : Profile
         CreateMap<ChatUser, ResponseDto>()
             .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Subscription entity to ResponseDto's Data property
 
+        // Source -> Target
+        CreateMap<FreeChat, FreeChatReadDto>().ReverseMap();
+        CreateMap<FreeChat, FreeChatCreateDto>().ReverseMap();
+        CreateMap<FreeChat, JsonPatchDocument<FreeChatCreateDto>>().ReverseMap();
+        CreateMap<FreeChat, ResponseDto>()
+            .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Subscription entity to ResponseDto's Data property
+
     }
 
 }

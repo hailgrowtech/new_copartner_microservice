@@ -12,8 +12,8 @@ using MigrationDB.Data;
 namespace MigrationDB.Migrations
 {
     [DbContext(typeof(CoPartnerDbContext))]
-    [Migration("20240726092605_IntialMigration")]
-    partial class IntialMigration
+    [Migration("20240801112319_InitialMigration")]
+    partial class InitialMigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -251,6 +251,12 @@ namespace MigrationDB.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
+                    b.Property<Guid?>("ChatUserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("ChatUserId1")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<string>("Contents")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -286,6 +292,10 @@ namespace MigrationDB.Migrations
                         .HasColumnType("datetime");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ChatUserId");
+
+                    b.HasIndex("ChatUserId1");
 
                     b.HasIndex("ReceiverId");
 
@@ -340,6 +350,9 @@ namespace MigrationDB.Migrations
                         .HasPrecision(18, 2)
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("SubscriptionType")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<Guid?>("UpdatedBy")
                         .HasColumnType("uniqueidentifier");
 
@@ -360,7 +373,6 @@ namespace MigrationDB.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("ConnectionId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserType")
@@ -369,12 +381,9 @@ namespace MigrationDB.Migrations
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasColumnType("nvarchar(450)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Username")
-                        .IsUnique();
 
                     b.ToTable("ChatUser");
                 });
@@ -528,6 +537,47 @@ namespace MigrationDB.Migrations
                     b.ToTable("ExpertsAdvertisingAgency");
                 });
 
+            modelBuilder.Entity("MigrationDB.Model.FreeChat", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("Availed")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime");
+
+                    b.Property<Guid>("ExpertsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("FreeChat");
+                });
+
             modelBuilder.Entity("MigrationDB.Model.Join", b =>
                 {
                     b.Property<Guid>("Id")
@@ -608,6 +658,47 @@ namespace MigrationDB.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("MarketingContent");
+                });
+
+            modelBuilder.Entity("MigrationDB.Model.MinisubscriptionLink", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime");
+
+                    b.Property<Guid?>("ExpertId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("MiniSubscriptionLink")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("SubscriptionId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("MinisubscriptionLink");
                 });
 
             modelBuilder.Entity("MigrationDB.Model.PaymentResponse", b =>
@@ -724,6 +815,50 @@ namespace MigrationDB.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("RelationshipManager");
+                });
+
+            modelBuilder.Entity("MigrationDB.Model.StandardQuestions", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Answer")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ChatId")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("CreatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatedOn")
+                        .HasColumnType("datetime");
+
+                    b.Property<Guid?>("DeletedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("DeletedOn")
+                        .HasColumnType("datetime");
+
+                    b.Property<Guid?>("ExpertId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("Question")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid?>("UpdatedBy")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime?>("UpdatedOn")
+                        .HasColumnType("datetime");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("StandardQuestions");
                 });
 
             modelBuilder.Entity("MigrationDB.Model.Subscriber", b =>
@@ -1407,6 +1542,9 @@ namespace MigrationDB.Migrations
                     b.Property<string>("GST")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool?>("IsChatLive")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("bit");
 
@@ -1589,16 +1727,24 @@ namespace MigrationDB.Migrations
 
             modelBuilder.Entity("MigrationDB.Model.ChatMessage", b =>
                 {
-                    b.HasOne("MigrationDB.Model.ChatUser", "Receiver")
+                    b.HasOne("MigrationDB.Model.ChatUser", null)
                         .WithMany("ReceivedMessages")
+                        .HasForeignKey("ChatUserId");
+
+                    b.HasOne("MigrationDB.Model.ChatUser", null)
+                        .WithMany("SentMessages")
+                        .HasForeignKey("ChatUserId1");
+
+                    b.HasOne("MigrationDB.Model.ChatUser", "Receiver")
+                        .WithMany()
                         .HasForeignKey("ReceiverId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("MigrationDB.Model.ChatUser", "Sender")
-                        .WithMany("SentMessages")
+                        .WithMany()
                         .HasForeignKey("SenderId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Receiver");

@@ -44,49 +44,50 @@ public class CoPartnerDbContextProd : DbContext
     public DbSet<ChatPlan> ChatPlans { get; set; }
     public DbSet<ChatUser> ChatUsers { get; set; }
     public DbSet<ChatMessage> ChatMessages { get; set; }
+    public DbSet<FreeChat> FreeChats { get; set; }
     public DbSet<MinisubscriptionLink> MinisubscriptionLink { get; set; }
     public DbSet<StandardQuestions> StandardQuestions { get; set; }
+
+    //protected override void OnModelCreating(ModelBuilder modelBuilder)
+    //{
+    //    modelBuilder.Entity<ChatMessage>()
+    //        .HasKey(cm => cm.Id);
+
+    //    modelBuilder.Entity<ChatMessage>()
+    //        .HasOne(cm => cm.Sender)
+    //        .WithMany() // or .WithMany(u => u.SentMessages) if you have a navigation property
+    //        .HasForeignKey(cm => cm.SenderId)
+    //        .OnDelete(DeleteBehavior.Restrict);
+
+    //    modelBuilder.Entity<ChatMessage>()
+    //        .HasOne(cm => cm.Receiver)
+    //        .WithMany() // or .WithMany(u => u.ReceivedMessages) if you have a navigation property
+    //        .HasForeignKey(cm => cm.ReceiverId)
+    //        .OnDelete(DeleteBehavior.Restrict);
+
+    //    base.OnModelCreating(modelBuilder);
+    //}
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.Entity<ChatMessage>()
+            .HasKey(cm => cm.Id);
+
+        modelBuilder.Entity<ChatMessage>()
             .HasOne(cm => cm.Sender)
-            .WithMany()
+            .WithMany(u => u.SentMessages)
             .HasForeignKey(cm => cm.SenderId)
-            .OnDelete(DeleteBehavior.Restrict); // Ensure this is set to Restrict
+            .OnDelete(DeleteBehavior.Cascade);
 
         modelBuilder.Entity<ChatMessage>()
             .HasOne(cm => cm.Receiver)
-            .WithMany()
+            .WithMany(u => u.ReceivedMessages)
             .HasForeignKey(cm => cm.ReceiverId)
-            .OnDelete(DeleteBehavior.Restrict); // Ensure this is set to Restrict
+            .OnDelete(DeleteBehavior.Cascade);
 
         base.OnModelCreating(modelBuilder);
     }
 
 
-
-    //protected override void OnModelCreating(ModelBuilder modelBuilder)
-    //{
-    //    modelBuilder.Entity<ChatUser>()
-    //        .HasKey(u => u.Id);
-
-    //    modelBuilder.Entity<ChatUser>()
-    //        .HasIndex(u => u.Username)
-    //        .IsUnique(); // Ensure Username is unique, if required
-    //                     //    base.OnModelCreating(modelBuilder);
-
-    //    modelBuilder.Entity<ChatMessage>()
-    //        .HasOne(m => m.Sender)
-    //        .WithMany(u => u.SentMessages)
-    //        .HasForeignKey(m => m.SenderId)
-    //        .OnDelete(DeleteBehavior.NoAction);
-
-    //    modelBuilder.Entity<ChatMessage>()
-    //        .HasOne(m => m.Receiver)
-    //        .WithMany(u => u.ReceivedMessages)
-    //        .HasForeignKey(m => m.ReceiverId)
-    //        .OnDelete(DeleteBehavior.NoAction);
-    //}
 
 }

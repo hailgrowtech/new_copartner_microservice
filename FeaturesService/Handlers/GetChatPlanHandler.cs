@@ -1,8 +1,10 @@
-﻿using FeaturesService.Queries;
+﻿using CommonLibrary.Extensions;
+using FeaturesService.Queries;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MigrationDB.Data;
 using MigrationDB.Model;
+using static MassTransit.ValidationResultExtensions;
 
 namespace FeaturesService.Handlers;
 public class GetChatPlanHandler : IRequestHandler<GetChatPlanQuery, IEnumerable<ChatPlan>>
@@ -19,6 +21,6 @@ public class GetChatPlanHandler : IRequestHandler<GetChatPlanQuery, IEnumerable<
                      .Take(request.PageSize)
                      .ToListAsync(cancellationToken);
         if (entities == null) return null;
-        return entities;
+        return entities.Select(e => e.ConvertAllDateTimesToIST()).ToList();
     }
 }

@@ -1,4 +1,5 @@
-﻿using FeaturesService.Queries;
+﻿using CommonLibrary.Extensions;
+using FeaturesService.Queries;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using MigrationDB.Data;
@@ -18,7 +19,7 @@ namespace FeaturesService.Handlers
         public async Task<ChatPlan> Handle(GetChatPlanByIdQuery request, CancellationToken cancellationToken)
         {
             var chatPlan = await _dbContext.ChatPlans.Where(a => a.Id == request.Id && a.IsDeleted != true).SingleOrDefaultAsync(cancellationToken: cancellationToken);
-            return chatPlan;
+            return chatPlan.ConvertAllDateTimesToIST();
         }
     }
 }

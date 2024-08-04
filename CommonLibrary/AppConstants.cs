@@ -113,6 +113,7 @@ public static class AppConstants
     public const string Common_RecordUpdated = "Record's updated successfully.";
     public const string Common_FailedToCreateNewRecord = "Failed to create new record's.";
     public const string Common_AlreadyExistsRecord = "Record's already exists.";
+    public const string Common_FailedToDeleteRecord = "Failed to delete record's.";
     #endregion
 
 

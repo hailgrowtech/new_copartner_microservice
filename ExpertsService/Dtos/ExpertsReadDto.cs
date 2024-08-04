@@ -38,6 +38,7 @@ public class ExpertReadDto
     public string? SEBIRegCertificatePath { get; set; }
     public Guid? RelationshipManagerId { get; set; }
     public int? WebinarUId { get; set; }
+    public bool? IsChatLive { get; set; }
     public bool isActive { get; set; }
 
 

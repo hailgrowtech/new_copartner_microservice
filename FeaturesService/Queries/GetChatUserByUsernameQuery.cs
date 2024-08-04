@@ -4,4 +4,4 @@ using MigrationDB.Model;
 namespace FeaturesService.Queries;
 
 
-public record GetChatUserByIdQuery(Guid Id) : IRequest<ChatUser>;
+public record GetChatUserByUsernameQuery(Guid Id) : IRequest<ChatUser>;
