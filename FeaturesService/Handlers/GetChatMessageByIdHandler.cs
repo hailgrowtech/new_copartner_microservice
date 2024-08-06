@@ -21,29 +21,36 @@ public class GetChatMessageByIdHandler : IRequestHandler<GetChatMessageByIdQuery
         {
             var userId = request.Id;
 
-            // Query to replicate the SQL logic
-            var result = await (from message in _dbContext.ChatMessages
-                                join user in _dbContext.ChatUsers
-                                on message.SenderId equals user.Id into senderUsers
-                                from senderUser in senderUsers.DefaultIfEmpty()
-                                join user in _dbContext.ChatUsers
-                                on message.ReceiverId equals user.Id into receiverUsers
-                                from receiverUser in receiverUsers.DefaultIfEmpty()
-                                where message.SenderId == request.Id || message.ReceiverId == request.Id
-                                select senderUser ?? receiverUser)
-                     .Distinct()
-                     .ToListAsync(cancellationToken);
+            var result = await (
+                from message in _dbContext.ChatMessages
+                join sender in _dbContext.ChatUsers on message.SenderId equals sender.Id into senderGroup
+                from senderUser in senderGroup.DefaultIfEmpty()
+                join receiver in _dbContext.ChatUsers on message.ReceiverId equals receiver.Id into receiverGroup
+                from receiverUser in receiverGroup.DefaultIfEmpty()
+                where message.SenderId == userId || message.ReceiverId == userId
+                select new
+                {
+                    UserId = message.SenderId == userId ? receiverUser.Id : senderUser.Id,
+                    Username = message.SenderId == userId ? receiverUser.Username : senderUser.Username,
+                    UserType = message.SenderId == userId ? receiverUser.UserType : senderUser.UserType
+                }
+            ).Distinct().ToListAsync(cancellationToken);
 
-            return result;
+            // Map the result to IEnumerable<ChatUser>
+            var chatUsers = result.Select(r => new ChatUser
+            {
+                Id = r.UserId,
+                Username = r.Username,
+                UserType = r.UserType
+            });
+
+            return chatUsers;
         }
         catch (Exception ex)
         {
-            // Log the exception details (you can use a logging library or framework here)
-            // For demonstration, we use Console.WriteLine, but in production, use a logging framework
             Console.WriteLine($"An error occurred: {ex.Message}");
             Console.WriteLine(ex.StackTrace);
 
-            // Return an empty list instead of null
             return Enumerable.Empty<ChatUser>();
         }
     }
