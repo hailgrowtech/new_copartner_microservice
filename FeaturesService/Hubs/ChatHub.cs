@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Storage.ValueConversion.Internal;
 using MigrationDB.Data;
 using MigrationDB.Model;
 using System;
@@ -21,7 +22,7 @@ public class ChatHub : Hub
         _connectionString = _configuration.GetConnectionString("CoPartnerConnectionString");
     }
 
-    public async Task SendMessage(string sender, string receiver, string message)
+    public async Task SendMessage(string sender, string receiver, string message, string planType)
     {
         var senderUser = await _dbContext.ChatUsers.SingleOrDefaultAsync(u => u.Username == sender);
         var receiverUser = await _dbContext.ChatUsers.SingleOrDefaultAsync(u => u.Username == receiver);
@@ -36,7 +37,8 @@ public class ChatHub : Hub
             Contents = message,
             Timestamp = DateTime.Now,
             SenderId = senderUser.Id,
-            ReceiverId = receiverUser.Id
+            ReceiverId = receiverUser.Id,
+            PlanType = planType
         };
 
         await _dbContext.ChatMessages.AddAsync(newMessage);
@@ -44,7 +46,7 @@ public class ChatHub : Hub
 
         if (!string.IsNullOrEmpty(receiverUser.ConnectionId))
         {
-            await Clients.Client(receiverUser.ConnectionId).SendAsync("ReceiveMessage", sender, message);
+            await Clients.Client(receiverUser.ConnectionId).SendAsync("ReceiveMessage", sender, message,planType);
         }
     }
 
@@ -82,7 +84,8 @@ public class ChatHub : Hub
                 Sender = m.Sender.Username,
                 Receiver = m.Receiver.Username,
                 Content = m.Contents,
-                Timestamp = m.Timestamp
+                Timestamp = m.Timestamp,
+                PlanType = m.PlanType,
             })
             .ToListAsync();
 
