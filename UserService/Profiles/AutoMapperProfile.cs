@@ -25,6 +25,15 @@ public class AutoMapperProfile : Profile
         CreateMap<User, JsonPatchDocument<UserCreateDto>>().ReverseMap();
         CreateMap<User, ResponseDto>()
             .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src));
+
+        // Source -> Target
+        CreateMap<User, TempUser>().ReverseMap();
+        CreateMap<TempUser, TempUserReadDto>().ReverseMap();
+        CreateMap<User, TempUserCreateDto>().ReverseMap();
+        CreateMap<TempUser, TempUserCreateDto>().ReverseMap();
+        CreateMap<TempUser, JsonPatchDocument<TempUserCreateDto>>().ReverseMap();
+        CreateMap<TempUser, ResponseDto>()
+            .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src));
     }
 
 }

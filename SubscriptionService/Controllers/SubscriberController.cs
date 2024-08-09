@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using SubscriptionService.Dtos;
 using SubscriptionService.Logic;
+using System;
 
 namespace SubscriptionService.Controllers;
 
@@ -133,5 +134,42 @@ public class SubscriberController : ControllerBase
         {
             return NotFound(response);
         }
+    }
+
+
+    [HttpPost("TempSubscription")]
+    public async Task<object> PostTempSubscription(SubscriberCreateDto subscriberCreateDto)
+    {
+        var response = await _logic.PostTempSubscription(subscriberCreateDto);
+
+        if (response.IsSuccess)
+        {
+            Guid guid = (Guid)response.Data.GetType().GetProperty("Id").GetValue(response.Data);
+            return Ok(response);
+        }
+        return NotFound(response);
+    }
+
+    [HttpPost("ProcessTempSubscription")]
+    public async Task<object> ProcessTempSubscription(Guid userId, Guid subscriberId)
+    {
+        var response = await _logic.ProcessTempSubscription(userId, subscriberId);
+
+        if (response.IsSuccess)
+        {
+            var result = await _logic.ProcessSubscriberWallet(subscriberId);
+            _publish.Publish<WalletEvent>(new
+            {
+                SubscriberId = result.SubscriberId,
+                AffiliatePartnerId = result.AffiliatePartnerId,
+                ExpertsId = result.ExpertsId,
+                RAAmount = result.RAAmount,
+                APAmount = result.APAmount,
+                CPAmount = result.CPAmount,
+                TransactionDate = DateTime.Now
+            });
+            return Ok(response);
+        }
+        return NotFound(response);
     }
 }

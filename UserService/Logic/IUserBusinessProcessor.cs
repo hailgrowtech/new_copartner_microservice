@@ -15,4 +15,6 @@ public interface IUserBusinessProcessor
     Task<ResponseDto> Patch(Guid Id, JsonPatchDocument<UserCreateDto> userDto);
     Task<ResponseDto> Delete(Guid id);
     Task<ResponseDto> ResetPassword(UserPasswordDTO userPasswordDTO);
+    Task<ResponseDto> PostTempUser(TempUserCreateDto user);
+    Task<ResponseDto> GetUpdatedUser(string mobileNumber);
 }

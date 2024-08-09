@@ -118,6 +118,34 @@ public class UserController : ControllerBase
         var user = await _logic.Delete(Id);
         return user != null ? Ok(user) : NotFound();
     }
+
+    [HttpPost("PostTempUser")]
+    public async Task<object> PostTempUser(UserCreateDto userDto)
+    {
+        var response = await _logic.Post(userDto);
+
+        if (response.IsSuccess)
+        {
+            Guid guid = (Guid)response.Data.GetType().GetProperty("Id").GetValue(response.Data);
+            //await _topicProducer.Produce(new UserCreatedEventDTO
+            //{
+            //    Email = userDto.Email,
+            //    Mobile = userDto.MobileNumber,
+            //    Password = userDto.Password,
+            //    UserId = guid
+            //});
+            return Ok(response);
+        }
+        return NotFound(response);
+    }
+
+    [HttpGet("GetUpdatedUser", Name = "GetUpdatedUserId")]
+    public async Task<object> GetUpdatedUser(string mobileNumber)
+    {
+        _logger.LogInformation("Fetching User Data..");
+        var users = await _logic.GetUpdatedUser(mobileNumber);
+        return Ok(users);
+    }
     //[HttpPut("{Id:guid}",Name ="ResetPassword")]
     //public async Task<object> ResetPassword(UserPasswordDTO userPasswordDTO)
     //{

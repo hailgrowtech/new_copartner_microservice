@@ -19,7 +19,8 @@ namespace SubscriptionService.Logic
         Task <WalletEvent>  ProcessSubscriberWallet(Guid subscriberId);
 
         Task<ResponseDto> GetByUserId(Guid id);
-
+        Task<ResponseDto> PostTempSubscription(SubscriberCreateDto subscriberCreateDto);
+        Task<ResponseDto> ProcessTempSubscription(Guid userId, Guid subscriberId);
 
     }
 }

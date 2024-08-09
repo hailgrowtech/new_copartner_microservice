@@ -20,7 +20,9 @@ public class AutoMapperProfile : Profile
 
         // Source -> Target
         CreateMap<Subscriber, SubscriberReadDto>().ReverseMap();
+        CreateMap<TempSubscriber, SubscriberReadDto>().ReverseMap();
         CreateMap<Subscriber, SubscriberCreateDto>().ReverseMap();
+        CreateMap<TempSubscriber, SubscriberCreateDto>().ReverseMap();
         CreateMap<Subscriber, JsonPatchDocument<SubscriberCreateDto>>().ReverseMap();
         CreateMap<Subscriber, ResponseDto>()
             .ForMember(dest => dest.Data, opt => opt.MapFrom(src => src)); // Map Subscription entity to ResponseDto's Data property

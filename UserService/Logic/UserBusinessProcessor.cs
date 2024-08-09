@@ -229,5 +229,60 @@ public class UserBusinessProcessor : IUserBusinessProcessor
             Data = userReadDto,
         };
     }
+
+    public async Task<ResponseDto> PostTempUser(TempUserCreateDto request)
+    {
+        var user = _mapper.Map<User>(request);
+        var tempUser = _mapper.Map<TempUser>(request);
+
+        var existingUser = await _sender.Send(new GetUserByMobileNumberOrEmailQuery(user));
+        if (existingUser != null)
+        {
+            tempUser.Id = existingUser.Id;
+            //return new ResponseDto()
+            //{
+            //    IsSuccess = false,
+            //    Data = _mapper.Map<UserReadDto>(existingUser),
+            //    ErrorMessages = new List<string>() { AppConstants.User_UserExistsWithMobileOrEmail }
+            //};
+        }
+
+        var result = await _sender.Send(new CreateTempUserCommand(tempUser));
+        if (result == null)
+        {
+            return new ResponseDto()
+            {
+                IsSuccess = false,
+                Data = _mapper.Map<UserReadDto>(existingUser),
+                ErrorMessages = new List<string>() { AppConstants.User_FailedToCreateNewUser }
+            };
+        }
+
+        var resultDto = _mapper.Map<TempUserReadDto>(result);
+        return new ResponseDto()
+        {
+            Data = resultDto,
+            DisplayMessage = AppConstants.User_UserCreated
+        };
+    }
+    public async Task<ResponseDto> GetUpdatedUser(string mobileNumber)
+    {
+        var user = await _sender.Send(new GetUserByMobileNumberQuery(mobileNumber));
+        if (user == null)
+        {
+            return new ResponseDto()
+            {
+                IsSuccess = false,
+                Data = null,
+                ErrorMessages = new List<string>() { AppConstants.User_UserNotFound }
+            };
+        }
+        var userReadDto = _mapper.Map<UserReadDto>(user);
+        return new ResponseDto()
+        {
+            IsSuccess = true,
+            Data = userReadDto,
+        };
+    }
 }
 
